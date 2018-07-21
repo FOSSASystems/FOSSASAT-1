@@ -1,0 +1,1 @@
+The frame will be made using a combination of FR4 and aluminium using small 5x5x5mm blocks on each corner and a series of brackets, the necessary dimsensions for the deployer are added in a document.

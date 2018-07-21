@@ -1,0 +1,1 @@
+The current plan is to use two rare earth magnets to stabilise the craft in two axis, Active attitude stabilisation will not be used due to complexity. Any info on placement is helpful.

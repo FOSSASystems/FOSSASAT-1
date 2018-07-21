@@ -1,0 +1,1 @@
+Using LoRa is partly due to the fact anyone can pickup the signals using an arduino and a cheap module along with a homemade antenna, plans and receiver schematics will be uploaded here. Uplink will have to be carried out with an amplifier, any RF help regarding specific budget calculations & antenna designs are welcome. 

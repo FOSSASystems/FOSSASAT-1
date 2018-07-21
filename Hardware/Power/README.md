@@ -1,0 +1,1 @@
+An SPV1040 will be used to regulate the incoming voltage from 9 solar panels with MPPT, each with 8 trisol X 2.3v 14.6mw solar cells. A 3.7v Li-Ion 1000mah battery will be used. A regulated 3.3v bus will be needed for the hardware. A battery charge controller will be used such as a BQ25120A.
