@@ -4,5 +4,6 @@
 int System_Info_GetResetCounter();
 void System_Info_IncrementRestartCounter();
 bool System_Info_CheckSystemPasscode();
+String System_Info_GetTransmissionSignature();
 
 #endif

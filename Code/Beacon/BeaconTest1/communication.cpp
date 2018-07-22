@@ -11,7 +11,28 @@
 
 void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is hidden, use SX1278Transmit____ functions.
 {
-  Serial.println("Transmitting... " + inFuncId + inMessage);
+  String transmissionSignature = System_Info_GetTransmissionSignature();
+  
+  Debugging_Utilities_DebugLog("Transmitting... " + transmissionSignature + inFuncId + inMessage);
+  
+  byte state = LORA.transmit(transmissionSignature + inFuncId + inMessage);
+
+  if (state == ERR_NONE)
+  {
+    // the packet was successfully transmitted
+    Debugging_Utilities_DebugLog(" success!");
+  }
+  else if (state == ERR_PACKET_TOO_LONG)
+  {
+    // the supplied packet was longer than 256 bytes
+    Debugging_Utilities_DebugLog(" too long!");
+
+  }
+  else if (state == ERR_TX_TIMEOUT)
+  {
+    // timeout occurred while transmitting packet
+    Debugging_Utilities_DebugLog(" timeout!");
+  } 
 }
 
 // 1                     : Notification : arduino started signal :  N/A      
@@ -74,17 +95,10 @@ void Communication_TransmitPowerInfo()
   int solarCell5 = Pin_Interface_GetSolarCellVoltage(5);
 
   bool deploymentState = Deployment_GetDeploymentState();
-  Debugging_Utilities_DebugLog(String(deploymentState));
 
   int resetCounter = System_Info_GetResetCounter();
 
-  // TODO perform validation and verfication on these values.
-
   int batteryChargingCurrent = Pin_Interface_GetBatteryChargingCurrent();
-
-  // TODO perform validation and verfication on these values.
-
-  // TODO convert transmission protocol to byte formats.
 
   String sysInfoMessage = String("S1:") + String(solarCell1) + ";" + "S2:" + String(solarCell2) + ";" + "S3:" + String(solarCell3) + ";" + "S4:" + String(solarCell4) + ";" + "S5:" + String(solarCell5) + ";" + "B:" + String(batteryChargingCurrent) + "RC:" + String(resetCounter) + ";DEPS:" + String(deploymentState);
 

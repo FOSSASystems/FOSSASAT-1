@@ -59,6 +59,11 @@ extern int CODING_RATE; // can be 12.
 extern char SYNC_WORD;
 extern int OUTPUT_POWER; // dBm
 
+////////////////////////////
+// Transmission signature //
+////////////////////////////
+extern String TRANSMISSION_SIGNATURE;
+
 void Configuration_SetupPins();
 
 #endif

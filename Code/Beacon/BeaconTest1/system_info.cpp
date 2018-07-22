@@ -19,3 +19,8 @@ bool System_Info_CheckSystemPasscode(String inRecievedPasscode)
   return (inRecievedPasscode == String(inRecievedPasscode));
 }
 
+String System_Info_GetTransmissionSignature()
+{
+  return TRANSMISSION_SIGNATURE;
+}
+

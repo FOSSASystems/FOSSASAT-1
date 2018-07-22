@@ -28,6 +28,12 @@ void Deployment_PowerDeploymentMosfets()
     // burn the nichrome wires.
     digitalWrite(DIGITAL_OUT_MOSFET_1, HIGH);
     digitalWrite(DIGITAL_OUT_MOSFET_2, HIGH);
+
+    delay(5000);
+
+    digitalWrite(DIGITAL_OUT_MOSFET_1, LOW);
+    digitalWrite(DIGITAL_OUT_MOSFET_2, LOW);
+
   }
 
 }

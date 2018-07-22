@@ -58,6 +58,8 @@ int CODING_RATE = 8; // can be 12.
 char SYNC_WORD = 0x13;
 int OUTPUT_POWER = 17; // dBm
 
+String TRANSMISSION_SIGNATURE = "FOSSASAT-1";
+
 void Configuration_SetupPins()
 {
     // Set up digital pins.
