@@ -33,3 +33,4 @@
 
 # Personal files
 .DS_Store
+*.xml
