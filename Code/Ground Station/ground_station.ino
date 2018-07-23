@@ -42,9 +42,19 @@ void loop()
   byte state = LORA.receive(str);
   
   String signature = str.substring(0, 10);
-  String function_id = str.substring(10, 11);
-  String message = str.substring(11);
-  
+  String withoutSignature = str.substring(10);
+
+  int indexOfS1 = withoutSignature.indexOf('S');
+  String message = withoutSignature.substring(indexOfS1);
+
+  String function_id = withoutSignature.substring(0, indexOfS1);
+
+  /*
+  Serial.println("Signature: " + String(signature));
+  Serial.println("Function ID: " + functionId);
+  Serial.println("Message: " + message);
+  */
+        
   ///////////////
   // recieving //
   ///////////////

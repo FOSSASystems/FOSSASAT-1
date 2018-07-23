@@ -64,31 +64,46 @@ void loop()
 
 	String str;
 	byte state = LORA.receive(str);
+ 
+  String signature = str.substring(0, 10);
+  String withoutSignature = str.substring(10);
 
-	if (TRANSMISSION_ENABLED)
+  int indexOfS1 = withoutSignature.indexOf('S');
+  String message = withoutSignature.substring(indexOfS1);
+
+  String function_id = withoutSignature.substring(0, indexOfS1);
+
+  /*
+  Serial.println("Signature: " + String(signature));
+  Serial.println("Function ID: " + functionId);
+  Serial.println("Message: " + message);
+   */
+               
+  if (System_Info_CheckSystemSignature(signature) == false) // invalid signature
+  {
+    Debugging_Utilities_DebugLog("(SAFETY ERROR) Signature received differs from system signature!");
+    return;
+  }
+   
+	if (TRANSMISSION_ENABLED) // cirital decision, transmission recieved to turn off transmission is REQUIRED.
 	{
 		///////////////
 		// RECIEVING //
 		///////////////
-
-		// process every message.
-		char function_id = str.charAt(0);
-		String message = str.substring(1);
-
 		// 5                     : Command      : Ping : N/A
-		if (function_id == '5')
+		if (function_id == "5")
 		{
 			Communication_RecievedPing();
 		}
 
 		// 7                     : Command      : stop transmitting : N/A
-		if (function_id == '7')
+		if (function_id == "7")
 		{
 			Communication_RecievedStopTransmitting();
 		}
 
 		// 8                     : Command      : start transmitting : N/A
-		if (function_id == '8')
+		if (function_id == "7")
 		{
 			Communication_RecievedStartTransmitting();
 		}
@@ -142,15 +157,11 @@ void loop()
 	}
 	else
 	{
-		// process every message.
-		char function_id = str.charAt(0);
-		String message = str.substring(1);
-    
-		if (function_id == '8')
+		if (function_id == "8")
 		{
 			Communication_RecievedStartTransmitting();
 		}
 	}
 
-	delay(1000);
+	delay(200);
 }
