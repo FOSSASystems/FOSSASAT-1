@@ -10,25 +10,28 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
   String signature = TRANSMISSION_SIGNATURE; // todo wrap this up in a container.
   
   Debugging_Utilities_DebugLog("Transmitting... " + signature + inFuncId + inMessage);
+
+  if (TRANSMISSION_ENABLED)
+  {
+    byte state = LORA.transmit(signature + inFuncId + inMessage);
+
+    if (state == ERR_NONE)
+    {
+      // the packet was successfully transmitted
+      Debugging_Utilities_DebugLog(" success!");
+    }
+    else if (state == ERR_PACKET_TOO_LONG)
+    {
+      // the supplied packet was longer than 256 bytes
+      Debugging_Utilities_DebugLog(" too long!");
   
-  byte state = LORA.transmit(signature + inFuncId + inMessage);
-
-  if (state == ERR_NONE)
-  {
-    // the packet was successfully transmitted
-    Debugging_Utilities_DebugLog(" success!");
+    }
+    else if (state == ERR_TX_TIMEOUT)
+    {
+      // timeout occurred while transmitting packet
+      Debugging_Utilities_DebugLog(" timeout!");
+    } 
   }
-  else if (state == ERR_PACKET_TOO_LONG)
-  {
-    // the supplied packet was longer than 256 bytes
-    Debugging_Utilities_DebugLog(" too long!");
-
-  }
-  else if (state == ERR_TX_TIMEOUT)
-  {
-    // timeout occurred while transmitting packet
-    Debugging_Utilities_DebugLog(" timeout!");
-  } 
 }
 
 void Communication_ReceivedStartedSignal()

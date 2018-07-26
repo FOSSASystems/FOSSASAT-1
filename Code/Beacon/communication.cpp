@@ -14,25 +14,28 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
   String transmissionSignature = System_Info_GetTransmissionSignature();
   
   Debugging_Utilities_DebugLog("Transmitting... " + transmissionSignature + inFuncId + inMessage);
+
+  if (TRANSMISSION_ENABLED)
+  {
+     byte state = LORA.transmit(transmissionSignature + inFuncId + inMessage);
+
+    if (state == ERR_NONE)
+    {
+      // the packet was successfully transmitted
+      Debugging_Utilities_DebugLog(" success!");
+    }
+    else if (state == ERR_PACKET_TOO_LONG)
+    {
+      // the supplied packet was longer than 256 bytes
+      Debugging_Utilities_DebugLog(" too long!");
   
-  byte state = LORA.transmit(transmissionSignature + inFuncId + inMessage);
-
-  if (state == ERR_NONE)
-  {
-    // the packet was successfully transmitted
-    Debugging_Utilities_DebugLog(" success!");
+    }
+    else if (state == ERR_TX_TIMEOUT)
+    {
+      // timeout occurred while transmitting packet
+      Debugging_Utilities_DebugLog(" timeout!");
+    }  
   }
-  else if (state == ERR_PACKET_TOO_LONG)
-  {
-    // the supplied packet was longer than 256 bytes
-    Debugging_Utilities_DebugLog(" too long!");
-
-  }
-  else if (state == ERR_TX_TIMEOUT)
-  {
-    // timeout occurred while transmitting packet
-    Debugging_Utilities_DebugLog(" timeout!");
-  } 
 }
 
 // 1                     : Notification : arduino started signal :  N/A      
