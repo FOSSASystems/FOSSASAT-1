@@ -110,8 +110,14 @@ void Communication_TransmitPowerInfo()
 // 10
 void Communication_TransmitTransceiverSettings()
 {
-  String transceiverSettingsMessage = String("CF:" + CARRIER_FREQUENCY + ";BW:" + BANDWIDTH + ";SF:" + SPREADING_FACTOR + ";CR:" + CODING_RATE + ";SW:" + SYNC_WORD + ";OP:" + OUTPUT_POWER + ";");
-
-  Communication_SX1278Transmit("10", transceiverSettingsMessage);
+  // switch to wide bandwidth location transmission.
+  LORA.setBandwidth(LOCATION_BANDWIDTH);
+  Debugging_Utilities_DebugLog("(TUNING) Switched to " + LOCATION_BANDWIDTH + "KHz bandwidth.");
+  
+  Communication_SX1278Transmit("10", String("FOSSASAT1"));
+  
+  // return to local bandwidth transmissions.
+  LORA.setBandwidth(BANDWIDTH);
+  Debugging_Utilities_DebugLog("(TUNING) Switched to " + BANDWIDTH + "KHz bandwidth.");
 }
 

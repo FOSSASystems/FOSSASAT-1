@@ -53,7 +53,8 @@ extern SX1278 LORA;
 // LoRa Antenna Settings //
 ///////////////////////////
 extern float CARRIER_FREQUENCY; // MHz
-extern float BANDWIDTH; // kHz
+extern float BANDWIDTH; // KHz
+extern float LOCATION_BANDWIDTH; // KHz
 extern int SPREADING_FACTOR;
 extern int CODING_RATE; // can be 12.
 extern char SYNC_WORD;

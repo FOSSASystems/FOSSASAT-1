@@ -52,7 +52,8 @@ SX1278 LORA = new LoRa(7, 2, 3);
 // LoRa Antenna Settings //
 ///////////////////////////
 float CARRIER_FREQUENCY = 434.0f; // MHz
-float BANDWIDTH = 7.8f; // kHz
+float BANDWIDTH = 7.8f; // KHz
+float LOCATION_BANDWIDTH = 62.5f; // KHz
 int SPREADING_FACTOR = 12;
 int CODING_RATE = 8; // can be 12.
 char SYNC_WORD = 0x13;

@@ -147,7 +147,10 @@ void loop()
       Communication_TransmitTransceiverInfo();
       STATE_TRANSMIT_TRANSCEIVER_SETTINGS_INFO = false;
    }
+
+   
     // this * 200ms is the delay between each transmission.
+    ///////////////////////////////
     int POWER_INFO_DELAY = 2; // 400ms
     int FREQ_INFO_DELAY = 5; // 1s
     
