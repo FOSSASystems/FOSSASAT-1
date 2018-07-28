@@ -110,7 +110,7 @@ void Communication_TransmitPowerInfo()
 // 10
 void Communication_TransmitTransceiverSettings()
 {
-  String transceiverSettingsMessage = String("FREQ:" + CARRIER_FREQUENCY);
+  String transceiverSettingsMessage = String("CF:" + CARRIER_FREQUENCY + ";BW:" + BANDWIDTH + ";SF:" + SPREADING_FACTOR + ";CR:" + CODING_RATE + ";SW:" + SYNC_WORD + ";OP:" + OUTPUT_POWER + ";");
 
   Communication_SX1278Transmit("10", transceiverSettingsMessage);
 }
