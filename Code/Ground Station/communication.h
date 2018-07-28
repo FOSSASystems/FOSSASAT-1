@@ -21,17 +21,17 @@
   ///////////////////////////////////////
 
   ///////////////////////////////////////////////
-  // Function ID (char)  :  Category       : Description  :  Type 
-  // 1                     : Notification : arduino started signal :  N/A      
-  // 2                     : Notification : arduino stopped signal : N/A
-  // 3                     : Notification : transmitter initialized success signal : N/A
-  // 4                     : Notification : cell and antenna deployment success : N/A
-  // 5                     : Command      : Ping : N/A
-  // 6                     : Data         : Pong : N/A
-  // 7                     : Command      : stop transmitting : N/A
-  // 8                     : Command      : start transmitting : N/A
-  // 9                     : Command      : transmit system infomation : N/A
-  // 10                    : Data         : System infomation : byte array
+  // Function ID (char) :  Direction  :  Type 
+  // 1                     : To Ground : arduino started signal :  N/A      
+  // 2                     : To Ground : arduino stopped signal : N/A
+  // 3                     : To Ground : transmitter initialized success signal : N/A
+  // 4                     : To Ground : cell and antenna deployment success : N/A
+  // 5                     : To Satellite      : Ping : N/A
+  // 6                     : To Ground         : Pong : N/A
+  // 7                     : To Satellite      : stop transmitting : N/A
+  // 8                     : To Satellite      : start transmitting : N/A
+  // 9                     : To Ground      : transmit system infomation : N/A
+  // 10                    : To Ground         : Send configuration frequency : float
   ///////////////////////////////////////////////
 void Communication_SX1278Transmit(String inFuncId, String inMessage);
 

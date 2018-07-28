@@ -79,3 +79,9 @@ void Communication_ReceivedPowerInfo(String inMessage)
     Debugging_Utilities_DebugLog("(DATA - POWER INFO) Received " + inMessage );
 }
 
+void Communication_ReceivedTransceiverSettings(String inMessage)
+{
+    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Received " + inMessage);
+}
+}
+

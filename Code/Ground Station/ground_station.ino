@@ -78,14 +78,18 @@ void loop()
   {
     Communication_ReceivedPong();
   }
-  if (function_id == "10")
+  if (function_id == "9")
   {
     Communication_ReceivedPowerInfo(message);
   }
+  if (function_id == "10")
+  {
+    Communication_ReceivedTransceiverSettings(message):
+  }
 
-  //////////////////
-  // transmitting //
-  //////////////////
+  ///////////////////////////////
+  // transmitting to satellite //
+  ///////////////////////////////
   if (STATE_TRANSMIT_PING)
   {
     Communication_TransmitPing();

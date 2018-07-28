@@ -18,6 +18,16 @@ Author:	Richad Bamford (FOSSA Systems)
 #include "communication.h"
 #include "deployment.h"
 
+//////////////////////////////////////////////////
+// Timers for transceiver settings transmission //
+//////////////////////////////////////////////////
+// this * 200ms is the delay between each transmission.
+int POWER_INFO_DELAY = 2; // 400ms
+int FREQ_INFO_DELAY = 5; // 1s
+// we create seperate timers so we don't cause overflows.
+int FREQ_INFO_TIMER = 0;
+int POWER_INFO_TIMER = 0; 
+
 void setup()
 {
 	Serial.begin(9600);
@@ -90,74 +100,76 @@ void loop()
 		///////////////
 		// RECIEVING //
 		///////////////
-		// 5                     : Command      : Ping : N/A
 		if (function_id == "5")
 		{
 			Communication_RecievedPing();
 		}
-
-		// 7                     : Command      : stop transmitting : N/A
 		if (function_id == "7")
 		{
-			Communication_RecievedStopTransmitting();
+			Communication_RecievedStopTransmitting(); // switch the TRANSMISSION_ENABLED boolean.
 		}
 
-		// 8                     : Command      : start transmitting : N/A
-		if (function_id == "7")
-		{
-			Communication_RecievedStartTransmitting();
-		}
-
-		//////////////////
-		// TRANSMITTING //
-		//////////////////
-
+		////////////////////////////
+		// TRANSMITTING TO GROUND //
+		///////////////////////////
 		if (STATE_STARTED)
 		{
 			Communication_TransmitStartedSignal();
 			STATE_STARTED = false;
 		}
-
-		// 2                     : Notification : arduino stopped signal : N/A
 		if (STATE_STOPPED)
 		{
 			Communication_TransmitStoppedSignal();
 			STATE_STOPPED = false;
 		}
-
-		// 3                     : Notification : transmitter initialized success signal : N/A
 		if (STATE_TRANSMITTER_INITIALIZED)
 		{
 			Communication_TransmitSX1278InitializedSuccess();
 			STATE_TRANSMITTER_INITIALIZED = false;
 		}
-
-		// 4                     : Notification : cell and antenna deployment success : N/A
 		if (STATE_DEPLOYMENT_SUCCESS)
 		{
 			Communication_TransmitDeploymentSuccess();
 			STATE_DEPLOYMENT_SUCCESS = false;
 		}
-
-		// 6                     : Data         : Pong : N/A
 		if (STATE_PING)
 		{
 			Communication_TransmitPong();
 			STATE_PING = false;
 		}
-
-		// 9                     : Command      : transmit system infomation : N/A
 		if (STATE_TRANSMIT_POWER_INFO)
 		{
 			Communication_TransmitPowerInfo();
 			STATE_TRANSMIT_POWER_INFO = false;
 		}
+   if (STATE_TRANSMIT_TRANSCEIVER_SETTINGS_INFO)
+   {
+      Communication_TransmitTransceiverInfo();
+      STATE_TRANSMIT_TRANSCEIVER_SETTINGS_INFO = false;
+   }
+    // this * 200ms is the delay between each transmission.
+    int POWER_INFO_DELAY = 2; // 400ms
+    int FREQ_INFO_DELAY = 5; // 1s
+    
+    int FREQ_INFO_TIMER = 0;
+    int POWER_INFO_TIMER = 0; 
+    FREQ_INFO_TIMER = FREQ_INFO_TIMER + 1;
+    POWER_INFO_TIMER = POWER_INFO_TIMER + 1;
 
-		STATE_TRANSMIT_POWER_INFO = true;
+    if (FREQ_INFO_TIMER >= FREQ_INFO_DELAY)
+    {
+      FREQ_INFO_TIMER = 0;
+      STATE_TRANSMIT_POWER_INFO = true;
+    }
+    if (POWER_INFO_TIMER >= POWER_INFO_TIMER)
+    {
+      POWER_INFO_TIMER = 0;
+      STATE_TRANSMIT_TRANSCEIVER_SETTINGS_INFO = true;
+    }
 	}
 	else
 	{
-		if (function_id == "8")
+		if (function_id == "8") // only parse the function id of 8.
 		{
 			Communication_RecievedStartTransmitting();
 		}

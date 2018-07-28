@@ -6,8 +6,9 @@
 #include "communication.h"
 #include "debugging_utilities.h"
 
-
-// See header for protocol definition.
+////////////////////////////////////////
+// See header for protocol definition //
+////////////////////////////////////////
 
 void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is hidden, use SX1278Transmit____ functions.
 {
@@ -38,59 +39,57 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
   }
 }
 
-// 1                     : Notification : arduino started signal :  N/A      
+// 1   
 void Communication_TransmitStartedSignal()
 {
   Communication_SX1278Transmit("1", "");
 }
 
-// 2                     : Notification : arduino stopped signal : N/A
+// 2
 void Communication_TransmitStoppedSignal()
 {
   Communication_SX1278Transmit("2", "");
 }
 
-// 3                     : Notification : transmitter initialized success signal : N/A
+// 3
 void Communication_TransmitSX1278InitializedSuccess()
 {
   Communication_SX1278Transmit("3", "");
 }
 
-// 4                     : Notification : cell and antenna deployment success : N/A
+// 4
 void Communication_TransmitDeploymentSuccess()
 {
   Communication_SX1278Transmit("4", "");
 }
 
-// 6                     : Data         : Pong : N/A
+// 6
 void Communication_TransmitPong()
 {
   Communication_SX1278Transmit("6", "");
 }
 
-// 5                     : Command      : Ping : N/A
+// 5
 void Communication_RecievedPing()
 {
   STATE_PING = true;
 }
 
-// 7                     : Command      : stop transmitting : N/A
+// 7
 void Communication_RecievedStopTransmitting()
 {
   TRANSMISSION_ENABLED = false;
 }
 
-// 8                     : Command      : start transmitting : N/A
+// 8
 void Communication_RecievedStartTransmitting()
 {
   TRANSMISSION_ENABLED = true;
 }
 
-// 9                     : Command      : transmit system infomation : N/A
+// 9
 void Communication_TransmitPowerInfo()
 {
-  String function_id = String(10);
-
   int solarCell1 = Pin_Interface_GetSolarCellVoltage(1);
   int solarCell2 = Pin_Interface_GetSolarCellVoltage(2);
   int solarCell3 = Pin_Interface_GetSolarCellVoltage(3);
@@ -105,5 +104,14 @@ void Communication_TransmitPowerInfo()
 
   String sysInfoMessage = String("S1:") + String(solarCell1) + ";" + "S2:" + String(solarCell2) + ";" + "S3:" + String(solarCell3) + ";" + "S4:" + String(solarCell4) + ";" + "S5:" + String(solarCell5) + ";" + "B:" + String(batteryChargingCurrent) + "RC:" + String(resetCounter) + ";DEPS:" + String(deploymentState);
 
-  Communication_SX1278Transmit(function_id, sysInfoMessage);
+  Communication_SX1278Transmit("9", sysInfoMessage);
 }
+
+// 10
+void Communication_TransmitTransceiverSettings()
+{
+  String transceiverSettingsMessage = String("FREQ:" + CARRIER_FREQUENCY);
+
+  Communication_SX1278Transmit("10", transceiverSettingsMessage);
+}
+
