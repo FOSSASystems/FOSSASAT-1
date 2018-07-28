@@ -19,6 +19,7 @@ SX1278 LORA = new LoRa(7, 2, 3);
 // LoRa Antenna Settings //
 ///////////////////////////
 float CARRIER_FREQUENCY = 434.0f; // MHz
+float DEFAULT_CARRIER_FREQUENCY = 434.0f; // MHz
 float BANDWIDTH = 62.5f; // kHz (this is the bandwidth the ground station starts with)
 float CONNECTED_BANDWIDTH = 7.8f; // kHz (this is the bandwidth that the ground station uses after finding a satellite transmission)
 int SPREADING_FACTOR = 12;

@@ -81,6 +81,7 @@ void Communication_ReceivedPowerInfo(String inMessage)
 
 void Communication_ReceivedTransceiverSettings(String inMessage, float inFrequencyError)
 {
+    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) TRANSCEIVER TUNING...");
     Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Received " + inMessage);
     Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Frequency error of " + inFrequencyError + " (TODO - is this number ever negative?)");
 

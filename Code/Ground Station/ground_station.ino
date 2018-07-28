@@ -114,7 +114,22 @@ void loop()
   else if (state == ERR_RX_TIMEOUT)
   {
     // timeout occurred while waiting for a packet
-    Debugging_Utilities_DebugLog("timeout!");
+    Debugging_Utilities_DebugLog("Timeout!");
+    
+    if (HAS_REDUCED_BANDWIDTH) // we have found the satellite already, lost connection
+    {
+      Debugging_Utilities_DebugLog("(DISCONNECT) Switching back to wide bandwidth mode.");
+     
+      CARRIER_FREQUENCY = DEFAULT_CARRIER_FREQUENCY;
+      HAS_REDUCED_BANDWIDTH = false; // enable tracking trigger.
+
+      LORA.setFrequency(CARRIER_FREQUENCY); // setup lora for wide bandwidth.
+      LORA.setBandwidth(BANDWIDTH);
+    }
+    else // have not found the satellite already
+    {
+      Debugging_Utilities_DebugLog("(UNFOUND) Satellite not found! Listening on wide bandwidth mode...");
+    }
 
   }
   else if (state == ERR_CRC_MISMATCH)
