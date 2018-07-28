@@ -57,4 +57,6 @@ void Communication_ReceivedPowerInfo(String inMessage);
 
 void Communication_ReceivedPong();
 
+void Communication_ReceivedTransceiverSettings(String inMessage, float inFrequencyError);
+
 #endif

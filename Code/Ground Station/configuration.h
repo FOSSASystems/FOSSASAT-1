@@ -5,6 +5,8 @@
 
 extern bool DEBUG;
 
+extern bool AUTOMATIC_TUNING;
+
 /////////////////////////
 // SX1278 antenna pins //
 // ------------------- //
@@ -18,6 +20,7 @@ extern SX1278 LORA;
 // LoRa Antenna Settings //
 ///////////////////////////
 extern float CARRIER_FREQUENCY; // MHz
+extern float LOCATION_BANDWIDTH; // kHz
 extern float BANDWIDTH; // kHz
 extern int SPREADING_FACTOR;
 extern int CODING_RATE; // can be 12.

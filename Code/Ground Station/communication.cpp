@@ -79,9 +79,27 @@ void Communication_ReceivedPowerInfo(String inMessage)
     Debugging_Utilities_DebugLog("(DATA - POWER INFO) Received " + inMessage );
 }
 
-void Communication_ReceivedTransceiverSettings(String inMessage)
+void Communication_ReceivedTransceiverSettings(String inMessage, float inFrequencyError)
 {
     Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Received " + inMessage);
-}
+    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Frequency error of " + inFrequencyError + " (TODO - is this number ever negative?)");
+
+    if (AUTOMATIC_TUNING)
+    {
+      // calculate what the new frequency is.
+      CARRIER_FREQUENCY = CARRIER_FREQUENCY + inFrequencyError;
+
+      // change the LORA modules frequency.
+      LORA.setFrequency(CARRIER_FREQUENCY);
+      Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Tuning SX1278 to Freq: " + String(CARRIER_FREQUENCY));
+
+      // reduce the LORA modules bandwidth
+      if (HAS_REDUCED_BANDWIDTH == false)
+      {
+        LORA.setBandwidth(CONNECTED_BANDWIDTH);
+        HAS_REDUCED_BANDWIDTH = true;
+        Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Set SX1278 to Bandwidth: " + String(CONNECTED_BANDWIDTH));
+      }
+    }
 }
 
