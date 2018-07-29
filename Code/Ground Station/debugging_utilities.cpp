@@ -1,3 +1,7 @@
+/**
+ * @file debugging_utilities.cpp
+*/
+
 #include <Arduino.h>
 #include <LoRaLib.h>
 #include "configuration.h"

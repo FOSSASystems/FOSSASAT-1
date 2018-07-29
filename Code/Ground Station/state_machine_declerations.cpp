@@ -1,3 +1,8 @@
+/**
+ * @file state_machine_declerations.cpp
+*/
+
+
 #include "state_machine_declerations.h"
 
 bool STATE_TRANSMIT_PING = false;

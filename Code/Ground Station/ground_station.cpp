@@ -1,4 +1,7 @@
- 
+/**
+ * @file ground_station.cpp
+*/
+
 /*
 * Name:    ground_station.ino
 * Created:  7/23/2018

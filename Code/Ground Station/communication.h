@@ -1,3 +1,9 @@
+/**
+ * \ingroup Configuration
+ * 
+ * 
+ */
+
 #ifndef COMMUNICATION_H_INCLUDED
 #define COMMUNICATION_H_INCLUDED
 
