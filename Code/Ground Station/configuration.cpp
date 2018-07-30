@@ -1,5 +1,7 @@
 /**
  * @file configuration.cpp
+ * @brief This is the file in which all the static flags are stored.
+ * these are to be switched during prototype development.
 */
 
 #include <LoRaLib.h>

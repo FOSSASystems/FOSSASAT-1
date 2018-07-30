@@ -1,5 +1,7 @@
 /**
  * @file debugging_utilities.cpp
+ * @brief Serial println abstraction with DEBUG configuration switch.
+ * This is so all printlns can be traced.
 */
 
 #include <Arduino.h>

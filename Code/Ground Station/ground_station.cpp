@@ -1,5 +1,6 @@
-/**
+ /**
  * @file ground_station.cpp
+ * @brief This is the main code starting point. It manages the state of the ground station.
 */
 
 /*
@@ -13,6 +14,14 @@
 #include "state_machine_declerations.h"
 #include "communication.h"
 
+/**
+ * @breif The starting point of the entire code base.
+ * 
+ * Called upon arduino startup.
+ * - Configures the SX1278 chip pin layout and settings.
+ * 
+ * @test Test ground station with no SX1278 chip connected to see how it fails.
+ */
 void setup()
 {
   Serial.begin(9600);
@@ -40,6 +49,19 @@ void setup()
   }
 }
 
+/**
+ * @breif The looping function.
+ * *
+ * Where the LORA transceiver's state is managed.
+ * Where the LORA transceiver is tuned on the function id "10" transmission.
+ * If the communication is lost to the satellite, this manages the switching between low and high bandwidth modes.
+ * 
+ * @test See how it behaves without a SX1278 interface.
+ * @test Test each function ID and ensure it prints to debug the correct functions.
+ * @test Ensure that the frequency error we receive on a packet is suitable for tuning with.
+ * @test Does changing the frequency of the LORA class at runtime work?
+ * @test DOes changing the bandwidth of the LORA class at runtime work?
+ */
 void loop()
 {
   String str;

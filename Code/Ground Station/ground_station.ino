@@ -1,4 +1,10 @@
- 
+ /**
+ * @file ground_station.ino
+ * @brief This code manages the protocol transmission. It takes raw values
+ * from the system, packs them into the radio protocol and sends it through the
+ * SX1278.
+*/
+
 /*
 * Name:    ground_station.ino
 * Created:  7/23/2018
