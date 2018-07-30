@@ -1,0 +1,15 @@
+<map id="Debugging_Utilities_DebugLog" name="Debugging_Utilities_DebugLog">
+<area shape="rect" id="node2" href="$communication_8h.html#a68fd88d1ccfc91925d30c0fdf1b417ab" title="Communication_SX1278Transmit" alt="" coords="200,96,413,123"/>
+<area shape="rect" id="node4" href="$ground__station_8cpp.html#afe461d27b9c48d5921c00d521181f12f" title="loop" alt="" coords="761,312,808,339"/>
+<area shape="rect" id="node7" href="$communication_8h.html#ab66ce78f3bfe62d6583da0a1a1473e6b" title="Communication_ReceivedStarted\lSignal" alt="" coords="487,239,701,281"/>
+<area shape="rect" id="node8" href="$communication_8h.html#ab24ce0353afa549bb631933e8cfe9343" title="Communication_ReceivedStopped\lSignal" alt="" coords="485,305,703,346"/>
+<area shape="rect" id="node9" href="$communication_8h.html#a9120f84592164d2c696fc5d8b9948ac1" title="Communication_ReceivedTransmitted\lOnline" alt="" coords="475,370,713,411"/>
+<area shape="rect" id="node10" href="$communication_8h.html#a649fe6cc16cc68a0eda736de6d670ea4" title="Communication_ReceivedDeployment\lSuccess" alt="" coords="187,414,427,455"/>
+<area shape="rect" id="node11" href="$communication_8h.html#ad67fe0fd5088334be55f2045f5c2067f" title="Communication_ReceivedPong" alt="" coords="206,480,407,507"/>
+<area shape="rect" id="node12" href="$communication_8h.html#a9dd32118d0d9d6eaa0cf4c5646622549" title="Communication_ReceivedPowerInfo" alt="" coords="193,531,420,557"/>
+<area shape="rect" id="node13" href="$communication_8h.html#a18e4470849a0b104b638efb80f2f56d7" title="Communication_ReceivedTransceiver\lSettings" alt="" coords="189,582,425,623"/>
+<area shape="rect" id="node14" href="$ground__station_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d" title="setup" alt="" coords="279,648,334,675"/>
+<area shape="rect" id="node3" href="$communication_8h.html#a639d7624642ba6e8f368f15b89d1b557" title="Communication_TransmitPing" alt="" coords="497,5,691,32"/>
+<area shape="rect" id="node5" href="$communication_8h.html#a7d368a63e53f4a1a63b166e6e97c7805" title="Communication_TransmitStop\lTransmitting" alt="" coords="496,57,692,98"/>
+<area shape="rect" id="node6" href="$communication_8h.html#aa11cefca5402f3a480be0b8448916dab" title="Communication_TransmitStart\lTransmitting" alt="" coords="495,122,693,163"/>
+</map>

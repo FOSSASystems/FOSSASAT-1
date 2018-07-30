@@ -1,0 +1,41 @@
+\hypertarget{index_sec_1}{}\section{About}\label{index_sec_1}
+
+
+ The ground station is the system that is distributed to lots of users. It receives and transmists messages to the satellite and also performs auto-\/tuning functions and relays messages to a central storage server.
+
+The target for this is a stand alone system with simple IO and connection to the internet.\hypertarget{index_sec_2}{}\section{The Transmission Protocol}\label{index_sec_2}
+
+
+ \hypertarget{index_Restrictions}{}\subsection{Restrictions}\label{index_Restrictions}
+
+\begin{DoxyItemize}
+\item Max send length of a string 256 characters.
+\item 512 bytes in total
+\end{DoxyItemize}\hypertarget{index_Format}{}\subsection{Format}\label{index_Format}
+1 byte = function id (0-\/256) 511 bytes = message of any format\hypertarget{index_Function}{}\subsection{I\+D Descriptors}\label{index_Function}
+\hypertarget{index_multi_row}{}
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{4}{|X[-1]}|}
+\caption{See the {\ttfamily communications.\+cpp} doxygen documentation page for info on where the transmissions are set from within the software.}\label{index_multi_row}\\
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Function ID (character type) }&\textbf{ Direction Bound }&\textbf{ Description }&\textbf{ Received Type  }\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Function ID (character type) }&\textbf{ Direction Bound }&\textbf{ Description }&\textbf{ Received Type  }\\\cline{1-4}
+\endhead
+1 &To Ground &Arduino has started. &No data sent  \\\cline{1-4}
+2 &To Ground &Arduino has stopped. &No data sent  \\\cline{1-4}
+3 &To Ground &Satellite transceiver online &No data sent  \\\cline{1-4}
+4 &To Ground &Solar panel and antenna deployment successful. &No data sent  \\\cline{1-4}
+5 &To Satellite &Invoke P\+I\+NG on satellite. &No data sent  \\\cline{1-4}
+6 &To Ground &Reply to P\+I\+NG (\char`\"{}5\char`\"{}) with P\+O\+NG transmission. &No data sent  \\\cline{1-4}
+7 &To Satellite &Stop transmitting. &No data sent  \\\cline{1-4}
+8 &To Satellite &Start transmitting. &No data sent  \\\cline{1-4}
+9 &To Ground &Transmit system power, reset count and deployment status infomation to the ground. &S\+T\+R\+I\+NG \+: \char`\"{}\+S1\+:int;\+S2\+:int;\+S3\+:int;\+S4\+:int;\+S5\+:int;\+R\+C\+:int;\+D\+E\+P\+S\+:int;\char`\"{}  \\\cline{1-4}
+10 &To Ground &Transmit system tuning and configuration message. &S\+T\+R\+I\+NG \+: \char`\"{}\+F\+O\+S\+S\+A\+S\+A\+T1\char`\"{}  \\\cline{1-4}
+\end{longtabu}
+
+
+ 

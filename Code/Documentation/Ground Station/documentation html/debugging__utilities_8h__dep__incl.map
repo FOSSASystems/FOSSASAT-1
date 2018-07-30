@@ -1,0 +1,5 @@
+<map id="debugging_utilities.h" name="debugging_utilities.h">
+<area shape="rect" id="node2" href="$communication_8cpp.html" title="This code manages the protocol transmission. It takes raw values from the system, packs them into the..." alt="" coords="5,80,140,107"/>
+<area shape="rect" id="node3" href="$debugging__utilities_8cpp.html" title="Serial println abstraction with DEBUG configuration switch. This is so all printlns can be traced..." alt="" coords="165,80,319,107"/>
+<area shape="rect" id="node4" href="$ground__station_8cpp.html" title="This is the main code starting point. It manages the state of the ground station. ..." alt="" coords="344,80,476,107"/>
+</map>

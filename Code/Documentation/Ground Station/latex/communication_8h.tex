@@ -1,0 +1,352 @@
+\hypertarget{communication_8h}{}\section{communication.\+h File Reference}
+\label{communication_8h}\index{communication.\+h@{communication.\+h}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=298pt]{communication_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{communication_8h_a68fd88d1ccfc91925d30c0fdf1b417ab}{Communication\+\_\+\+S\+X1278\+Transmit}} (String in\+Func\+Id, String in\+Message)
+\item 
+void \mbox{\hyperlink{communication_8h_ab66ce78f3bfe62d6583da0a1a1473e6b}{Communication\+\_\+\+Received\+Started\+Signal}} ()
+\item 
+void \mbox{\hyperlink{communication_8h_ab24ce0353afa549bb631933e8cfe9343}{Communication\+\_\+\+Received\+Stopped\+Signal}} ()
+\item 
+void \mbox{\hyperlink{communication_8h_a9120f84592164d2c696fc5d8b9948ac1}{Communication\+\_\+\+Received\+Transmitted\+Online}} ()
+\item 
+void \mbox{\hyperlink{communication_8h_a649fe6cc16cc68a0eda736de6d670ea4}{Communication\+\_\+\+Received\+Deployment\+Success}} ()
+\item 
+void \mbox{\hyperlink{communication_8h_a639d7624642ba6e8f368f15b89d1b557}{Communication\+\_\+\+Transmit\+Ping}} ()
+\item 
+void \mbox{\hyperlink{communication_8h_a7d368a63e53f4a1a63b166e6e97c7805}{Communication\+\_\+\+Transmit\+Stop\+Transmitting}} ()
+\item 
+void \mbox{\hyperlink{communication_8h_aa11cefca5402f3a480be0b8448916dab}{Communication\+\_\+\+Transmit\+Start\+Transmitting}} ()
+\item 
+void \mbox{\hyperlink{communication_8h_a9dd32118d0d9d6eaa0cf4c5646622549}{Communication\+\_\+\+Received\+Power\+Info}} (String in\+Message)
+\item 
+void \mbox{\hyperlink{communication_8h_ad67fe0fd5088334be55f2045f5c2067f}{Communication\+\_\+\+Received\+Pong}} ()
+\item 
+void \mbox{\hyperlink{communication_8h_a18e4470849a0b104b638efb80f2f56d7}{Communication\+\_\+\+Received\+Transceiver\+Settings}} (String in\+Message, float in\+Frequency\+Error)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{communication_8h_a649fe6cc16cc68a0eda736de6d670ea4}\label{communication_8h_a649fe6cc16cc68a0eda736de6d670ea4}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Received\+Deployment\+Success@{Communication\+\_\+\+Received\+Deployment\+Success}}
+\index{Communication\+\_\+\+Received\+Deployment\+Success@{Communication\+\_\+\+Received\+Deployment\+Success}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Received\+Deployment\+Success()}{Communication\_ReceivedDeploymentSuccess()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Received\+Deployment\+Success (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Called when received Function ID \char`\"{}4\char`\"{}.
+
+This function indicates to the ground station that the deployment sequence was successfull.
+
+Received\+: Satellite\textquotesingle{}s Setup() function.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000004}{Todo}}]Implement satellite deployment success signal. \end{DoxyRefDesc}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_a649fe6cc16cc68a0eda736de6d670ea4_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=331pt]{communication_8h_a649fe6cc16cc68a0eda736de6d670ea4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_ad67fe0fd5088334be55f2045f5c2067f}\label{communication_8h_ad67fe0fd5088334be55f2045f5c2067f}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Received\+Pong@{Communication\+\_\+\+Received\+Pong}}
+\index{Communication\+\_\+\+Received\+Pong@{Communication\+\_\+\+Received\+Pong}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Received\+Pong()}{Communication\_ReceivedPong()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Received\+Pong (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Called when received Function ID \char`\"{}6\char`\"{}.
+
+This function indicates to the ground station that the satellite received the Ping transmission.
+
+Received\+: Satellite receives Ping function \char`\"{}5\char`\"{} transmission. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_ad67fe0fd5088334be55f2045f5c2067f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=302pt]{communication_8h_ad67fe0fd5088334be55f2045f5c2067f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_a9dd32118d0d9d6eaa0cf4c5646622549}\label{communication_8h_a9dd32118d0d9d6eaa0cf4c5646622549}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Received\+Power\+Info@{Communication\+\_\+\+Received\+Power\+Info}}
+\index{Communication\+\_\+\+Received\+Power\+Info@{Communication\+\_\+\+Received\+Power\+Info}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Received\+Power\+Info()}{Communication\_ReceivedPowerInfo()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Received\+Power\+Info (\begin{DoxyParamCaption}\item[{String}]{in\+Message }\end{DoxyParamCaption})}
+
+Function ID \char`\"{}9\char`\"{}.
+
+This function is called when the ground station receives a power infomation transmission. The power info is broadcasted every 400s.
+
+Received\+: every 400ms from the satellite\textquotesingle{}s Loop(). Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_a9dd32118d0d9d6eaa0cf4c5646622549_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=321pt]{communication_8h_a9dd32118d0d9d6eaa0cf4c5646622549_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_ab66ce78f3bfe62d6583da0a1a1473e6b}\label{communication_8h_ab66ce78f3bfe62d6583da0a1a1473e6b}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Received\+Started\+Signal@{Communication\+\_\+\+Received\+Started\+Signal}}
+\index{Communication\+\_\+\+Received\+Started\+Signal@{Communication\+\_\+\+Received\+Started\+Signal}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Received\+Started\+Signal()}{Communication\_ReceivedStartedSignal()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Received\+Started\+Signal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Called when received Function ID \char`\"{}1\char`\"{}.
+
+This function indicates to the ground station that the satellite has started.
+
+Received\+: satellite\textquotesingle{}s Setup() function is called.. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_ab66ce78f3bfe62d6583da0a1a1473e6b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=311pt]{communication_8h_ab66ce78f3bfe62d6583da0a1a1473e6b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_ab24ce0353afa549bb631933e8cfe9343}\label{communication_8h_ab24ce0353afa549bb631933e8cfe9343}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Received\+Stopped\+Signal@{Communication\+\_\+\+Received\+Stopped\+Signal}}
+\index{Communication\+\_\+\+Received\+Stopped\+Signal@{Communication\+\_\+\+Received\+Stopped\+Signal}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Received\+Stopped\+Signal()}{Communication\_ReceivedStoppedSignal()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Received\+Stopped\+Signal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Called when received Function ID \char`\"{}2\char`\"{}.
+
+This function indicates to the ground station that the satellite has stoppped.
+
+Received\+: satellite\textquotesingle{}s failure is detected.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000002}{Todo}}]Implement satellite stop signal transmission. \end{DoxyRefDesc}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_ab24ce0353afa549bb631933e8cfe9343_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=315pt]{communication_8h_ab24ce0353afa549bb631933e8cfe9343_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_a18e4470849a0b104b638efb80f2f56d7}\label{communication_8h_a18e4470849a0b104b638efb80f2f56d7}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Received\+Transceiver\+Settings@{Communication\+\_\+\+Received\+Transceiver\+Settings}}
+\index{Communication\+\_\+\+Received\+Transceiver\+Settings@{Communication\+\_\+\+Received\+Transceiver\+Settings}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Received\+Transceiver\+Settings()}{Communication\_ReceivedTransceiverSettings()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Received\+Transceiver\+Settings (\begin{DoxyParamCaption}\item[{String}]{in\+Message,  }\item[{float}]{in\+Frequency\+Error }\end{DoxyParamCaption})}
+
+Function ID \char`\"{}10\char`\"{}.
+
+This function is called when the ground station receives a tranceiver setting transmission. This transmission tunes the ground station to the satellite.
+
+This function\textquotesingle{}s associated transmission is sent from the satellite in a wide bandwidth (62.\+5\+K\+Hz) mode. Upon the ground station receiving this wide bandwidth transmission, it uses the frequency error (how much the default 434.\+0 M\+Hz frequency has been distorted) to re-\/set the frequency the ground stations S\+X1278 listen to.
+
+After the ground station has tuned itself, it switches to a small bandwidth (7.\+8\+K\+Hz) mode. If the ground station cannot communicate with the satellite, or packets are failed to be sent, it switches back to the \char`\"{}searching\char`\"{} wide bandwidth mode.
+
+If the ground station L\+O\+R\+A.\+receive() function returns a timeout, it resets to width bandwidth \char`\"{}searching/listening\char`\"{} mode for re-\/tuning.
+
+Received\+: Every 1s from the satellite\textquotesingle{}s Loop(). Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_a18e4470849a0b104b638efb80f2f56d7_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=328pt]{communication_8h_a18e4470849a0b104b638efb80f2f56d7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_a9120f84592164d2c696fc5d8b9948ac1}\label{communication_8h_a9120f84592164d2c696fc5d8b9948ac1}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Received\+Transmitted\+Online@{Communication\+\_\+\+Received\+Transmitted\+Online}}
+\index{Communication\+\_\+\+Received\+Transmitted\+Online@{Communication\+\_\+\+Received\+Transmitted\+Online}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Received\+Transmitted\+Online()}{Communication\_ReceivedTransmittedOnline()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Received\+Transmitted\+Online (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Called when received Function ID \char`\"{}2\char`\"{}.
+
+This function indicates to the ground station that the satellite has initialised it\textquotesingle{}s transceiver.
+
+Received\+: satellite\textquotesingle{}s failure is detected.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000003}{Todo}}]Add output interface. 
+
+Implement satellite stop signal transmission.\end{DoxyRefDesc}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_a9120f84592164d2c696fc5d8b9948ac1_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{communication_8h_a9120f84592164d2c696fc5d8b9948ac1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_a68fd88d1ccfc91925d30c0fdf1b417ab}\label{communication_8h_a68fd88d1ccfc91925d30c0fdf1b417ab}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+S\+X1278\+Transmit@{Communication\+\_\+\+S\+X1278\+Transmit}}
+\index{Communication\+\_\+\+S\+X1278\+Transmit@{Communication\+\_\+\+S\+X1278\+Transmit}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+S\+X1278\+Transmit()}{Communication\_SX1278Transmit()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+S\+X1278\+Transmit (\begin{DoxyParamCaption}\item[{String}]{in\+Func\+Id,  }\item[{String}]{in\+Message }\end{DoxyParamCaption})}
+
+The main transmission function. 
+\begin{DoxyParams}{Parameters}
+{\em in\+Func\+Id} & The number that represents the function being sent. \\
+\hline
+{\em in\+Message} & The string that will be transmistted to the satellite.\\
+\hline
+\end{DoxyParams}
+This should never be called directly in the main code body. There are more specific functions that handle custom functionality.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]Debug Logging removal. 
+
+Transmission signature containment. \end{DoxyRefDesc}
+\begin{DoxyRefDesc}{Test}
+\item[\mbox{\hyperlink{test__test000001}{Test}}]in\+Func\+Id range String(-\/inf) to String(inf). 
+
+in\+Func\+Id String length above 256 
+
+In\+Func\+Id empty string. 
+
+in\+Message String empty. 
+
+in\+Message length above 256. \end{DoxyRefDesc}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_a68fd88d1ccfc91925d30c0fdf1b417ab_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_a68fd88d1ccfc91925d30c0fdf1b417ab_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_a639d7624642ba6e8f368f15b89d1b557}\label{communication_8h_a639d7624642ba6e8f368f15b89d1b557}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Transmit\+Ping@{Communication\+\_\+\+Transmit\+Ping}}
+\index{Communication\+\_\+\+Transmit\+Ping@{Communication\+\_\+\+Transmit\+Ping}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Transmit\+Ping()}{Communication\_TransmitPing()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Transmit\+Ping (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Function ID \char`\"{}5\char`\"{}.
+
+This function transmits to the satellite a small packet, the satellite then responds with a Pong packet. This is useful for small packet testing the connection.
+
+Transmitted\+: On user input.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000005}{Todo}}]Implement user interface for ground station. \end{DoxyRefDesc}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_a639d7624642ba6e8f368f15b89d1b557_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=297pt]{communication_8h_a639d7624642ba6e8f368f15b89d1b557_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_aa11cefca5402f3a480be0b8448916dab}\label{communication_8h_aa11cefca5402f3a480be0b8448916dab}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Transmit\+Start\+Transmitting@{Communication\+\_\+\+Transmit\+Start\+Transmitting}}
+\index{Communication\+\_\+\+Transmit\+Start\+Transmitting@{Communication\+\_\+\+Transmit\+Start\+Transmitting}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Transmit\+Start\+Transmitting()}{Communication\_TransmitStartTransmitting()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Transmit\+Start\+Transmitting (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Function ID \char`\"{}8\char`\"{}.
+
+This function signals to the satellite to start transmitting again. When the satellite is given a \char`\"{}\+Stop Transmitting\char`\"{} signal it will only listen for this signal and nothing else.
+
+Transmitted\+: On user input.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000007}{Todo}}]Reference the security code that requires this functionality. \end{DoxyRefDesc}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_aa11cefca5402f3a480be0b8448916dab_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=299pt]{communication_8h_aa11cefca5402f3a480be0b8448916dab_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{communication_8h_a7d368a63e53f4a1a63b166e6e97c7805}\label{communication_8h_a7d368a63e53f4a1a63b166e6e97c7805}} 
+\index{communication.\+h@{communication.\+h}!Communication\+\_\+\+Transmit\+Stop\+Transmitting@{Communication\+\_\+\+Transmit\+Stop\+Transmitting}}
+\index{Communication\+\_\+\+Transmit\+Stop\+Transmitting@{Communication\+\_\+\+Transmit\+Stop\+Transmitting}!communication.\+h@{communication.\+h}}
+\subsubsection{\texorpdfstring{Communication\+\_\+\+Transmit\+Stop\+Transmitting()}{Communication\_TransmitStopTransmitting()}}
+{\footnotesize\ttfamily void Communication\+\_\+\+Transmit\+Stop\+Transmitting (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Function ID \char`\"{}7\char`\"{}.
+
+This function signals to the satellite to stop all transmissions.
+
+Transmitted\+: On user input.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000006}{Todo}}]Reference the security code that requires this functionality. \end{DoxyRefDesc}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{communication_8h_a7d368a63e53f4a1a63b166e6e97c7805_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=298pt]{communication_8h_a7d368a63e53f4a1a63b166e6e97c7805_icgraph}
+\end{center}
+\end{figure}

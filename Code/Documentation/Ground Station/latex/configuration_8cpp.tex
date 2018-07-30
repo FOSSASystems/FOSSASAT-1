@@ -1,0 +1,167 @@
+\hypertarget{configuration_8cpp}{}\section{configuration.\+cpp File Reference}
+\label{configuration_8cpp}\index{configuration.\+cpp@{configuration.\+cpp}}
+
+
+This is the file in which all the static flags are stored. these are to be switched during prototype development.  
+
+
+{\ttfamily \#include $<$Lo\+Ra\+Lib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}configuration.\+h\char`\"{}}\newline
+Include dependency graph for configuration.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{configuration_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{configuration_8cpp_a117352cc494cc62c6b2f1882786a332c}{D\+E\+B\+UG}} = true
+\begin{DoxyCompactList}\small\item\em Should the ground station output to serial. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{configuration_8cpp_ab1e5677d6b70e3965bdb8b1303d722f8}{A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+T\+U\+N\+I\+NG}} = true
+\begin{DoxyCompactList}\small\item\em Should use the Transceiver settings message to tune its own antenna. \end{DoxyCompactList}\item 
+S\+X1278 \mbox{\hyperlink{configuration_8cpp_a5f993a563f70b3c5508e11762006c2cf}{L\+O\+RA}} = new Lo\+Ra(7, 2, 3)
+\item 
+float \mbox{\hyperlink{configuration_8cpp_a6f812a7f3ce771172c19e67b93772474}{C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY}} = 434.\+0f
+\begin{DoxyCompactList}\small\item\em Transmission frequency measured in M\+Hz (varies). \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{configuration_8cpp_a593e2609469ad2848c8eb2f99fedd6cd}{D\+E\+F\+A\+U\+L\+T\+\_\+\+C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY}} = 434.\+0f
+\begin{DoxyCompactList}\small\item\em Transmission frequency measured in M\+Hz (constant). \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{configuration_8cpp_a8a1bb433d870a97dd5584108636cdbc3}{B\+A\+N\+D\+W\+I\+D\+TH}} = 62.\+5f
+\begin{DoxyCompactList}\small\item\em Transmission bandwidth measured in K\+Hz. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{configuration_8cpp_a8b4922dd8446574ca5548ec99a1f23e1}{C\+O\+N\+N\+E\+C\+T\+E\+D\+\_\+\+B\+A\+N\+D\+W\+I\+D\+TH}} = 7.\+8f
+\begin{DoxyCompactList}\small\item\em Transmission bandwidth measured in K\+Hz (varies). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{configuration_8cpp_a7171ec0721b810d80493f48ec7e73c00}{S\+P\+R\+E\+A\+D\+I\+N\+G\+\_\+\+F\+A\+C\+T\+OR}} = 12
+\begin{DoxyCompactList}\small\item\em Chip duration. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{configuration_8cpp_a058c5ebaef09467069080c27d0d07ff4}{C\+O\+D\+I\+N\+G\+\_\+\+R\+A\+TE}} = 8
+\begin{DoxyCompactList}\small\item\em Cod erate. \end{DoxyCompactList}\item 
+char \mbox{\hyperlink{configuration_8cpp_a8eb3cfcbe3656a266dc371537bcb4719}{S\+Y\+N\+C\+\_\+\+W\+O\+RD}} = 0x13
+\begin{DoxyCompactList}\small\item\em Start of transmission frame preamble. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{configuration_8cpp_adb47c06342602a39a68e0ea3e6786dc6}{O\+U\+T\+P\+U\+T\+\_\+\+P\+O\+W\+ER}} = 17
+\begin{DoxyCompactList}\small\item\em Amount of power of radio frequency transmitted. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{configuration_8cpp_a82c428085c407e360d82a73ad8847b63}{T\+R\+A\+N\+S\+M\+I\+S\+S\+I\+O\+N\+\_\+\+S\+I\+G\+N\+A\+T\+U\+RE}} = \char`\"{}F\+O\+S\+S\+A\+S\+AT-\/1\char`\"{}
+\begin{DoxyCompactList}\small\item\em The unique identifyer for this satellite, used as a signature for transmissions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is the file in which all the static flags are stored. these are to be switched during prototype development. 
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{configuration_8cpp_ab1e5677d6b70e3965bdb8b1303d722f8}\label{configuration_8cpp_ab1e5677d6b70e3965bdb8b1303d722f8}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+T\+U\+N\+I\+NG@{A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+T\+U\+N\+I\+NG}}
+\index{A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+T\+U\+N\+I\+NG@{A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+T\+U\+N\+I\+NG}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+T\+U\+N\+I\+NG}{AUTOMATIC\_TUNING}}
+{\footnotesize\ttfamily bool A\+U\+T\+O\+M\+A\+T\+I\+C\+\_\+\+T\+U\+N\+I\+NG = true}
+
+
+
+Should use the Transceiver settings message to tune its own antenna. 
+
+This flag sets whether the ground station should tune itself from the Function Id \char`\"{}10\char`\"{} transmissions. only used for prototyping, if the tuning system fails to allow hardware debugging. \mbox{\Hypertarget{configuration_8cpp_a8a1bb433d870a97dd5584108636cdbc3}\label{configuration_8cpp_a8a1bb433d870a97dd5584108636cdbc3}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!B\+A\+N\+D\+W\+I\+D\+TH@{B\+A\+N\+D\+W\+I\+D\+TH}}
+\index{B\+A\+N\+D\+W\+I\+D\+TH@{B\+A\+N\+D\+W\+I\+D\+TH}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{B\+A\+N\+D\+W\+I\+D\+TH}{BANDWIDTH}}
+{\footnotesize\ttfamily float B\+A\+N\+D\+W\+I\+D\+TH = 62.\+5f}
+
+
+
+Transmission bandwidth measured in K\+Hz. 
+
+\mbox{\Hypertarget{configuration_8cpp_a6f812a7f3ce771172c19e67b93772474}\label{configuration_8cpp_a6f812a7f3ce771172c19e67b93772474}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY@{C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY}}
+\index{C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY@{C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY}{CARRIER\_FREQUENCY}}
+{\footnotesize\ttfamily float C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY = 434.\+0f}
+
+
+
+Transmission frequency measured in M\+Hz (varies). 
+
+\mbox{\Hypertarget{configuration_8cpp_a058c5ebaef09467069080c27d0d07ff4}\label{configuration_8cpp_a058c5ebaef09467069080c27d0d07ff4}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!C\+O\+D\+I\+N\+G\+\_\+\+R\+A\+TE@{C\+O\+D\+I\+N\+G\+\_\+\+R\+A\+TE}}
+\index{C\+O\+D\+I\+N\+G\+\_\+\+R\+A\+TE@{C\+O\+D\+I\+N\+G\+\_\+\+R\+A\+TE}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{C\+O\+D\+I\+N\+G\+\_\+\+R\+A\+TE}{CODING\_RATE}}
+{\footnotesize\ttfamily int C\+O\+D\+I\+N\+G\+\_\+\+R\+A\+TE = 8}
+
+
+
+Cod erate. 
+
+\mbox{\Hypertarget{configuration_8cpp_a8b4922dd8446574ca5548ec99a1f23e1}\label{configuration_8cpp_a8b4922dd8446574ca5548ec99a1f23e1}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!C\+O\+N\+N\+E\+C\+T\+E\+D\+\_\+\+B\+A\+N\+D\+W\+I\+D\+TH@{C\+O\+N\+N\+E\+C\+T\+E\+D\+\_\+\+B\+A\+N\+D\+W\+I\+D\+TH}}
+\index{C\+O\+N\+N\+E\+C\+T\+E\+D\+\_\+\+B\+A\+N\+D\+W\+I\+D\+TH@{C\+O\+N\+N\+E\+C\+T\+E\+D\+\_\+\+B\+A\+N\+D\+W\+I\+D\+TH}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{C\+O\+N\+N\+E\+C\+T\+E\+D\+\_\+\+B\+A\+N\+D\+W\+I\+D\+TH}{CONNECTED\_BANDWIDTH}}
+{\footnotesize\ttfamily float C\+O\+N\+N\+E\+C\+T\+E\+D\+\_\+\+B\+A\+N\+D\+W\+I\+D\+TH = 7.\+8f}
+
+
+
+Transmission bandwidth measured in K\+Hz (varies). 
+
+\mbox{\Hypertarget{configuration_8cpp_a117352cc494cc62c6b2f1882786a332c}\label{configuration_8cpp_a117352cc494cc62c6b2f1882786a332c}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!D\+E\+B\+UG@{D\+E\+B\+UG}}
+\index{D\+E\+B\+UG@{D\+E\+B\+UG}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{D\+E\+B\+UG}{DEBUG}}
+{\footnotesize\ttfamily bool D\+E\+B\+UG = true}
+
+
+
+Should the ground station output to serial. 
+
+This flag sets whether the ground station should print through the Debug\+Log via serial. Upon prototype finishing, this should be removed along with the debugging functions, this servers as a temporary development flag. \mbox{\Hypertarget{configuration_8cpp_a593e2609469ad2848c8eb2f99fedd6cd}\label{configuration_8cpp_a593e2609469ad2848c8eb2f99fedd6cd}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!D\+E\+F\+A\+U\+L\+T\+\_\+\+C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY@{D\+E\+F\+A\+U\+L\+T\+\_\+\+C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY}}
+\index{D\+E\+F\+A\+U\+L\+T\+\_\+\+C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY@{D\+E\+F\+A\+U\+L\+T\+\_\+\+C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{D\+E\+F\+A\+U\+L\+T\+\_\+\+C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY}{DEFAULT\_CARRIER\_FREQUENCY}}
+{\footnotesize\ttfamily float D\+E\+F\+A\+U\+L\+T\+\_\+\+C\+A\+R\+R\+I\+E\+R\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY = 434.\+0f}
+
+
+
+Transmission frequency measured in M\+Hz (constant). 
+
+\mbox{\Hypertarget{configuration_8cpp_a5f993a563f70b3c5508e11762006c2cf}\label{configuration_8cpp_a5f993a563f70b3c5508e11762006c2cf}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!L\+O\+RA@{L\+O\+RA}}
+\index{L\+O\+RA@{L\+O\+RA}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{L\+O\+RA}{LORA}}
+{\footnotesize\ttfamily S\+X1278 L\+O\+RA = new Lo\+Ra(7, 2, 3)}
+
+S\+X1278 pin layout  N\+SS P\+IN = 7 D\+I\+O0 P\+IN = 2 D\+I\+O1 P\+IN = 3 \mbox{\Hypertarget{configuration_8cpp_adb47c06342602a39a68e0ea3e6786dc6}\label{configuration_8cpp_adb47c06342602a39a68e0ea3e6786dc6}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!O\+U\+T\+P\+U\+T\+\_\+\+P\+O\+W\+ER@{O\+U\+T\+P\+U\+T\+\_\+\+P\+O\+W\+ER}}
+\index{O\+U\+T\+P\+U\+T\+\_\+\+P\+O\+W\+ER@{O\+U\+T\+P\+U\+T\+\_\+\+P\+O\+W\+ER}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{O\+U\+T\+P\+U\+T\+\_\+\+P\+O\+W\+ER}{OUTPUT\_POWER}}
+{\footnotesize\ttfamily int O\+U\+T\+P\+U\+T\+\_\+\+P\+O\+W\+ER = 17}
+
+
+
+Amount of power of radio frequency transmitted. 
+
+\mbox{\Hypertarget{configuration_8cpp_a7171ec0721b810d80493f48ec7e73c00}\label{configuration_8cpp_a7171ec0721b810d80493f48ec7e73c00}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!S\+P\+R\+E\+A\+D\+I\+N\+G\+\_\+\+F\+A\+C\+T\+OR@{S\+P\+R\+E\+A\+D\+I\+N\+G\+\_\+\+F\+A\+C\+T\+OR}}
+\index{S\+P\+R\+E\+A\+D\+I\+N\+G\+\_\+\+F\+A\+C\+T\+OR@{S\+P\+R\+E\+A\+D\+I\+N\+G\+\_\+\+F\+A\+C\+T\+OR}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{S\+P\+R\+E\+A\+D\+I\+N\+G\+\_\+\+F\+A\+C\+T\+OR}{SPREADING\_FACTOR}}
+{\footnotesize\ttfamily int S\+P\+R\+E\+A\+D\+I\+N\+G\+\_\+\+F\+A\+C\+T\+OR = 12}
+
+
+
+Chip duration. 
+
+\mbox{\Hypertarget{configuration_8cpp_a8eb3cfcbe3656a266dc371537bcb4719}\label{configuration_8cpp_a8eb3cfcbe3656a266dc371537bcb4719}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!S\+Y\+N\+C\+\_\+\+W\+O\+RD@{S\+Y\+N\+C\+\_\+\+W\+O\+RD}}
+\index{S\+Y\+N\+C\+\_\+\+W\+O\+RD@{S\+Y\+N\+C\+\_\+\+W\+O\+RD}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{S\+Y\+N\+C\+\_\+\+W\+O\+RD}{SYNC\_WORD}}
+{\footnotesize\ttfamily char S\+Y\+N\+C\+\_\+\+W\+O\+RD = 0x13}
+
+
+
+Start of transmission frame preamble. 
+
+\mbox{\Hypertarget{configuration_8cpp_a82c428085c407e360d82a73ad8847b63}\label{configuration_8cpp_a82c428085c407e360d82a73ad8847b63}} 
+\index{configuration.\+cpp@{configuration.\+cpp}!T\+R\+A\+N\+S\+M\+I\+S\+S\+I\+O\+N\+\_\+\+S\+I\+G\+N\+A\+T\+U\+RE@{T\+R\+A\+N\+S\+M\+I\+S\+S\+I\+O\+N\+\_\+\+S\+I\+G\+N\+A\+T\+U\+RE}}
+\index{T\+R\+A\+N\+S\+M\+I\+S\+S\+I\+O\+N\+\_\+\+S\+I\+G\+N\+A\+T\+U\+RE@{T\+R\+A\+N\+S\+M\+I\+S\+S\+I\+O\+N\+\_\+\+S\+I\+G\+N\+A\+T\+U\+RE}!configuration.\+cpp@{configuration.\+cpp}}
+\subsubsection{\texorpdfstring{T\+R\+A\+N\+S\+M\+I\+S\+S\+I\+O\+N\+\_\+\+S\+I\+G\+N\+A\+T\+U\+RE}{TRANSMISSION\_SIGNATURE}}
+{\footnotesize\ttfamily String T\+R\+A\+N\+S\+M\+I\+S\+S\+I\+O\+N\+\_\+\+S\+I\+G\+N\+A\+T\+U\+RE = \char`\"{}F\+O\+S\+S\+A\+S\+AT-\/1\char`\"{}}
+
+
+
+The unique identifyer for this satellite, used as a signature for transmissions. 
+
