@@ -34,3 +34,9 @@
 # Personal files
 .DS_Store
 *.xml
+
+# DOXYGEN
+*.md5
+*.tex
+*.bat
+*.map

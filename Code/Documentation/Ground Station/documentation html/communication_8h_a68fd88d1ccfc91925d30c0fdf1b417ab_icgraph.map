@@ -1,6 +1,0 @@
-<map id="Communication_SX1278Transmit" name="Communication_SX1278Transmit">
-<area shape="rect" id="node2" href="$communication_8h.html#a639d7624642ba6e8f368f15b89d1b557" title="Communication_TransmitPing" alt="" coords="268,5,463,32"/>
-<area shape="rect" id="node4" href="$communication_8h.html#a7d368a63e53f4a1a63b166e6e97c7805" title="Communication_TransmitStop\lTransmitting" alt="" coords="267,57,463,98"/>
-<area shape="rect" id="node5" href="$communication_8h.html#aa11cefca5402f3a480be0b8448916dab" title="Communication_TransmitStart\lTransmitting" alt="" coords="267,122,464,163"/>
-<area shape="rect" id="node3" href="$ground__station_8cpp.html#afe461d27b9c48d5921c00d521181f12f" title="loop" alt="" coords="512,64,559,91"/>
-</map>

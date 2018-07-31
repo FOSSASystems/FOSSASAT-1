@@ -1,5 +1,0 @@
-<map id="state_machine_declerations.h" name="state_machine_declerations.h">
-<area shape="rect" id="node2" href="$communication_8cpp.html" title="This code manages the protocol transmission. It takes raw values from the system, packs them into the..." alt="" coords="5,80,140,107"/>
-<area shape="rect" id="node3" href="$ground__station_8cpp.html" title="This is the main code starting point. It manages the state of the ground station. ..." alt="" coords="164,80,296,107"/>
-<area shape="rect" id="node4" href="$state__machine__declerations_8cpp.html" title="Where the state machine booleans are held for easy access. " alt="" coords="320,80,529,107"/>
-</map>
