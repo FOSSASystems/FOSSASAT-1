@@ -1,0 +1,43 @@
+.file_tabbar
+{
+	display: inline-flex;
+}
+
+.file_tabbar_tab
+{
+	display: flex;
+	flex-direction: row;
+
+	min-width: 75px;
+	min-height: 30px;
+
+	background: linear-gradient(to bottom, #388baf, #247BA1);
+	border: 1px;
+	border-style: solid;
+	border-color: #337fa0;
+
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+
+	margin-right: 4px;
+}
+
+.file_tabbar_tab_text
+{
+	margin-top: auto;
+	margin-bottom: auto;
+
+	margin-right: 4px;
+}
+
+.file_tabbar_tab_page_icon
+{
+	width: 16px;
+	height: 16px;
+
+	margin-top: auto;
+	margin-bottom: auto;
+
+	margin-right: 4px;
+	margin-left: 4px;
+}

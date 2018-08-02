@@ -1,0 +1,63 @@
+.toolbar
+{
+	display: inline-flex;
+
+	align-items: center;
+
+	margin-bottom: 10px;
+
+	background: linear-gradient(to bottom, #388baf, #247BA1);	
+	border: 1px;
+	border-style: solid;
+	border-color: #337fa0;
+}
+
+.toolbar_file_button
+{
+	display: flex;
+	margin-left: 5px;
+}
+
+.toolbar_file_dropdown_menu
+{
+	display: none;
+	flex-direction: column;
+
+	position: absolute;
+	transform: translate(0px, 16px);
+
+	background-color: #388baf;
+
+	padding: 2px;
+	border: 1px;
+	border-style: solid;
+	border-color: #337fa0;
+	z-index: 5;
+}
+
+.toolbar_filedropdown_menu_list_item
+{
+	display: inline-flex;
+}
+
+.toolbar_filedropdown_menu_list_icon
+{
+	margin-right: 4px;
+}
+
+toolbar_filedropdown_menu_list_text
+{
+
+}
+
+.toolbar_simulate_button
+{
+	display: flex;
+	flex-direction: column;
+	margin-left: 5px;
+}
+
+.toolbar_button_text
+{
+	margin: auto;
+}
