@@ -20,13 +20,13 @@ Author:	Richad Bamford (FOSSA Systems)
 
 //////////////////////////////////////////////////
 // Timers for transceiver settings transmission //
-//////////////////////////////////////////////////
 // this * 200ms is the delay between each transmission.
 int POWER_INFO_DELAY = 2; // 400ms
-int FREQ_INFO_DELAY = 5; // 1s
-// we create seperate timers so we don't cause overflows.
-int FREQ_INFO_TIMER = 0;
-int POWER_INFO_TIMER = 0; 
+int TUNE_TIMER_DELAY = 5; // 1s
+
+int TUNE_TIMER = 0;
+int POWER_INFO_TIMER = 0;
+    
 
 void setup()
 {
@@ -68,6 +68,13 @@ void setup()
 	Deployment_PowerDeploymentMosfets();
 }
 
+/*
+ * 
+ * 
+ * @test Signature malforming during transmission?
+ * 
+ * @todo Create interval adjustments based on power level.
+ */
 void loop()
 {
 	Pin_Interface_WatchdogHeartbeat();
@@ -142,32 +149,25 @@ void loop()
 			Communication_TransmitPowerInfo();
 			STATE_TRANSMIT_POWER_INFO = false;
 		}
-   if (STATE_TRANSMIT_TRANSCEIVER_SETTINGS_INFO)
+   if (STATE_TRANSMIT_TUNE)
    {
-      Communication_TransmitTransceiverInfo();
-      STATE_TRANSMIT_TRANSCEIVER_SETTINGS_INFO = false;
+      Communication_TransmitTune();
+      STATE_TRANSMIT_TUNE = false;
    }
 
    
-    // this * 200ms is the delay between each transmission.
-    ///////////////////////////////
-    int POWER_INFO_DELAY = 2; // 400ms
-    int FREQ_INFO_DELAY = 5; // 1s
-    
-    int FREQ_INFO_TIMER = 0;
-    int POWER_INFO_TIMER = 0; 
-    FREQ_INFO_TIMER = FREQ_INFO_TIMER + 1;
+    TUNE_TIMER = TUNE_TIMER + 1;
     POWER_INFO_TIMER = POWER_INFO_TIMER + 1;
 
-    if (FREQ_INFO_TIMER >= FREQ_INFO_DELAY)
-    {
-      FREQ_INFO_TIMER = 0;
-      STATE_TRANSMIT_POWER_INFO = true;
-    }
-    if (POWER_INFO_TIMER >= POWER_INFO_TIMER)
+    if (POWER_INFO_TIMER >= POWER_INFO_DELAY)
     {
       POWER_INFO_TIMER = 0;
-      STATE_TRANSMIT_TRANSCEIVER_SETTINGS_INFO = true;
+      STATE_TRANSMIT_POWER_INFO = true;
+    }
+    if (TUNE_TIMER >= TUNE_TIMER_DELAY)
+    {
+      TUNE_TIMER = 0;
+      STATE_TRANSMIT_TUNE = true;
     }
 	}
 	else

@@ -1,23 +1,29 @@
+/**
+ * @file configuration.cpp
+ * @brief Configurable settings for prototyping; pin layouts, lora lib settings, debug.
+ * SX1278.
+*/
+
+
 #include <Arduino.h>
 #include <LoRaLib.h>
 #include "configuration.h"
 
-/////////////////////////////////////////////
-// IN HOUSE PROTOTYPE DEBUG                //
-/////////////////////////////////////////////
-bool DEBUG = true;   // whether to print debug infomation at all.
-bool DEBUG_SERIAL = true; // whether to print debug info to serial.
-bool DEBUG_SX1278 = false; // whether to send debug info to SX1278.
+/* Should we print debug infomation? */
+bool DEBUG = true;
+/* Should we print debug infomation to the Serial package? */
+bool DEBUG_SERIAL = true;
+/* Should we print debug infomation through the transmittor? (NO) */
+bool DEBUG_SX1278 = false;
 
-//////////////////////////
-// Transmission control //
-//////////////////////////
-bool TRANSMISSION_ENABLED = true; // when disabled will only parse transmission on message.
 
-//////////////////////
-// EEPROM Addresses //
-//////////////////////
+/* (internal) Disables transmission and only listens for a start transmitting message. */
+bool TRANSMISSION_ENABLED = true;
+
+
+/* EEPROM addreses */
 int EEPROM_DEPLOYMENT_ADDR = 1;
+/* EEPROM addreses */
 int EEPROM_RESTART_COUNTER_ADDR = 4;
 
 ///////////////////////

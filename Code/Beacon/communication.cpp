@@ -1,3 +1,10 @@
+/**
+ * @file communication.cpp
+ * @brief This code manages the protocol transmission. It takes raw values
+ * from the system, packs them into the radio protocol and sends it through the
+ * SX1278.
+*/
+
 #include "configuration.h"
 #include "state_machine_declerations.h"
 #include "pin_interface.h"
@@ -6,10 +13,22 @@
 #include "communication.h"
 #include "debugging_utilities.h"
 
-////////////////////////////////////////
-// See header for protocol definition //
-////////////////////////////////////////
-
+/**
+ * @brief The main transmission function.
+ * @param inFuncId The number that represents the function being sent.
+ * @param inMessage The string that will be transmistted to the satellite.
+ * 
+ * This should never be called directly in the main code body. There are
+ * more specific functions that handle custom functionality.
+ * 
+ * @todo Debug Logging removal. 
+ * @todo Transmission signature containment.
+ * @test inFuncId range String(-inf) to String(inf).
+ * @test inFuncId String length above 256 
+ * @test InFuncId empty string.
+ * @test inMessage String empty.
+ * @test inMessage length above 256.
+ */
 void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is hidden, use SX1278Transmit____ functions.
 {
   String transmissionSignature = System_Info_GetTransmissionSignature();
@@ -38,56 +57,94 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
     }  
   }
 }
-
-// 1   
+   
+/**
+ * @brief satellite's Setup() function is called..
+ *
+ * This function indicates to the ground station that the satellite has started.
+ */
 void Communication_TransmitStartedSignal()
 {
   Communication_SX1278Transmit("1", "");
 }
 
-// 2
+/**
+ * @brief satellite's failure sequency function is called..
+ *
+ * This function indicates to the ground station that the satellite has stopped.
+ */
 void Communication_TransmitStoppedSignal()
 {
   Communication_SX1278Transmit("2", "");
 }
 
-// 3
+/**
+ * @brief satellite's SX1278 LoRa library .begin() ran successfully.
+ *
+ * This function indicates to the ground station that the satellite has began the LoRa object successfully.
+ */
 void Communication_TransmitSX1278InitializedSuccess()
 {
   Communication_SX1278Transmit("3", "");
 }
 
-// 4
+/**
+ * @brief When the Atmega setup() is called.
+ *
+ * This function indicates to the ground station that the satellite has deployed successfully.
+ * @todo !!! How do we handle missing packets? we could miss a deployment success and assume it has failed?
+ */
 void Communication_TransmitDeploymentSuccess()
 {
   Communication_SX1278Transmit("4", "");
 }
 
-// 6
+/**
+ * @brief satellite's Setup() function is called..
+ *
+ * This function indicates to the ground station that the satellite has started.
+ */
 void Communication_TransmitPong()
 {
   Communication_SX1278Transmit("6", "");
 }
 
-// 5
+/**
+ * @brief Satellite PING transmission received.
+ *
+ * This function is to test the connection using a minimal packet.
+ */
 void Communication_RecievedPing()
 {
   STATE_PING = true;
 }
 
-// 7
+/**
+ * @brief Satellite Stop transmission.
+ *
+ * This prevents the satellite from transmitting and configures it to only listen to start transmitting messages.
+ */
 void Communication_RecievedStopTransmitting()
 {
   TRANSMISSION_ENABLED = false;
 }
 
-// 8
+/**
+ * @brief Satellite Start transmission.
+ *
+ * This re-enables transmitting and receiving for all routes.
+ */
 void Communication_RecievedStartTransmitting()
 {
   TRANSMISSION_ENABLED = true;
 }
 
-// 9
+/**
+ * @brief Power infomation send to ground station every 400ms.
+ *
+ * Collects Solar cell voltages, deployment state, reset count and batter charging current
+ * then transmits it to the ground station.
+ */
 void Communication_TransmitPowerInfo()
 {
   int solarCell1 = Pin_Interface_GetSolarCellVoltage(1);
@@ -107,17 +164,21 @@ void Communication_TransmitPowerInfo()
   Communication_SX1278Transmit("9", sysInfoMessage);
 }
 
-// 10
-void Communication_TransmitTransceiverSettings()
+/**
+ * @brief Satellite's ground station TUNE transmission.
+ *
+ * This is send every 1s which the ground station tunes its frequency to
+ */
+void Communication_TransmitTune()
 {
   // switch to wide bandwidth location transmission.
   LORA.setBandwidth(LOCATION_BANDWIDTH);
-  Debugging_Utilities_DebugLog("(TUNING) Switched to " + LOCATION_BANDWIDTH + "KHz bandwidth.");
+  Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(LOCATION_BANDWIDTH) + "KHz bandwidth.");
   
   Communication_SX1278Transmit("10", String("FOSSASAT1"));
   
   // return to local bandwidth transmissions.
   LORA.setBandwidth(BANDWIDTH);
-  Debugging_Utilities_DebugLog("(TUNING) Switched to " + BANDWIDTH + "KHz bandwidth.");
+  Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(BANDWIDTH) + "KHz bandwidth.");
 }
 

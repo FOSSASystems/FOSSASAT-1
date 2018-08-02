@@ -96,7 +96,7 @@ void loop()
       // Frequency error for automatic tuning...
       float frequencyError = LORA.getFrequencyError();
       
-      Communication_ReceivedTransceiverSettings(message, frequencyError);
+      Communication_ReceivedTune(frequencyError);
     }
   
     ///////////////////////////////

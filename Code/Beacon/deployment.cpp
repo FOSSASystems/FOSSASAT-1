@@ -1,11 +1,22 @@
+/**
+ * @file deployment.cpp
+ * @brief This abstracts the deployment mechanism and sequence into callable functions.
+ * SX1278.
+*/
+
+
 #include <Arduino.h>
 #include "configuration.h"
 #include "persistant_storage.h"
 #include "deployment.h"
 
-//////////////////////////
-// DEPLOYMENT FUNCTIONS //
-//////////////////////////
+   
+/**
+ * @brief Power the deployment release mechanism (spring and hinge)
+ *
+ * Checks against the EEPROM value to see if it has already deployed, if not it waits 5s, then sends a digital high
+ * value to the DIGITAL_OUT_MOSFET_1&2 pins and then after another 5s switches them back to low.
+ */
 void Deployment_PowerDeploymentMosfets()
 {
   // check against eeprom for already deployed.
@@ -38,6 +49,11 @@ void Deployment_PowerDeploymentMosfets()
 
 }
 
+   
+/**
+ * @brief This function abstracts whether the deployment mechanism has succeeded.
+ *
+ */
 bool Deployment_GetDeploymentState()
 {
   // read from the deployment digital pin.

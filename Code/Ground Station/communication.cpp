@@ -10,10 +10,8 @@
 #include "communication.h"
 #include "debugging_utilities.h"
 
-// See header for protocol definition.
-
 /**
- * @breif The main transmission function.
+ * @brief The main transmission function.
  * @param inFuncId The number that represents the function being sent.
  * @param inMessage The string that will be transmistted to the satellite.
  * 
@@ -34,31 +32,28 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
   
   Debugging_Utilities_DebugLog("Transmitting... " + signature + inFuncId + inMessage);
 
-  if (TRANSMISSION_ENABLED)
-  {
-    byte state = LORA.transmit(signature + inFuncId + inMessage);
+  byte state = LORA.transmit(signature + inFuncId + inMessage);
 
-    if (state == ERR_NONE)
-    {
-      // the packet was successfully transmitted
-      Debugging_Utilities_DebugLog(" success!");
-    }
-    else if (state == ERR_PACKET_TOO_LONG)
-    {
-      // the supplied packet was longer than 256 bytes
-      Debugging_Utilities_DebugLog(" too long!");
-  
-    }
-    else if (state == ERR_TX_TIMEOUT)
-    {
-      // timeout occurred while transmitting packet
-      Debugging_Utilities_DebugLog(" timeout!");
-    } 
+  if (state == ERR_NONE)
+  {
+    // the packet was successfully transmitted
+    Debugging_Utilities_DebugLog(" success!");
   }
+  else if (state == ERR_PACKET_TOO_LONG)
+  {
+    // the supplied packet was longer than 256 bytes
+    Debugging_Utilities_DebugLog(" too long!");
+
+  }
+  else if (state == ERR_TX_TIMEOUT)
+  {
+    // timeout occurred while transmitting packet
+    Debugging_Utilities_DebugLog(" timeout!");
+  } 
 }
 
 /**
- * @breif Called when received Function ID "1".
+ * @brief Called when received Function ID "1".
  *
  * This function indicates to the ground station that the satellite has started.
  *
@@ -70,7 +65,7 @@ void Communication_ReceivedStartedSignal()
 }
 
 /**
- * @breif Called when received Function ID "2".
+ * @brief Called when received Function ID "2".
  *
  * This function indicates to the ground station that the satellite has stoppped.
  *
@@ -84,7 +79,7 @@ void Communication_ReceivedStoppedSignal()
 }
 
 /**
- * @breif Called when received Function ID "2".
+ * @brief Called when received Function ID "2".
  *
  * This function indicates to the ground station that the satellite has initialised it's transceiver.
  *
@@ -100,7 +95,7 @@ void Communication_ReceivedTransmittedOnline()
 }
 
 /**
- * @breif Called when received Function ID "4".
+ * @brief Called when received Function ID "4".
  *
  * This function indicates to the ground station that the deployment sequence was successfull.
  *
@@ -114,7 +109,7 @@ void Communication_ReceivedDeploymentSuccess()
 }
 
 /**
- * @breif Called when received Function ID "6".
+ * @brief Called when received Function ID "6".
  *
  * This function indicates to the ground station that the satellite received the Ping transmission.
  *
@@ -126,7 +121,7 @@ void Communication_ReceivedPong()
 }
 
 /**
- * @breif Function ID "5".
+ * @brief Function ID "5".
  *
  * This function transmits to the satellite a small packet, the satellite then responds with a Pong packet. This is useful for small packet testing the
  * connection.
@@ -141,7 +136,7 @@ void Communication_TransmitPing()
 }
 
 /**
- * @breif Function ID "7".
+ * @brief Function ID "7".
  * 
  * This function signals to the satellite to stop all transmissions.
  *
@@ -155,7 +150,7 @@ void Communication_TransmitStopTransmitting()
 }
 
 /**
- * @breif Function ID "8".
+ * @brief Function ID "8".
  *
  * This function signals to the satellite to start transmitting again. When the satellite is given a "Stop Transmitting" signal
  * it will only listen for this signal and nothing else.
@@ -170,7 +165,7 @@ void Communication_TransmitStartTransmitting()
 }
 
 /**
- * @breif Function ID "9".
+ * @brief Function ID "9".
  *
  * This function is called when the ground station receives a power infomation transmission. The power info is broadcasted every 400s.
  *
@@ -182,7 +177,7 @@ void Communication_ReceivedPowerInfo(String inMessage)
 }
 
 /**
- * @breif Function ID "10".
+ * @brief Function ID "10".
  *
  * This function is called when the ground station receives a tranceiver setting transmission. This transmission tunes the ground
  * station to the satellite.
@@ -199,11 +194,10 @@ void Communication_ReceivedPowerInfo(String inMessage)
  * Received: Every 1s from the satellite's Loop().
  *
  */
-void Communication_ReceivedTransceiverSettings(String inMessage, float inFrequencyError)
+void Communication_ReceivedTune(float inFrequencyError)
 {
-    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) TRANSCEIVER TUNING...");
-    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Received " + inMessage);
-    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Frequency error of " + inFrequencyError + " (TODO - is this number ever negative?)");
+    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) TRANSCEIVER TUNING PACKET...");
+    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Frequency error of " + String(inFrequencyError) + " (TODO - is this number ever negative?)");
 
     if (AUTOMATIC_TUNING)
     {
