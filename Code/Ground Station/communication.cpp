@@ -28,28 +28,32 @@
  */
 void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is hidden, use SX1278Transmit____ functions.
 {
-  String signature = TRANSMISSION_SIGNATURE; // todo wrap this up in a container.
-  
-  Debugging_Utilities_DebugLog("Transmitting... " + signature + inFuncId + inMessage);
+	String signature = TRANSMISSION_SIGNATURE; // todo wrap this up in a container.
 
-  byte state = LORA.transmit(signature + inFuncId + inMessage);
+	Debugging_Utilities_DebugLog("(S) Transmitting... " + signature + inFuncId + inMessage);
 
-  if (state == ERR_NONE)
-  {
-    // the packet was successfully transmitted
-    Debugging_Utilities_DebugLog(" success!");
-  }
-  else if (state == ERR_PACKET_TOO_LONG)
-  {
-    // the supplied packet was longer than 256 bytes
-    Debugging_Utilities_DebugLog(" too long!");
+	byte state = LORA.transmit(signature + inFuncId + inMessage);
 
-  }
-  else if (state == ERR_TX_TIMEOUT)
-  {
-    // timeout occurred while transmitting packet
-    Debugging_Utilities_DebugLog(" timeout!");
-  } 
+	if (state == ERR_NONE)
+	{
+	  // the packet was successfully transmitted
+	  Debugging_Utilities_DebugLog("(S) Transmitted successfully.");
+	}
+	else if (state == ERR_PACKET_TOO_LONG)
+	{
+	  // the supplied packet was longer than 256 bytes
+	  Debugging_Utilities_DebugLog("(S) Transmission packet size in bytes too large.");
+
+	}
+	else if (state == ERR_TX_TIMEOUT)
+	{
+	  // timeout occurred while transmitting packet
+	  Debugging_Utilities_DebugLog("(S) Transmission timeout.");
+	}
+	else
+	{
+		Debugging_Utilities_DebugLog("(S) Undefined transmission state.")
+	}
 }
 
 /**
@@ -201,20 +205,24 @@ void Communication_ReceivedTune(float inFrequencyError)
 
     if (AUTOMATIC_TUNING)
     {
-      // calculate what the new frequency is.
-      CARRIER_FREQUENCY = CARRIER_FREQUENCY + inFrequencyError;
+		// calculate what the new frequency is.
+		CARRIER_FREQUENCY = CARRIER_FREQUENCY + inFrequencyError;
 
-      // change the LORA modules frequency.
-      LORA.setFrequency(CARRIER_FREQUENCY);
-      Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Tuning SX1278 to Freq: " + String(CARRIER_FREQUENCY));
+		// change the LORA modules frequency to the one received on the wide bandwidth mode. (satellite frequency infered)
+		LORA.setFrequency(CARRIER_FREQUENCY);
+		Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Tuning SX1278 to Freq: " + String(CARRIER_FREQUENCY));
 
-      // reduce the LORA modules bandwidth
-      if (HAS_REDUCED_BANDWIDTH == false)
-      {
-        LORA.setBandwidth(CONNECTED_BANDWIDTH);
-        HAS_REDUCED_BANDWIDTH = true;
-        Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Set SX1278 to Bandwidth: " + String(CONNECTED_BANDWIDTH));
-      }
+		// reduce the LORA transceiver bandwidth because we have found the sat.
+		if (HAS_REDUCED_BANDWIDTH == false)
+		{
+			LORA.setBandwidth(CONNECTED_BANDWIDTH);
+			HAS_REDUCED_BANDWIDTH = true;
+			Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Set SX1278 to Bandwidth: " + String(CONNECTED_BANDWIDTH));
+		}
+    }
+    else
+    {
+    	Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) AUTOMATIC TUNING DISABLED.")
     }
 }
 

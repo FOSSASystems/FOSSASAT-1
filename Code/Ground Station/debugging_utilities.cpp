@@ -13,8 +13,8 @@
 
 void Debugging_Utilities_DebugLog(String inLine)
 {
-  if (DEBUG)
-  {
-      Serial.println(inLine);
-  }
+	if (DEBUG)
+	{
+		Serial.println(inLine);
+	}
 }

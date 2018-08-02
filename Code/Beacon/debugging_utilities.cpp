@@ -7,11 +7,11 @@
 
 void Debugging_Utilities_DebugLog(String inLine)
 {
-  if (DEBUG)
-  {
-    if (DEBUG_SERIAL)
-    {
-      Serial.println(inLine);
-    }
-  }
+	if (DEBUG)
+	{
+		if (DEBUG_SERIAL)
+		{
+			Serial.println(inLine);
+		}
+	}
 }

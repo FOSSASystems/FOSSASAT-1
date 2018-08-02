@@ -69,11 +69,11 @@ String TRANSMISSION_SIGNATURE = "FOSSASAT-1";
 
 void Configuration_SetupPins()
 {
-    // Set up digital pins.
-  pinMode(OUTPUT, DIGITAL_OUT_MOSFET_1);  // burns the nichrome wires.
-  pinMode(OUTPUT, DIGITAL_OUT_MOSFET_2); // to deploy solar panels and antenna.
-  pinMode(OUTPUT, DIGITAL_OUT_WATCHDOG_HEARTBEAT); // on system failure.
-  pinMode(INPUT, DIGITAL_IN_DEPLOYMENT_STATE); // deployment signal/flag.
-  pinMode(INPUT, DIGITAL_IN_RESET_PERSISTANT_STORAGE);
+	// Set up digital pins.
+	pinMode(OUTPUT, DIGITAL_OUT_MOSFET_1);  // burns the nichrome wires.
+	pinMode(OUTPUT, DIGITAL_OUT_MOSFET_2); // to deploy solar panels and antenna.
+	pinMode(OUTPUT, DIGITAL_OUT_WATCHDOG_HEARTBEAT); // on system failure.
+	pinMode(INPUT, DIGITAL_IN_DEPLOYMENT_STATE); // deployment signal/flag.
+	pinMode(INPUT, DIGITAL_IN_RESET_PERSISTANT_STORAGE);
 }
 

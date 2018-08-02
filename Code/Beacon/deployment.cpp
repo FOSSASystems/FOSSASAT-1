@@ -19,34 +19,30 @@
  */
 void Deployment_PowerDeploymentMosfets()
 {
-  // check against eeprom for already deployed.
-  if (Persistant_Storage_Get(EEPROM_DEPLOYMENT_ADDR) == HIGH)
-  {
-    // the deployment has occured.
-    digitalWrite(DIGITAL_OUT_MOSFET_1, LOW);
-    digitalWrite(DIGITAL_OUT_MOSFET_2, LOW);
+	// check against eeprom for already deployed.
+	if (Persistant_Storage_Get(EEPROM_DEPLOYMENT_ADDR) == LOW)
+	{
+		// send high signal after 5seconds if not already deployed.
+		delay(5000);
 
-    return;
-  }
-  else
-  {
-    // send high signal after 5seconds if not already deployed.
-    delay(5000);
+		// set the eeprom value so it doesn't turn the mosfets on again.
+		Persistant_Storage_Set(EEPROM_DEPLOYMENT_ADDR, HIGH);
 
-    // set the eeprom value so it doesn't turn the mosfets on again.
-    Persistant_Storage_Set(EEPROM_DEPLOYMENT_ADDR, HIGH);
+		// burn the nichrome wires.
+		digitalWrite(DIGITAL_OUT_MOSFET_1, HIGH);
+		digitalWrite(DIGITAL_OUT_MOSFET_2, HIGH);
 
-    // burn the nichrome wires.
-    digitalWrite(DIGITAL_OUT_MOSFET_1, HIGH);
-    digitalWrite(DIGITAL_OUT_MOSFET_2, HIGH);
+		delay(5000);
 
-    delay(5000);
-
-    digitalWrite(DIGITAL_OUT_MOSFET_1, LOW);
-    digitalWrite(DIGITAL_OUT_MOSFET_2, LOW);
-
-  }
-
+		digitalWrite(DIGITAL_OUT_MOSFET_1, LOW);
+		digitalWrite(DIGITAL_OUT_MOSFET_2, LOW);
+	}
+	else // catches EEPROM failure.
+	{
+		// the deployment has occured.
+		digitalWrite(DIGITAL_OUT_MOSFET_1, LOW);
+		digitalWrite(DIGITAL_OUT_MOSFET_2, LOW);
+	}
 }
 
    
@@ -56,19 +52,19 @@ void Deployment_PowerDeploymentMosfets()
  */
 bool Deployment_GetDeploymentState()
 {
-  // read from the deployment digital pin.
-  int val = digitalRead(DIGITAL_IN_DEPLOYMENT_STATE);
+	// read from the deployment digital pin.
+	int val = digitalRead(DIGITAL_IN_DEPLOYMENT_STATE);
 
-  // return true if high and false if low.
-  if (val == LOW)
-  {
-    // deployment pin returning LOW threshold, deployment failed.
-    return false;
-  }
-  else
-  {
-    // deployment pin returning HIGH threshold, deployment success.
-    return true;
-  }
+	// return true if high and false if low.
+	if (val == HIGH)
+	{
+		// deployment pin returning HIGH threshold, deployment success.
+		return true;
+	}
+	else
+	{
+		// deployment pin returning LOW threshold, deployment failed.
+		return false;
+	}
 }
 

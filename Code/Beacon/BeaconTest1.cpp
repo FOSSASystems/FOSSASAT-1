@@ -1,3 +1,8 @@
+/**
+ * @file BeaconTest1.cpp
+ * @brief The main entry point for the system (real file is BeaconTest1.ino)
+*/
+
 #ifdef DO_NOT_USE
 
 /*
@@ -83,26 +88,26 @@ void loop()
 
 	String str;
 	byte state = LORA.receive(str);
- 
-  String signature = str.substring(0, 10);
-  String withoutSignature = str.substring(10);
 
-  int indexOfS1 = withoutSignature.indexOf('S');
-  String message = withoutSignature.substring(indexOfS1);
+	String signature = str.substring(0, 10);
+	String withoutSignature = str.substring(10);
 
-  String function_id = withoutSignature.substring(0, indexOfS1);
+	int indexOfS1 = withoutSignature.indexOf('S');
+	String message = withoutSignature.substring(indexOfS1);
 
-  /*
-  Serial.println("Signature: " + String(signature));
-  Serial.println("Function ID: " + functionId);
-  Serial.println("Message: " + message);
-   */
+	String function_id = withoutSignature.substring(0, indexOfS1);
+
+	/*
+	Serial.println("Signature: " + String(signature));
+	Serial.println("Function ID: " + functionId);
+	Serial.println("Message: " + message);
+	*/
                
-  if (System_Info_CheckSystemSignature(signature) == false) // invalid signature
-  {
-    Debugging_Utilities_DebugLog("(SAFETY ERROR) Signature received differs from system signature!");
-    return;
-  }
+	if (System_Info_CheckSystemSignature(signature) == false) // invalid signature
+	{
+		Debugging_Utilities_DebugLog("(SAFETY ERROR) Signature received differs from system signature!");
+		return;
+	}
    
 	if (TRANSMISSION_ENABLED) // cirital decision, transmission recieved to turn off transmission is REQUIRED.
 	{
@@ -151,26 +156,26 @@ void loop()
 			Communication_TransmitPowerInfo();
 			STATE_TRANSMIT_POWER_INFO = false;
 		}
-   if (STATE_TRANSMIT_TUNE)
-   {
-      Communication_TransmitTune();
-      STATE_TRANSMIT_TUNE = false;
-   }
+		if (STATE_TRANSMIT_TUNE)
+		{
+			Communication_TransmitTune();
+			STATE_TRANSMIT_TUNE = false;
+		}
 
    
-    TUNE_TIMER = TUNE_TIMER + 1;
-    POWER_INFO_TIMER = POWER_INFO_TIMER + 1;
+	    POWER_INFO_TIMER = POWER_INFO_TIMER + 1;
+		if (POWER_INFO_TIMER >= POWER_INFO_DELAY)
+		{
+			POWER_INFO_TIMER = 0;
+			STATE_TRANSMIT_POWER_INFO = true;
+		}
 
-    if (POWER_INFO_TIMER >= POWER_INFO_DELAY)
-    {
-      POWER_INFO_TIMER = 0;
-      STATE_TRANSMIT_POWER_INFO = true;
-    }
-    if (TUNE_TIMER >= TUNE_TIMER_DELAY)
-    {
-      TUNE_TIMER = 0;
-      STATE_TRANSMIT_TUNE = true;
-    }
+		TUNE_TIMER = TUNE_TIMER + 1;
+		if (TUNE_TIMER >= TUNE_TIMER_DELAY)
+		{
+			TUNE_TIMER = 0;
+			STATE_TRANSMIT_TUNE = true;
+		}
 	}
 	else
 	{

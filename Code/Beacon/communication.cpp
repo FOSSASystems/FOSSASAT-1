@@ -31,31 +31,30 @@
  */
 void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is hidden, use SX1278Transmit____ functions.
 {
-  String transmissionSignature = System_Info_GetTransmissionSignature();
-  
-  Debugging_Utilities_DebugLog("Transmitting... " + transmissionSignature + inFuncId + inMessage);
+	String transmissionSignature = System_Info_GetTransmissionSignature();
 
-  if (TRANSMISSION_ENABLED)
-  {
-     byte state = LORA.transmit(transmissionSignature + inFuncId + inMessage);
+	Debugging_Utilities_DebugLog("Transmitting... " + transmissionSignature + inFuncId + inMessage);
 
-    if (state == ERR_NONE)
-    {
-      // the packet was successfully transmitted
-      Debugging_Utilities_DebugLog(" success!");
-    }
-    else if (state == ERR_PACKET_TOO_LONG)
-    {
-      // the supplied packet was longer than 256 bytes
-      Debugging_Utilities_DebugLog(" too long!");
-  
-    }
-    else if (state == ERR_TX_TIMEOUT)
-    {
-      // timeout occurred while transmitting packet
-      Debugging_Utilities_DebugLog(" timeout!");
-    }  
-  }
+	if (TRANSMISSION_ENABLED)
+	{
+		byte state = LORA.transmit(transmissionSignature + inFuncId + inMessage);
+
+		if (state == ERR_NONE)
+		{
+			// the packet was successfully transmitted
+			Debugging_Utilities_DebugLog(" success!");
+		}
+		else if (state == ERR_PACKET_TOO_LONG)
+		{
+			// the supplied packet was longer than 256 bytes
+			Debugging_Utilities_DebugLog(" too long!");
+		}
+		else if (state == ERR_TX_TIMEOUT)
+		{
+			// timeout occurred while transmitting packet
+			Debugging_Utilities_DebugLog(" timeout!");
+		}  
+	}
 }
    
 /**
@@ -65,7 +64,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
  */
 void Communication_TransmitStartedSignal()
 {
-  Communication_SX1278Transmit("1", "");
+	Communication_SX1278Transmit("1", "");
 }
 
 /**
@@ -75,7 +74,7 @@ void Communication_TransmitStartedSignal()
  */
 void Communication_TransmitStoppedSignal()
 {
-  Communication_SX1278Transmit("2", "");
+	Communication_SX1278Transmit("2", "");
 }
 
 /**
@@ -85,7 +84,7 @@ void Communication_TransmitStoppedSignal()
  */
 void Communication_TransmitSX1278InitializedSuccess()
 {
-  Communication_SX1278Transmit("3", "");
+	Communication_SX1278Transmit("3", "");
 }
 
 /**
@@ -96,7 +95,7 @@ void Communication_TransmitSX1278InitializedSuccess()
  */
 void Communication_TransmitDeploymentSuccess()
 {
-  Communication_SX1278Transmit("4", "");
+	Communication_SX1278Transmit("4", "");
 }
 
 /**
@@ -106,7 +105,7 @@ void Communication_TransmitDeploymentSuccess()
  */
 void Communication_TransmitPong()
 {
-  Communication_SX1278Transmit("6", "");
+	Communication_SX1278Transmit("6", "");
 }
 
 /**
@@ -116,7 +115,7 @@ void Communication_TransmitPong()
  */
 void Communication_RecievedPing()
 {
-  STATE_PING = true;
+	STATE_PING = true;
 }
 
 /**
@@ -126,7 +125,7 @@ void Communication_RecievedPing()
  */
 void Communication_RecievedStopTransmitting()
 {
-  TRANSMISSION_ENABLED = false;
+	TRANSMISSION_ENABLED = false;
 }
 
 /**
@@ -136,7 +135,7 @@ void Communication_RecievedStopTransmitting()
  */
 void Communication_RecievedStartTransmitting()
 {
-  TRANSMISSION_ENABLED = true;
+	TRANSMISSION_ENABLED = true;
 }
 
 /**
@@ -147,21 +146,21 @@ void Communication_RecievedStartTransmitting()
  */
 void Communication_TransmitPowerInfo()
 {
-  int solarCell1 = Pin_Interface_GetSolarCellVoltage(1);
-  int solarCell2 = Pin_Interface_GetSolarCellVoltage(2);
-  int solarCell3 = Pin_Interface_GetSolarCellVoltage(3);
-  int solarCell4 = Pin_Interface_GetSolarCellVoltage(4);
-  int solarCell5 = Pin_Interface_GetSolarCellVoltage(5);
+	int solarCell1 = Pin_Interface_GetSolarCellVoltage(1);
+	int solarCell2 = Pin_Interface_GetSolarCellVoltage(2);
+	int solarCell3 = Pin_Interface_GetSolarCellVoltage(3);
+	int solarCell4 = Pin_Interface_GetSolarCellVoltage(4);
+	int solarCell5 = Pin_Interface_GetSolarCellVoltage(5);
 
-  bool deploymentState = Deployment_GetDeploymentState();
+	bool deploymentState = Deployment_GetDeploymentState();
 
-  int resetCounter = System_Info_GetResetCounter();
+	int resetCounter = System_Info_GetResetCounter();
 
-  int batteryChargingCurrent = Pin_Interface_GetBatteryChargingCurrent();
+	int batteryChargingCurrent = Pin_Interface_GetBatteryChargingCurrent();
 
-  String sysInfoMessage = String("S1:") + String(solarCell1) + ";" + "S2:" + String(solarCell2) + ";" + "S3:" + String(solarCell3) + ";" + "S4:" + String(solarCell4) + ";" + "S5:" + String(solarCell5) + ";" + "B:" + String(batteryChargingCurrent) + "RC:" + String(resetCounter) + ";DEPS:" + String(deploymentState);
+	String sysInfoMessage = String("S1:") + String(solarCell1) + ";" + "S2:" + String(solarCell2) + ";" + "S3:" + String(solarCell3) + ";" + "S4:" + String(solarCell4) + ";" + "S5:" + String(solarCell5) + ";" + "B:" + String(batteryChargingCurrent) + ";RC:" + String(resetCounter) + ";DEPS:" + String(deploymentState) + ";";
 
-  Communication_SX1278Transmit("9", sysInfoMessage);
+	Communication_SX1278Transmit("9", sysInfoMessage);
 }
 
 /**
@@ -171,14 +170,14 @@ void Communication_TransmitPowerInfo()
  */
 void Communication_TransmitTune()
 {
-  // switch to wide bandwidth location transmission.
-  LORA.setBandwidth(LOCATION_BANDWIDTH);
-  Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(LOCATION_BANDWIDTH) + "KHz bandwidth.");
-  
-  Communication_SX1278Transmit("10", String("FOSSASAT1"));
-  
-  // return to local bandwidth transmissions.
-  LORA.setBandwidth(BANDWIDTH);
-  Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(BANDWIDTH) + "KHz bandwidth.");
+	// switch to wide bandwidth location transmission.
+	LORA.setBandwidth(LOCATION_BANDWIDTH);
+	Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(LOCATION_BANDWIDTH) + "KHz bandwidth.");
+
+	Communication_SX1278Transmit("10", String("FOSSASAT1"));
+
+	// return to local bandwidth transmissions.
+	LORA.setBandwidth(BANDWIDTH);
+	Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(BANDWIDTH) + "KHz bandwidth.");
 }
 
