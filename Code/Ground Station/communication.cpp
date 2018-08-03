@@ -203,12 +203,12 @@ void Communication_ReceivedPowerInfo(String inMessage)
 void Communication_ReceivedTune(float inFrequencyError)
 {
     Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) TRANSCEIVER TUNING PACKET...");
-    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Frequency error of " + String(inFrequencyError) + " (TODO - is this number ever negative?)");
+    Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Frequency error of " + String(inFrequencyError / 1000000.0f) + " (TODO - is this number ever negative?)");
 
     if (AUTOMATIC_TUNING)
     {
   		// calculate what the new frequency is.
-  		CARRIER_FREQUENCY = CARRIER_FREQUENCY + inFrequencyError;
+  		CARRIER_FREQUENCY = CARRIER_FREQUENCY + (inFrequencyError / 1000000.0f);
   
   		// change the LORA modules frequency to the one received on the wide bandwidth mode. (satellite frequency infered)
   		LORA.setFrequency(CARRIER_FREQUENCY);
