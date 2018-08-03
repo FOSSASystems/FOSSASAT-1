@@ -111,6 +111,7 @@ void loop()
    
 	if (TRANSMISSION_ENABLED) // cirital decision, transmission recieved to turn off transmission is REQUIRED.
 	{
+    Debugging_Utilities_DebugLog("Invoking the comms subsystem, expecting a print...");
 		///////////////
 		// RECIEVING //
 		///////////////
@@ -176,13 +177,17 @@ void loop()
 			TUNE_TIMER = 0;
 			STATE_TRANSMIT_TUNE = true;
 		}
+   
+    Debugging_Utilities_DebugLog("End of comms system.");
 	}
 	else
 	{
+    Debugging_Utilities_DebugLog("Transmission disabled... Listening for function id '8'");
 		if (function_id == "8") // only parse the function id of 8.
 		{
 			Communication_RecievedStartTransmitting();
 		}
+    Debugging_Utilities_DebugLog("End listening for function id '8'");
 	}
 
 	delay(200);
