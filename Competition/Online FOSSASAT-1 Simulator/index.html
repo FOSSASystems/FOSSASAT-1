@@ -15,10 +15,8 @@
 	-	JSON array of file objects
 	- Loading into website, drag and drop the directory onto the page.
 	- Saving from the website a toolbar across the top.
-	
-
-	
 	-->
+	
 
 	<div class="vertical_container">
 		
@@ -64,33 +62,10 @@
 		</div>
 				
 		<div class="file_tabbar">
-			<div class="file_tabbar_tab">
-				<div class="file_tabbar_tab_page_icon">
-					<img src="resources/icons/script_code_red.png">
-				</div>
-				<div class="file_tabbar_tab_text">main.js</div>
-			</div>
-			
-			<div class="file_tabbar_tab">				
-				<div class="file_tabbar_tab_page_icon">
-					<img src="resources/icons/script_code_red.png">
-				</div>
-				<div class="file_tabbar_tab_text">my_library.js</div>
-			</div>
 		</div>
 		
 		<div class="main_editor">
-			<div id="editor" style="width: 100%; height: 600px;">
-function Setup()
-{
-	// Write your setup code here...
-}
-
-function Loop()
-{
-	// Write your looping code here...
-}
-			</div>
+			<div id="editor" style="width: 100%; height: 600px;"></div>
 		</div>
 		
 
@@ -112,7 +87,7 @@ function Loop()
 	</div>
 	
 	<script src="resources/javascript-libraries/jquery-3.3.1.min.js"></script>
-	
+
 	<script src="ace-builds/src-min/ace.js"></script>
 	<script src="ace-builds/src-min/ext-settings_menu.js"></script>
 	<script src="ace-builds/src-min/ext-language_tools.js"></script>
@@ -123,6 +98,40 @@ function Loop()
 	
 	<script type="application/javascript">
 		Editor.scriptPages = [];
+		Editor.activeScriptIndex = 0;
+		
+		Editor.updateDOM = function ()
+		{			
+			// clear tab bar area.
+			$(".file_tabbar").empty();
+			
+			// page already exist?
+			for (var pageIndex = 0; pageIndex < Editor.scriptPages.length; pageIndex++)
+			{
+				// for each script given in drop.
+				var scriptPage = Editor.scriptPages[pageIndex];
+				var scriptPageFilename = scriptPage.filename;
+				scriptPageFilename = scriptPageFilename.replace(".", "♥");
+				
+				var tabHtml = "<div id='" + scriptPageFilename + "_tab' class='file_tabbar_tab'>" +
+					"<div class='file_tabbar_tab_page_icon'>" +
+					"<img src='resources/icons/script_code_red.png'>" +
+					"</div>" +
+					"<div class='file_tabbar_tab_text'>" + scriptPageFilename.replace("♥", ".") + "</div>" +
+					"</div>";
+
+				$(".file_tabbar").append(tabHtml);
+				
+				$(".file_tabbar_tab").click(function()
+				{
+					Editor.onTabBarTabPressed(this);
+				});
+			}
+			
+			// get the first page and set it to "open"/shown.
+			// put contents into the editor
+			Editor.editingDiv.setValue(Editor.scriptPages[0].contents, -1);
+		};
 		
 		Editor.doesScriptPageExist = function (scriptPageName)
 		{
@@ -177,6 +186,7 @@ function Loop()
 							return function(e)
 							{			
 								var filename = theFile.name;
+								filename = filename.replace(".", "♥");
 								var contents = e.currentTarget.result;
 								
 								// does this page already exist?
@@ -191,10 +201,11 @@ function Loop()
 									Editor.scriptPages.push({
 										filename: filename,
 										contents: contents
-									});	
+									});
 								}
 								
 								// update the DOM view.
+								Editor.updateDOM();
 							};
 						})(transferFile);
 

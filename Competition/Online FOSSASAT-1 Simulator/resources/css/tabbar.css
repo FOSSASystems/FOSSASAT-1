@@ -20,6 +20,11 @@
 	margin-right: 4px;
 }
 
+.selected
+{
+	background: linear-gradient(to bottom, #48c5fc, #37b1e6) !important;
+}
+
 .file_tabbar_tab_text
 {
 	margin-top: auto;

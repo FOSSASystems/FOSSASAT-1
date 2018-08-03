@@ -4,6 +4,17 @@
 * R.G.Bamford
 */
 
+Editor.onTabBarTabPressed = function (element)
+{
+	var scriptElementId = element.id;
+	
+	var filename = scriptElementId.substring(0, scriptElementId.length - 4);
+	
+	var contents = Editor.getScriptPage(filename).contents;
+
+	Editor.editingDiv.setValue(contents, -1);
+};
+
 Editor.onToolbarFileButtonClicked = function (e)
 {
 	var dropdownState = $(".toolbar_file_dropdown_menu").css("display");
@@ -46,4 +57,5 @@ $(document).ready(function()
 	{
 		Editor.onBottomBarKeyboardShortcutsButtonClicked(e);									   
 	});
+	  
 });
