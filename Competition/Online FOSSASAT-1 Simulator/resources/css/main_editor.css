@@ -1,0 +1,11 @@
+.main_editor
+{
+	background-color: red;
+	width: 1000px;
+	height: 1000px;
+}
+
+.ace_content
+{
+	height: 100% !important;
+}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>FOSSASAT-1 Simulator</title>
+	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet">	
+</head>
+
+<body ondrop="Editor.dropHandler(event);" ondragover="Editor.dragOverHandler(event);">
+	<!--
+	- We need to be able to edit N number of files.
+	- We need to be able to save and load multiple files.
+	
+	- Project format:
+	-	JSON array of file objects
+	- Loading into website, drag and drop the directory onto the page.
+	- Saving from the website a toolbar across the top.
+	
+
+	
+	-->
+
+	<div class="vertical_container">
+		
+		<div class="toolbar">
+			
+			<div class="toolbar_file_button">
+				<div class="toolbar_button_text">File</div>
+				
+				<div class="toolbar_file_dropdown_menu">
+					<div class="toolbar_filedropdown_menu_list_item">
+						<div class="toolbar_filedropdown_menu_list_icon">
+							<img src="resources/icons/script_add.png">
+						</div>
+						<div class="toolbar_filedropdown_menu_list_text">
+							New
+						</div>
+					</div>		
+					
+					<div class="toolbar_filedropdown_menu_list_item">
+						<div class="toolbar_filedropdown_menu_list_icon">
+							<img src="resources/icons/monitor_go.png">
+						</div>
+						<div class="toolbar_filedropdown_menu_list_text">
+							Import Project
+						</div>
+					</div>
+					
+					<div class="toolbar_filedropdown_menu_list_item">
+						<div class="toolbar_filedropdown_menu_list_icon">
+							<img src="resources/icons/script_save.png">
+						</div>
+						<div class="toolbar_filedropdown_menu_list_text">
+							Export Project
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="toolbar_simulate_button">
+				<div class="toolbar_button_text">Simulate</div>
+			</div>
+		</div>
+				
+		<div class="file_tabbar">
+			<div class="file_tabbar_tab">
+				<div class="file_tabbar_tab_page_icon">
+					<img src="resources/icons/script_code_red.png">
+				</div>
+				<div class="file_tabbar_tab_text">main.js</div>
+			</div>
+			
+			<div class="file_tabbar_tab">				
+				<div class="file_tabbar_tab_page_icon">
+					<img src="resources/icons/script_code_red.png">
+				</div>
+				<div class="file_tabbar_tab_text">my_library.js</div>
+			</div>
+		</div>
+		
+		<div class="main_editor">
+			<div id="editor" style="width: 100%; height: 600px;">
+function Setup()
+{
+	// Write your setup code here...
+}
+
+function Loop()
+{
+	// Write your looping code here...
+}
+			</div>
+		</div>
+		
+
+		<div class="toolbar_bottom">
+			<div class="toolbar_bottom_item_editor_settings">
+				<div class="toolbar_bottom_item_icon">
+					<img src="resources/icons/cog.png">
+				</div>
+				<div class="toolbar_bottom_item_editor_settings_text">Editor Settings</div>
+			</div>	
+			
+			<div class="toolbar_bottom_item_keyboard_shortcuts">
+				<div class="toolbar_bottom_item_icon">
+					<img src="resources/icons/keyboard.png">
+				</div>
+				<div class="toolbar_bottom_item_keyboard_shortcuts_text">Keyboard Shortcuts</div>
+			</div>	
+		</div>
+	</div>
+	
+	<script src="resources/javascript-libraries/jquery-3.3.1.min.js"></script>
+	
+	<script src="ace-builds/src-min/ace.js"></script>
+	<script src="ace-builds/src-min/ext-settings_menu.js"></script>
+	<script src="ace-builds/src-min/ext-language_tools.js"></script>
+	
+	<script src="resources/js/init.js"></script>
+	<script src="resources/js/globalPageClickManager.js"></script>
+	<script src="resources/js/buttonClickManager.js"></script>
+	
+	<script type="application/javascript">
+		Editor.scriptPages = [];
+		
+		Editor.doesScriptPageExist = function (scriptPageName)
+		{
+			// page already exist?
+			for (var pageIndex = 0; pageIndex < Editor.scriptPages.length; pageIndex++)
+			{
+				var scriptPage = Editor.scriptPages[pageIndex];
+				var scriptPageFilename = scriptPage.filename;
+				
+				if (scriptPageFilename == scriptPageName)
+				{
+					return true;		
+				}
+			}
+			
+			return false;
+		};
+		
+		Editor.getScriptPage = function (scriptPageName)
+		{
+			for (var pageIndex = 0; pageIndex < Editor.scriptPages.length; pageIndex++)
+			{
+				var scriptPage = Editor.scriptPages[pageIndex];
+				var scriptPageFilename = scriptPage.filename;
+							
+				// found the script filename in the pages array, return its object.
+				if (scriptPageFilename == scriptPageName)
+				{
+					return Editor.scriptPages[pageIndex];		
+				}
+			}
+		};
+		
+		Editor.dropHandler = function (e)
+		{
+			e.preventDefault();			
+			
+			if (e.dataTransfer.items)
+			{
+				// for each file in the dropped file array.
+				for (var i = 0; i < e.dataTransfer.items.length; i++)
+				{
+					var transferItem = e.dataTransfer.items[i];
+					if (transferItem.kind === "file")
+					{
+						var transferFile = transferItem.getAsFile();
+						var reader = new FileReader();
+
+						// Closure to capture the file information.
+						reader.onload = (function(theFile)
+						{
+							return function(e)
+							{			
+								var filename = theFile.name;
+								var contents = e.currentTarget.result;
+								
+								// does this page already exist?
+								if (Editor.doesScriptPageExist(filename))
+								{
+									// update the contents.
+									var scriptPage = Editor.getScriptPage(filename);
+									scriptPage.contents = contents;
+								}
+								else
+								{														
+									Editor.scriptPages.push({
+										filename: filename,
+										contents: contents
+									});	
+								}
+								
+								// update the DOM view.
+							};
+						})(transferFile);
+
+					  reader.readAsText(transferFile);
+					}
+				}
+			}
+		};
+		
+		Editor.dragOverHandler = function (e)
+		{
+			e.preventDefault();
+		};
+	</script>
+	
+			
+	<link rel="stylesheet" type="text/css" href="resources/css/vertical_container.css" />
+	<link rel="stylesheet" type="text/css" href="resources/css/toolbar.css" />
+	<link rel="stylesheet" type="text/css" href="resources/css/tabbar.css" />
+	<link rel="stylesheet" type="text/css" href="resources/css/bottom_toolbar.css" />
+</body>
+
+</html>
