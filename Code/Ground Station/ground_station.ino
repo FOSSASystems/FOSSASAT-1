@@ -33,7 +33,7 @@ void setup()
   + String(SYNC_WORD) + "\nOUTPUT_POWER: "
   + String(OUTPUT_POWER));
 
-  byte err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
+  byte err_check = LORA.begin(DEFAULT_CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
 
   if (err_check == ERR_NONE)
   {
@@ -54,20 +54,20 @@ void loop()
   String signature = str.substring(0, 10);
   String withoutSignature = str.substring(10);
 
-  int indexOfS1 = withoutSignature.indexOf('S');
-  String message = withoutSignature.substring(indexOfS1);
+  int indexOfS1 = withoutSignature.indexOf(';');
+  String message = withoutSignature.substring(indexOfS1 + 1);
 
   String function_id = withoutSignature.substring(0, indexOfS1);
 
   Serial.println("Received transmission from satellite:");
-  Serial.println("  Signature: " + String(signature));
-  Serial.println("  Function ID: " + functionId);
+  Serial.println("  Signature: " + signature);
+  Serial.println("  Function ID: " + function_id);
   Serial.println("  Message: " + message);
   Serial.println("End of transmission.");
   
   if (state == ERR_NONE)
   {
-      Serial.println("We should receive a log from the comms sub-system...")
+      Serial.println("We should receive a log from the comms sub-system...");
     ///////////////
     // recieving //
     ///////////////
@@ -103,25 +103,7 @@ void loop()
       Communication_ReceivedTune(frequencyError);
     }
 
-    ///////////////////////////////
-    // transmitting to satellite //
-    ///////////////////////////////
-    if (STATE_TRANSMIT_PING)
-    {
-      Communication_TransmitPing();
-      STATE_TRANSMIT_PING = false;
-    }
-    if (STATE_TRANSMIT_STOP_TRANSMITTING)
-    {
-      Communication_TransmitStopTransmitting();
-      STATE_TRANSMIT_STOP_TRANSMITTING = false;
-    }
-    if (STATE_TRANSMIT_START_TRANSMITTING)
-    {
-      Communication_TransmitStartTransmitting();
-      STATE_TRANSMIT_START_TRANSMITTING = false;
-    }
-    Serial.println("End of comms sub-system. (Error if nothing in this block).")
+    Serial.println("End of comms sub-system. (Error if nothing in this block).");
   }
   else if (state == ERR_RX_TIMEOUT)
   {
@@ -148,6 +130,80 @@ void loop()
     // packet was received, but is malformed
     Debugging_Utilities_DebugLog("Packet has been received but malformed, CRC error,"); 
   }
-
-  delay(200);
+  else if (state == ERR_UNKNOWN)
+  {
+    Debugging_Utilities_DebugLog("Unknown error occured!");
+  }
+  else if (state == ERR_CHIP_NOT_FOUND)
+  {
+    Debugging_Utilities_DebugLog("Could not find chip.");
+  }
+  else if (state == ERR_EEPROM_NOT_INITIALIZED)
+  {
+    Debugging_Utilities_DebugLog("EEPROM not initialized");
+  }
+  else if (state == ERR_PACKET_TOO_LONG)
+  {
+    Debugging_Utilities_DebugLog("Packet too long...");
+  }
+  else if (state == ERR_TX_TIMEOUT)
+  {
+    Debugging_Utilities_DebugLog("TX Timout.");
+  }
+  else if (state == ERR_RX_TIMEOUT)
+  {
+    Debugging_Utilities_DebugLog("RX Timeout.");
+  }
+  else if (state == ERR_INVALID_BANDWIDTH)
+  {
+    Debugging_Utilities_DebugLog("Invalid bandwidth.");
+  }
+  else if (state == ERR_INVALID_SPREADING_FACTOR)
+  {
+    Debugging_Utilities_DebugLog("Invalid spreading factor.");
+  }
+  else if (state == ERR_INVALID_CODING_RATE)
+  {
+    Debugging_Utilities_DebugLog("Invalid coding rate.");
+  }
+  else if (state == ERR_INVALID_BIT_RANGE)
+  {
+    Debugging_Utilities_DebugLog("Invalid bit range.");
+  }
+  else if (state == ERR_INVALID_FREQUENCY)
+  {
+    Debugging_Utilities_DebugLog("Invalid frequency.");
+  }
+  else if (state == ERR_INVALID_OUTPUT_POWER)
+  {
+    Debugging_Utilities_DebugLog("Invalid output power.");
+  }
+  else if (state == PREAMBLE_DETECTED)
+  {
+    Debugging_Utilities_DebugLog("Preamble detected.");
+  }
+  else if (state == CHANNEL_FREE)
+  {
+    Debugging_Utilities_DebugLog("Channel free.");
+  }
+  else if (state == ERR_SPI_WRITE_FAILED)
+  {
+    Debugging_Utilities_DebugLog("SPI write failed");
+  }
+  else if (state == ERR_INVALID_CURRENT_LIMIT)
+  {
+    Debugging_Utilities_DebugLog("Invalid current limit");
+  }
+  else if (state == ERR_INVALID_PREAMBLE_LENGTH)
+  {
+    Debugging_Utilities_DebugLog("Invalid preamble length");
+  }
+  else if (state == ERR_INVALID_GAIN)
+  {
+    Debugging_Utilities_DebugLog("Invalid gain.");
+  }
+  else
+  {
+    Debugging_Utilities_DebugLog("ERROR STATE = " + String(state));
+  }
 }

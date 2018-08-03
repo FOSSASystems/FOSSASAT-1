@@ -81,12 +81,12 @@ void loop()
 
 	String str;
 	byte state = LORA.receive(str);
- 
+  
   String signature = str.substring(0, 10);
   String withoutSignature = str.substring(10);
 
-  int indexOfS1 = withoutSignature.indexOf('S');
-  String message = withoutSignature.substring(indexOfS1);
+  int indexOfS1 = withoutSignature.indexOf(';');
+  String message = withoutSignature.substring(indexOfS1 + 1);
 
   String function_id = withoutSignature.substring(0, indexOfS1);
 
@@ -98,8 +98,7 @@ void loop()
                
   if (System_Info_CheckSystemSignature(signature) == false) // invalid signature
   {
-    Debugging_Utilities_DebugLog("(SAFETY ERROR) Signature received differs from system signature!");
-    return;
+    Debugging_Utilities_DebugLog("(SAFETY WARNING) Signature received differs from system signature!");
   }
    
 	if (TRANSMISSION_ENABLED) // cirital decision, transmission recieved to turn off transmission is REQUIRED.

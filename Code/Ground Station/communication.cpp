@@ -30,9 +30,11 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
 {
 	String signature = TRANSMISSION_SIGNATURE; // todo wrap this up in a container.
 
-	Debugging_Utilities_DebugLog("(S) Transmitting... " + signature + inFuncId + inMessage);
+  String transmissionPacket = signature + inFuncId + ";" + inMessage;
+  
+	Debugging_Utilities_DebugLog("(S) Transmitting... " + transmissionPacket);
 
-	byte state = LORA.transmit(signature + inFuncId + inMessage);
+	byte state = LORA.transmit(transmissionPacket);
 
 	if (state == ERR_NONE)
 	{
@@ -52,7 +54,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
 	}
 	else
 	{
-		Debugging_Utilities_DebugLog("(S) Undefined transmission state.")
+		Debugging_Utilities_DebugLog("(S) Undefined transmission state.");
 	}
 }
 
@@ -205,24 +207,24 @@ void Communication_ReceivedTune(float inFrequencyError)
 
     if (AUTOMATIC_TUNING)
     {
-		// calculate what the new frequency is.
-		CARRIER_FREQUENCY = CARRIER_FREQUENCY + inFrequencyError;
-
-		// change the LORA modules frequency to the one received on the wide bandwidth mode. (satellite frequency infered)
-		LORA.setFrequency(CARRIER_FREQUENCY);
-		Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Tuning SX1278 to Freq: " + String(CARRIER_FREQUENCY));
-
-		// reduce the LORA transceiver bandwidth because we have found the sat.
-		if (HAS_REDUCED_BANDWIDTH == false)
-		{
-			LORA.setBandwidth(CONNECTED_BANDWIDTH);
-			HAS_REDUCED_BANDWIDTH = true;
-			Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Set SX1278 to Bandwidth: " + String(CONNECTED_BANDWIDTH));
-		}
+  		// calculate what the new frequency is.
+  		CARRIER_FREQUENCY = CARRIER_FREQUENCY + inFrequencyError;
+  
+  		// change the LORA modules frequency to the one received on the wide bandwidth mode. (satellite frequency infered)
+  		LORA.setFrequency(CARRIER_FREQUENCY);
+  		Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Tuning SX1278 to Freq: " + String(CARRIER_FREQUENCY));
+  
+  		// reduce the LORA transceiver bandwidth because we have found the sat.
+  		if (HAS_REDUCED_BANDWIDTH == false)
+  		{
+  			LORA.setBandwidth(CONNECTED_BANDWIDTH);
+  			HAS_REDUCED_BANDWIDTH = true;
+  			Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) Set SX1278 to Bandwidth: " + String(CONNECTED_BANDWIDTH));
+  		}
     }
     else
     {
-    	Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) AUTOMATIC TUNING DISABLED.")
+    	Debugging_Utilities_DebugLog("(DATA - TRANS. INFO) AUTOMATIC TUNING DISABLED.");
     }
 }
 

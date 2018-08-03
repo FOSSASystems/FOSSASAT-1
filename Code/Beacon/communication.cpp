@@ -32,27 +32,28 @@
 void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is hidden, use SX1278Transmit____ functions.
 {
 	String transmissionSignature = System_Info_GetTransmissionSignature();
+  String transmissionPacket = transmissionSignature + inFuncId + ";" + inMessage;
 
-	Debugging_Utilities_DebugLog("Transmitting... " + transmissionSignature + inFuncId + inMessage);
+	Debugging_Utilities_DebugLog("Transmitting... " + transmissionPacket);
 
 	if (TRANSMISSION_ENABLED)
 	{
-		byte state = LORA.transmit(transmissionSignature + inFuncId + inMessage);
+		byte state = LORA.transmit(transmissionPacket);
 
 		if (state == ERR_NONE)
 		{
 			// the packet was successfully transmitted
-			Debugging_Utilities_DebugLog(" success!");
+			Debugging_Utilities_DebugLog("Packet successfully transmitted to ground station.");
 		}
 		else if (state == ERR_PACKET_TOO_LONG)
 		{
 			// the supplied packet was longer than 256 bytes
-			Debugging_Utilities_DebugLog(" too long!");
+			Debugging_Utilities_DebugLog("Packet size > 256 bytes!");
 		}
 		else if (state == ERR_TX_TIMEOUT)
 		{
 			// timeout occurred while transmitting packet
-			Debugging_Utilities_DebugLog(" timeout!");
+			Debugging_Utilities_DebugLog("Timed out while transmitting packet.");
 		}  
 	}
 }
@@ -64,6 +65,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
  */
 void Communication_TransmitStartedSignal()
 {
+  Debugging_Utilities_DebugLog("(T) Transmit satellite started.");
 	Communication_SX1278Transmit("1", "");
 }
 
@@ -74,6 +76,7 @@ void Communication_TransmitStartedSignal()
  */
 void Communication_TransmitStoppedSignal()
 {
+  Debugging_Utilities_DebugLog("(T) Transmit satellite stopped.");
 	Communication_SX1278Transmit("2", "");
 }
 
@@ -84,6 +87,7 @@ void Communication_TransmitStoppedSignal()
  */
 void Communication_TransmitSX1278InitializedSuccess()
 {
+  Debugging_Utilities_DebugLog("(T) Transmit sx1278 initialized success.");
 	Communication_SX1278Transmit("3", "");
 }
 
@@ -95,6 +99,7 @@ void Communication_TransmitSX1278InitializedSuccess()
  */
 void Communication_TransmitDeploymentSuccess()
 {
+  Debugging_Utilities_DebugLog("(T) Transmit deployment success.");
 	Communication_SX1278Transmit("4", "");
 }
 
@@ -105,6 +110,7 @@ void Communication_TransmitDeploymentSuccess()
  */
 void Communication_TransmitPong()
 {
+  Debugging_Utilities_DebugLog("(T) Transmit pong.");
 	Communication_SX1278Transmit("6", "");
 }
 
@@ -115,6 +121,7 @@ void Communication_TransmitPong()
  */
 void Communication_RecievedPing()
 {
+  Debugging_Utilities_DebugLog("(R) Received ping.");
 	STATE_PING = true;
 }
 
@@ -125,6 +132,7 @@ void Communication_RecievedPing()
  */
 void Communication_RecievedStopTransmitting()
 {
+  Debugging_Utilities_DebugLog("(R) Received stop transmitting.");
 	TRANSMISSION_ENABLED = false;
 }
 
@@ -135,6 +143,7 @@ void Communication_RecievedStopTransmitting()
  */
 void Communication_RecievedStartTransmitting()
 {
+  Debugging_Utilities_DebugLog("(R) Received start transmitting.");
 	TRANSMISSION_ENABLED = true;
 }
 
@@ -146,6 +155,7 @@ void Communication_RecievedStartTransmitting()
  */
 void Communication_TransmitPowerInfo()
 {
+  Debugging_Utilities_DebugLog("(T) Transmitting power info packet.");
 	int solarCell1 = Pin_Interface_GetSolarCellVoltage(1);
 	int solarCell2 = Pin_Interface_GetSolarCellVoltage(2);
 	int solarCell3 = Pin_Interface_GetSolarCellVoltage(3);
@@ -170,6 +180,7 @@ void Communication_TransmitPowerInfo()
  */
 void Communication_TransmitTune()
 {
+  Debugging_Utilities_DebugLog("(T) Transmitting tuning packet.");
 	// switch to wide bandwidth location transmission.
 	LORA.setBandwidth(LOCATION_BANDWIDTH);
 	Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(LOCATION_BANDWIDTH) + "KHz bandwidth.");
