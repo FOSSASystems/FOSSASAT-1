@@ -98,7 +98,7 @@
 	
 	<script type="application/javascript">
 		Editor.scriptPages = [];
-		Editor.activeScriptIndex = 0;
+		Editor.activeScriptName = "";
 		
 		Editor.updateDOM = function ()
 		{			
@@ -130,7 +130,11 @@
 			
 			// get the first page and set it to "open"/shown.
 			// put contents into the editor
-			Editor.editingDiv.setValue(Editor.scriptPages[0].contents, -1);
+			if (Editor.scriptPages.length > 0)
+			{
+				Editor.editingDiv.setValue(Editor.scriptPages[0].contents, -1);
+				Editor.activeScriptName = Editor.scriptPages[0].filename;
+			}
 		};
 		
 		Editor.doesScriptPageExist = function (scriptPageName)
@@ -163,6 +167,15 @@
 					return Editor.scriptPages[pageIndex];		
 				}
 			}
+		};
+		
+		Editor.setScriptPageContents = function (scriptPageName, scriptPageContents)
+		{
+			console.log("Script page set name: " + scriptPageName);
+			
+			var scriptPage = Editor.getScriptPage(scriptPageName);
+			
+			scriptPage.contents = scriptPageContents;
 		};
 		
 		Editor.dropHandler = function (e)

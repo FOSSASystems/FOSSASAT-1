@@ -10,6 +10,10 @@ Editor.onTabBarTabPressed = function (element)
 	
 	var filename = scriptElementId.substring(0, scriptElementId.length - 4);
 	
+	Editor.activeScriptName = filename;
+	
+	console.log("Active script name now: " + Editor.activeScriptName);
+	
 	var contents = Editor.getScriptPage(filename).contents;
 
 	Editor.editingDiv.setValue(contents, -1);

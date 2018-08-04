@@ -19,3 +19,18 @@ Editor.editingDiv.setOptions({
 	enableSnippets: true,
 	enableLiveAutocompletion: true
 });
+
+Editor.editingDiv.getSession().on("change", function(event)
+{
+	// take contents of the editor.
+	var contents = Editor.editingDiv.getValue();
+	
+	var name = Editor.activeScriptName;
+	
+	console.log("On changed: " + contents + " :" + name);
+	
+	if (name == "") return;
+	
+	// replace the text in the Editor.scriptPages[] object
+	var scriptPage = Editor.setScriptPageContents(name, contents);
+});
