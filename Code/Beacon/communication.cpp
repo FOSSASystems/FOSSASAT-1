@@ -156,6 +156,7 @@ void Communication_RecievedStartTransmitting()
 void Communication_TransmitPowerInfo()
 {
   Debugging_Utilities_DebugLog("(T) Transmitting power info packet.");
+  
 	int solarCell1 = Pin_Interface_GetSolarCellVoltage(1);
 	int solarCell2 = Pin_Interface_GetSolarCellVoltage(2);
 	int solarCell3 = Pin_Interface_GetSolarCellVoltage(3);
@@ -168,7 +169,9 @@ void Communication_TransmitPowerInfo()
 
 	int batteryChargingCurrent = Pin_Interface_GetBatteryChargingCurrent();
 
-	String sysInfoMessage = String("S1:") + String(solarCell1) + ";" + "S2:" + String(solarCell2) + ";" + "S3:" + String(solarCell3) + ";" + "S4:" + String(solarCell4) + ";" + "S5:" + String(solarCell5) + ";" + "B:" + String(batteryChargingCurrent) + ";RC:" + String(resetCounter) + ";DEPS:" + String(deploymentState) + ";";
+  float internalTemperature = System_Info_GetInternalTemperature();
+
+	String sysInfoMessage = String("T") + String(internalTemperature) + ";" + String("S1:") + String(solarCell1) + ";" + "S2:" + String(solarCell2) + ";" + "S3:" + String(solarCell3) + ";" + "S4:" + String(solarCell4) + ";" + "S5:" + String(solarCell5) + ";" + "B:" + String(batteryChargingCurrent) + ";RC:" + String(resetCounter) + ";DEPS:" + String(deploymentState) + ";";
 
 	Communication_SX1278Transmit("9", sysInfoMessage);
 }
@@ -181,14 +184,17 @@ void Communication_TransmitPowerInfo()
 void Communication_TransmitTune()
 {
   Debugging_Utilities_DebugLog("(T) Transmitting tuning packet.");
+  
 	// switch to wide bandwidth location transmission.
 	LORA.setBandwidth(LOCATION_BANDWIDTH);
+  
 	Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(LOCATION_BANDWIDTH) + "KHz bandwidth.");
 
 	Communication_SX1278Transmit("10", String("FOSSASAT1"));
 
 	// return to local bandwidth transmissions.
 	LORA.setBandwidth(BANDWIDTH);
+ 
 	Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(BANDWIDTH) + "KHz bandwidth.");
 }
 

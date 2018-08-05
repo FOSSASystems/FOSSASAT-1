@@ -1,0 +1,76 @@
+TODO
+----
+	- Write an interface for receving serial values on the ground station
+		- Serial read -> parse function id -> if statements to route to correct booleans.
+		
+	- Create a nodejs application:
+		- Routes all serial reading through websockets to javascript webpage.
+		- Routes all button commands through websockets to serial write.
+
+
+
+
+General
+--------
+	- Log the values into a text file. (LOCAL)
+	- Display solar cell mV and battery charging values over time. (LOCAL)
+	- If we are receiving values from the satellite, post the entire packet to a webserver and save it with the time received. (REMOTE)
+		- Write to file JSON database. (REMOTE)
+		
+	- Ground Station booleans must be able to be switched.
+	- Ground Station never sends a custom message to the satellite (*)
+	- The satellite sends custom messages back (*)
+	- One way messaging from ground station.
+
+
+
+
+
+System infomation page (LOCAL)
+---------------------
+Data to display:
+	- 6 mV
+	- 1 mA
+	- 1 Counter
+	- 1 Boolean
+	
+Elements:
+	- 6 
+	- Google Charts Line Chart that represent mV and mA over time.
+		
+		
+Specifications:
+	- solar cell volages are sent in mV.
+	- solar cell voltage range 0.45V to 4.2V.
+		
+
+
+
+
+
+
+Control page (LOCAL)
+------------
+Elements:
+	- Rich text box for received messages from satellite.
+	- Rich text box for sent commands from ground station.
+	- Button array of simple commands.
+	
+Control system (INTERNAL)
+--------------
+- Every message sent from the control panel is first validated and verified to be ok.
+- If the messages passes V&V filters it is serial.wrote.
+	
+	
+	
+	
+
+		
+Webserver packet system (INTERNAL)
+-----------------------
+Description:
+	- send entire serial.read string as a POST to our PHP website.
+	- PHP website then adsd it to a database.
+
+Libraries:
+	- https://github.com/cybrox/crunchdb - JSON database.
