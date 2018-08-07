@@ -57,7 +57,19 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
 		}  
 	}
 }
-   
+
+ /*
+ * @brief an abstraction layer for the payload transmissions.
+ */
+void Communication_SX1278TransmitPayloadMessage(String inPayloadMessage)
+{
+  int indexOfSeperator = inPayloadMessage.indexOf(';'); // first ; is the seperator between funcid and message data.
+  String message = inPayloadMessage.substring(indexOfSeperator + 1); // from after the first ; to the end
+  String functionId = inPayloadMessage.substring(0, indexOfSeperator);  // from the start to the first ; (exluding);
+
+  Communication_SX1278Transmit(functionId, message);
+}
+
 /**
  * @brief satellite's Setup() function is called..
  *

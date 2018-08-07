@@ -8,6 +8,7 @@ Author:	Richad Bamford (FOSSA Systems)
 #include <EEPROM.h>
 #include <string.h>
 #include <LoRaLib.h>
+#include <Wire.h>
 
 #include "configuration.h"
 #include "state_machine_declerations.h"
@@ -30,6 +31,7 @@ int POWER_INFO_TIMER = 0;
 
 void setup()
 {
+  Wire.begin();
 	Serial.begin(9600);
 
   if (Pin_Interface_ShouldReset())
@@ -183,6 +185,29 @@ void loop()
     
     Debugging_Utilities_DebugLog("End listening for function id '8'");
 	}
+
+  // delay(200);
+  
+  Debugging_Utilities_DebugLog("Checking I2C input for data.");
+
+  Wire.requestFrom(8, 32);    // request 32 bytes from slave device #8
+
+  String payloadTransmissionMessage = String("");
+  
+  while (Wire.available())
+  { // slave may send less than requested
+    char c = Wire.read(); // receive a byte as character
+    payloadTransmissionMessage += String(c);
+  }
+
+  if (payloadTransmissionMessage != "")
+  {
+    Communication_SX1278TransmitPayloadMessage(payloadTransmissionMessage);
+  }
+  else
+  {
+    // Debugging_Utilities_DebugLog("No message to send");
+  }
 
 	delay(200);
 }

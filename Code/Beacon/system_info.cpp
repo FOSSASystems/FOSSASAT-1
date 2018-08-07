@@ -36,17 +36,7 @@ float System_Info_GetInternalTemperature()
 
   ADCSRA |= _BV(ADSC);  
 
-  int max_repetitions = 10000;
-  int repetition_count = 0;
-  while (bit_is_set(ADCSRA,ADSC))
-  {
-    repetition_count++;
-
-    if (repetition_count >= max_repetitions)
-    {
-      break;
-    }
-  }
+  while (bit_is_set(ADCSRA,ADSC));
 
   wADC = ADCW;
 

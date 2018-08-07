@@ -1,6 +1,15 @@
+#include <Wire.h>
+
+void requestEvent()
+{
+  Wire.write("6;");
+}
+
 void setup() {
   // put your setup code here, to run once:
+  Wire.begin(8);
   Serial.begin(9600);
+  Wire.onRequest(requestEvent);
 }
 
 void loop() {
