@@ -180,8 +180,8 @@ void Communication_TransmitPowerInfo()
 	sysInfoMessage += String("BC:") + (batteryChargingVoltage) + ";";
   sysInfoMessage += String("B:") + (batteryVoltage) + ";";
   sysInfoMessage += String("TS:") + (totalSolarCellVoltage) + ";";
-  sysInfoMessage += String("RC:") + String(resetCounter) + ";";
-  sysInfoMessage += String("DS:") + String(deploymentState) + ";";
+  sysInfoMessage += String("RC:") + String(resetCounter, "DEC") + ";";
+  sysInfoMessage += String("DS:") + String(deploymentState, "DEC") + ";";
 
 	Communication_SX1278Transmit("9", sysInfoMessage);
 }

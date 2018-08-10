@@ -35,6 +35,6 @@ String System_Info_MapValue(float inValue, float inMin, float inMax, float outMi
 {
   float value = ( ((inValue - inMin) * (outMax - outMin)) / (inMax - inMin) ) + outMin;
 
-  return String(value);
+  return String(value, "DEC");
 }
 

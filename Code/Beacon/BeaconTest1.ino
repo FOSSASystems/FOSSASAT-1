@@ -186,7 +186,7 @@ void loop()
     Debugging_Utilities_DebugLog("End listening for function id '8'");
 	}
 
-  // delay(200);
+  delay(200);
   
   Debugging_Utilities_DebugLog("Checking I2C input for data.");
 
@@ -209,5 +209,5 @@ void loop()
     // Debugging_Utilities_DebugLog("No message to send");
   }
 
-	delay(200);
+	delay(1000);
 }
