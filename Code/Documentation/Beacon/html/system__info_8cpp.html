@@ -94,8 +94,8 @@ Functions</h2></td></tr>
 <tr class="separator:a88ae62dc1b2d67bc4f6bd7f5bf3c5f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37b578f49d895fb7eb69038559b63f60"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="system__info_8cpp.html#a37b578f49d895fb7eb69038559b63f60">System_Info_GetTransmissionSignature</a> ()</td></tr>
 <tr class="separator:a37b578f49d895fb7eb69038559b63f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa26064e57fae213b138815820a47d069"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="system__info_8cpp.html#aa26064e57fae213b138815820a47d069">System_Info_GetInternalTemperature</a> ()</td></tr>
-<tr class="separator:aa26064e57fae213b138815820a47d069"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abec207cf958d64cdd840bbdad08df690"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="system__info_8cpp.html#abec207cf958d64cdd840bbdad08df690">System_Info_MapValue</a> (float inValue, float inMin, float inMax, float outMin, float outMax)</td></tr>
+<tr class="separator:abec207cf958d64cdd840bbdad08df690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a88ae62dc1b2d67bc4f6bd7f5bf3c5f39"></a>
@@ -113,31 +113,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa26064e57fae213b138815820a47d069"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa26064e57fae213b138815820a47d069">&#9670;&nbsp;</a></span>System_Info_GetInternalTemperature()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float System_Info_GetInternalTemperature </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="system__info_8cpp_aa26064e57fae213b138815820a47d069_icgraph.png" border="0" usemap="#system__info_8cpp_aa26064e57fae213b138815820a47d069_icgraph" alt=""/></div>
-<map name="system__info_8cpp_aa26064e57fae213b138815820a47d069_icgraph" id="system__info_8cpp_aa26064e57fae213b138815820a47d069_icgraph">
-<area shape="rect" id="node2" href="communication_8h.html#a712ae7b6a79893e9d0188cf2a55db0d5" title="Power infomation send to ground station every 400ms. " alt="" coords="289,5,515,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -193,14 +168,15 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="system__info_8cpp_a37b578f49d895fb7eb69038559b63f60_icgraph.png" border="0" usemap="#system__info_8cpp_a37b578f49d895fb7eb69038559b63f60_icgraph" alt=""/></div>
 <map name="system__info_8cpp_a37b578f49d895fb7eb69038559b63f60_icgraph" id="system__info_8cpp_a37b578f49d895fb7eb69038559b63f60_icgraph">
-<area shape="rect" id="node2" href="communication_8h.html#a68fd88d1ccfc91925d30c0fdf1b417ab" title="The main transmission function. " alt="" coords="252,209,465,235"/>
-<area shape="rect" id="node3" href="communication_8h.html#a51f2b306c87fa18c2527e7c0c52be9be" title="satellite&#39;s Setup() function is called.. " alt="" coords="527,5,738,47"/>
-<area shape="rect" id="node4" href="communication_8h.html#a5d4ee18ed44fceae055bb7a28dd2988c" title="satellite&#39;s failure sequency function is called.. " alt="" coords="524,71,741,112"/>
-<area shape="rect" id="node5" href="communication_8h.html#a2d3cd37bf37299ace49542ef70bf0f17" title="satellite&#39;s SX1278 LoRa library .begin() ran successfully. " alt="" coords="526,136,739,177"/>
-<area shape="rect" id="node6" href="communication_8h.html#ae3e6eec1903874d9d4a6b130c35f0f97" title="When the Atmega setup() is called. " alt="" coords="513,201,752,243"/>
-<area shape="rect" id="node7" href="communication_8h.html#ae91ea86f951b2a61313c5c14d0ec39f0" title="satellite&#39;s Setup() function is called.. " alt="" coords="533,267,732,294"/>
-<area shape="rect" id="node8" href="communication_8h.html#a712ae7b6a79893e9d0188cf2a55db0d5" title="Power infomation send to ground station every 400ms. " alt="" coords="520,318,745,345"/>
-<area shape="rect" id="node9" href="communication_8h.html#ac8c893c270beb16dd3214f16bae57e0a" title="Satellite&#39;s ground station TUNE transmission. " alt="" coords="534,369,731,395"/>
+<area shape="rect" id="node2" href="communication_8h.html#a68fd88d1ccfc91925d30c0fdf1b417ab" title="The main transmission function. " alt="" coords="252,242,465,269"/>
+<area shape="rect" id="node3" href="communication_8h.html#a0cbe4b49927d6893d34e12849df77a7c" title="Communication_SX1278Transmit\lPayloadMessage" alt="" coords="526,5,739,47"/>
+<area shape="rect" id="node4" href="communication_8h.html#a51f2b306c87fa18c2527e7c0c52be9be" title="satellite&#39;s Setup() function is called.. " alt="" coords="527,71,738,112"/>
+<area shape="rect" id="node5" href="communication_8h.html#a5d4ee18ed44fceae055bb7a28dd2988c" title="satellite&#39;s failure sequency function is called.. " alt="" coords="524,136,741,177"/>
+<area shape="rect" id="node6" href="communication_8h.html#a2d3cd37bf37299ace49542ef70bf0f17" title="satellite&#39;s SX1278 LoRa library .begin() ran successfully. " alt="" coords="526,201,739,243"/>
+<area shape="rect" id="node7" href="communication_8h.html#ae3e6eec1903874d9d4a6b130c35f0f97" title="When the Atmega setup() is called. " alt="" coords="513,267,752,308"/>
+<area shape="rect" id="node8" href="communication_8h.html#ae91ea86f951b2a61313c5c14d0ec39f0" title="satellite&#39;s Setup() function is called.. " alt="" coords="533,333,732,359"/>
+<area shape="rect" id="node9" href="communication_8h.html#a712ae7b6a79893e9d0188cf2a55db0d5" title="Power infomation send to ground station every 400ms. " alt="" coords="520,383,745,410"/>
+<area shape="rect" id="node10" href="communication_8h.html#ac8c893c270beb16dd3214f16bae57e0a" title="Satellite&#39;s ground station TUNE transmission. " alt="" coords="534,434,731,461"/>
 </map>
 </div>
 
@@ -227,6 +203,60 @@ Here is the call graph for this function:</div>
 <map name="system__info_8cpp_ab10cdc00c398c83dc4401d3b84e20242_cgraph" id="system__info_8cpp_ab10cdc00c398c83dc4401d3b84e20242_cgraph">
 <area shape="rect" id="node2" href="persistant__storage_8cpp.html#a84ed76c27751b80e0d81b190681bcab6" title="Persistant_Storage_Get" alt="" coords="253,5,415,32"/>
 <area shape="rect" id="node3" href="persistant__storage_8cpp.html#a5710d1cd52da221de7bd44c9e41897dc" title="Persistant_Storage_Set" alt="" coords="254,56,414,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="abec207cf958d64cdd840bbdad08df690"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abec207cf958d64cdd840bbdad08df690">&#9670;&nbsp;</a></span>System_Info_MapValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">String System_Info_MapValue </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>inValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>inMin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>inMax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>outMin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>outMax</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="system__info_8cpp_abec207cf958d64cdd840bbdad08df690_icgraph.png" border="0" usemap="#system__info_8cpp_abec207cf958d64cdd840bbdad08df690_icgraph" alt=""/></div>
+<map name="system__info_8cpp_abec207cf958d64cdd840bbdad08df690_icgraph" id="system__info_8cpp_abec207cf958d64cdd840bbdad08df690_icgraph">
+<area shape="rect" id="node2" href="communication_8h.html#a712ae7b6a79893e9d0188cf2a55db0d5" title="Power infomation send to ground station every 400ms. " alt="" coords="212,5,437,32"/>
 </map>
 </div>
 
