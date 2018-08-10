@@ -29,12 +29,9 @@ int EEPROM_RESTART_COUNTER_ADDR = 4;
 ///////////////////////
 // Anlog in voltages //
 ///////////////////////
-int ANALOG_IN_SOLAR_CELL_1_PIN = 0;
-int ANALOG_IN_SOLAR_CELL_2_PIN = 1;
-int ANALOG_IN_SOLAR_CELL_3_PIN = 2;
-int ANALOG_IN_SOLAR_CELL_4_PIN = 3;
-int ANALOG_IN_SOLAR_CELL_5_PIN = 4;
-int ANALOG_IN_CHARGING_CURRENT_PIN = 5;
+int ANALOG_IN_TOTAL_SOLAR_VOLTAGE_PIN = 0;
+int ANALOG_IN_BATTERY_CHARGING_VOLTAGE_PIN = 1;
+int ANALOG_IN_BATTERY_VOLTAGE_PIN = 2;
 
 ///////////////////////////////
 // System state control pins //

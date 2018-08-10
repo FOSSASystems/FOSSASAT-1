@@ -24,25 +24,17 @@ String System_Info_GetTransmissionSignature()
 	return TRANSMISSION_SIGNATURE;
 }
 
-float System_Info_GetInternalTemperature()
+/* @breif platform dependent float values, very unusual behaviour...
+ *  
+ *  @test 1023 integer input
+ *  @test 0 integer input
+ *  @test negative value input
+ *  @test inf value input
+ */
+String System_Info_MapValue(float inValue, float inMin, float inMax, float outMin, float outMax)
 {
-  unsigned int wADC;
-  double t;
+  float value = ( ((inValue - inMin) * (outMax - outMin)) / (inMax - inMin) ) + outMin;
 
-  ADMUX = (_BV(REFS1) | _BV(REFS0) | _BV(MUX3));
-  ADCSRA |= _BV(ADEN);
-
-  delay(20);            
-
-  ADCSRA |= _BV(ADSC);  
-
-  while (bit_is_set(ADCSRA,ADSC));
-
-  wADC = ADCW;
-
-  // The offset of 317.31 could be wrong. It is just an indication.
-  t = (wADC - 317.31f ) / 1.22f;
-
-  // degrees celcius
-  return t;
+  return String(value);
 }
+

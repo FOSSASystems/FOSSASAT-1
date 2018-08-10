@@ -3,21 +3,19 @@
 #include "configuration.h"
 #include "pin_interface.h"
 
-////////////////////////////
-// Analog input interface //
-////////////////////////////
-int Pin_Interface_GetSolarCellVoltage(int inCellIndex)
+int Pin_Interface_GetBatteryChargingVoltage()
 {
-	if (inCellIndex == 1) return analogRead(ANALOG_IN_SOLAR_CELL_1_PIN);
-	if (inCellIndex == 2) return analogRead(ANALOG_IN_SOLAR_CELL_2_PIN);
-	if (inCellIndex == 3) return analogRead(ANALOG_IN_SOLAR_CELL_3_PIN);
-	if (inCellIndex == 4) return analogRead(ANALOG_IN_SOLAR_CELL_4_PIN);
-	if (inCellIndex == 5) return analogRead(ANALOG_IN_SOLAR_CELL_5_PIN);
+  return analogRead(ANALOG_IN_BATTERY_CHARGING_VOLTAGE_PIN);
 }
 
-int Pin_Interface_GetBatteryChargingCurrent()
+int Pin_Interface_GetBatteryVoltage()
 {
-	return analogRead(ANALOG_IN_CHARGING_CURRENT_PIN);
+  return analogRead(ANALOG_IN_BATTERY_VOLTAGE_PIN);
+}
+
+int Pin_Interface_GetTotalSolarCellVoltage()
+{
+  return analogRead(ANALOG_IN_TOTAL_SOLAR_VOLTAGE_PIN);
 }
 
 

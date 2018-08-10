@@ -169,21 +169,19 @@ void Communication_TransmitPowerInfo()
 {
   Debugging_Utilities_DebugLog("(T) Transmitting power info packet.");
   
-	int solarCell1 = Pin_Interface_GetSolarCellVoltage(1);
-	int solarCell2 = Pin_Interface_GetSolarCellVoltage(2);
-	int solarCell3 = Pin_Interface_GetSolarCellVoltage(3);
-	int solarCell4 = Pin_Interface_GetSolarCellVoltage(4);
-	int solarCell5 = Pin_Interface_GetSolarCellVoltage(5);
-
+  String batteryChargingVoltage = System_Info_MapValue(Pin_Interface_GetBatteryChargingVoltage(), 0.0f, 1023.0f, 0.4f, 4.2f);
+  String batteryVoltage = System_Info_MapValue(Pin_Interface_GetBatteryVoltage(), 0.0f, 1023.0f, 0.4f, 4.2f);
+  String totalSolarCellVoltage = System_Info_MapValue(Pin_Interface_GetTotalSolarCellVoltage(), 0.0f, 1023.0f, 0.4f, 4.2f);
+  
 	bool deploymentState = Deployment_GetDeploymentState();
-
 	int resetCounter = System_Info_GetResetCounter();
 
-	int batteryChargingCurrent = Pin_Interface_GetBatteryChargingCurrent();
-
-  float internalTemperature = System_Info_GetInternalTemperature();
-
-	String sysInfoMessage = String("T") + String(internalTemperature) + ";" + String("S1:") + String(solarCell1) + ";" + "S2:" + String(solarCell2) + ";" + "S3:" + String(solarCell3) + ";" + "S4:" + String(solarCell4) + ";" + "S5:" + String(solarCell5) + ";" + "B:" + String(batteryChargingCurrent) + ";RC:" + String(resetCounter) + ";DEPS:" + String(deploymentState) + ";";
+	String sysInfoMessage = String("");
+	sysInfoMessage += String("BC:") + (batteryChargingVoltage) + ";";
+  sysInfoMessage += String("B:") + (batteryVoltage) + ";";
+  sysInfoMessage += String("TS:") + (totalSolarCellVoltage) + ";";
+  sysInfoMessage += String("RC:") + String(resetCounter) + ";";
+  sysInfoMessage += String("DS:") + String(deploymentState) + ";";
 
 	Communication_SX1278Transmit("9", sysInfoMessage);
 }

@@ -5,6 +5,6 @@ int System_Info_GetResetCounter();
 void System_Info_IncrementRestartCounter();
 bool System_Info_CheckSystemSignature(String inSignature);
 String System_Info_GetTransmissionSignature();
-float System_Info_GetInternalTemperature();
+String System_Info_MapValue(float inValue, float inMin, float inMax, float outMin, float outMax);
 
 #endif
