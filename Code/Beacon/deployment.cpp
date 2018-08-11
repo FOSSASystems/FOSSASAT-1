@@ -20,20 +20,15 @@
 void Deployment_PowerDeploymentMosfets()
 {
 	// check against eeprom for already deployed.
-	if (Persistant_Storage_Get(EEPROM_DEPLOYMENT_ADDR) == LOW)
+	if (Persistant_Storage_Get(EEPROM_DEPLOYMENT_ADDR) == 0)
 	{
-    Debugging_Utilities_DebugLog("(DEPLOYMENT SEQ.) Waiting 5 seconds...");
+    Debugging_Utilities_DebugPrintLine("(DEPLOYMENT SEQ. START.)");
     
 		// send high signal after 5seconds if not already deployed.
 		delay(5000);
-
-    Debugging_Utilities_DebugLog("(DEPLOYMENT SEQ.) Setting deployment EEPROM value to HIGH.");
     
 		// set the eeprom value so it doesn't turn the mosfets on again.
-		Persistant_Storage_Set(EEPROM_DEPLOYMENT_ADDR, HIGH);
-
-
-    Debugging_Utilities_DebugLog("(DEPLOYMENT SEQ.) Activiating MOSFET circuit to burn nichrome wires (5 seconds).");
+		Persistant_Storage_Set(EEPROM_DEPLOYMENT_ADDR, 1);
     
 		// burn the nichrome wires.
 		digitalWrite(DIGITAL_OUT_MOSFET_1, HIGH);
@@ -41,28 +36,19 @@ void Deployment_PowerDeploymentMosfets()
 
 		delay(5000);
     
-    Debugging_Utilities_DebugLog("(DEPLOYMENT SEQ.) Deployment sequence completed, switching MOSFET cicuit to low.");
+    Debugging_Utilities_DebugPrintLine("(DEPLOYMENT SEQ. SUCCESS.)");
 
 		digitalWrite(DIGITAL_OUT_MOSFET_1, LOW);
 		digitalWrite(DIGITAL_OUT_MOSFET_2, LOW);
 	}
-	else if (Persistant_Storage_Get(EEPROM_DEPLOYMENT_ADDR) == HIGH) // catches EEPROM failure.
+	else if (Persistant_Storage_Get(EEPROM_DEPLOYMENT_ADDR) == 1) // catches EEPROM failure.
 	{
-    Debugging_Utilities_DebugLog("(DEPLOYMENT SEQ.) Deployment sequence has already happened.");
+    Debugging_Utilities_DebugPrintLine("(DEPLOYMENT SEQ. N/A.)");
     
 		// the deployment has occured.
 		digitalWrite(DIGITAL_OUT_MOSFET_1, LOW);
 		digitalWrite(DIGITAL_OUT_MOSFET_2, LOW);
 	}
-  else
-  {
-    // error with eeprom storage, set to low.
-    
-    Debugging_Utilities_DebugLog("(DEPLOYMENT SEQ.) Error reading EEPROM!");
-    
-    digitalWrite(DIGITAL_OUT_MOSFET_1, LOW);
-    digitalWrite(DIGITAL_OUT_MOSFET_2, LOW);
-  }
 }
 
    

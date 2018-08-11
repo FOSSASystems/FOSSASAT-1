@@ -34,7 +34,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
 	String transmissionSignature = System_Info_GetTransmissionSignature();
   String transmissionPacket = transmissionSignature + inFuncId + ";" + inMessage;
 
-	Debugging_Utilities_DebugLog("Transmitting... " + transmissionPacket);
+	Debugging_Utilities_DebugPrintLine("(Transmit) " + transmissionPacket);
 
 	if (TRANSMISSION_ENABLED)
 	{
@@ -43,17 +43,17 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
 		if (state == ERR_NONE)
 		{
 			// the packet was successfully transmitted
-			Debugging_Utilities_DebugLog("Packet successfully transmitted to ground station.");
+			Debugging_Utilities_DebugPrintLine("(Sent packet)");
 		}
 		else if (state == ERR_PACKET_TOO_LONG)
 		{
 			// the supplied packet was longer than 256 bytes
-			Debugging_Utilities_DebugLog("Packet size > 256 bytes!");
+			Debugging_Utilities_DebugPrintLine("(Packet too big)");
 		}
 		else if (state == ERR_TX_TIMEOUT)
 		{
 			// timeout occurred while transmitting packet
-			Debugging_Utilities_DebugLog("Timed out while transmitting packet.");
+			Debugging_Utilities_DebugPrintLine("(Packet timeout)");
 		}  
 	}
 }
@@ -77,7 +77,7 @@ void Communication_SX1278TransmitPayloadMessage(String inPayloadMessage)
  */
 void Communication_TransmitStartedSignal()
 {
-  Debugging_Utilities_DebugLog("(T) Transmit satellite started.");
+  Debugging_Utilities_DebugPrintLine("(T. Start. Trans.)");
 	Communication_SX1278Transmit("1", "");
 }
 
@@ -88,7 +88,7 @@ void Communication_TransmitStartedSignal()
  */
 void Communication_TransmitStoppedSignal()
 {
-  Debugging_Utilities_DebugLog("(T) Transmit satellite stopped.");
+  Debugging_Utilities_DebugPrintLine("(T. Stop. Trans.)");
 	Communication_SX1278Transmit("2", "");
 }
 
@@ -99,7 +99,7 @@ void Communication_TransmitStoppedSignal()
  */
 void Communication_TransmitSX1278InitializedSuccess()
 {
-  Debugging_Utilities_DebugLog("(T) Transmit sx1278 initialized success.");
+  Debugging_Utilities_DebugPrintLine("(T. SX1278 S.");
 	Communication_SX1278Transmit("3", "");
 }
 
@@ -111,7 +111,7 @@ void Communication_TransmitSX1278InitializedSuccess()
  */
 void Communication_TransmitDeploymentSuccess()
 {
-  Debugging_Utilities_DebugLog("(T) Transmit deployment success.");
+  Debugging_Utilities_DebugPrintLine("(T. Dep. S.)");
 	Communication_SX1278Transmit("4", "");
 }
 
@@ -122,7 +122,7 @@ void Communication_TransmitDeploymentSuccess()
  */
 void Communication_TransmitPong()
 {
-  Debugging_Utilities_DebugLog("(T) Transmit pong.");
+  Debugging_Utilities_DebugPrintLine("(T. Pong)");
 	Communication_SX1278Transmit("6", "");
 }
 
@@ -133,7 +133,7 @@ void Communication_TransmitPong()
  */
 void Communication_RecievedPing()
 {
-  Debugging_Utilities_DebugLog("(R) Received ping.");
+  Debugging_Utilities_DebugPrintLine("(R. Ping)");
 	STATE_PING = true;
 }
 
@@ -144,7 +144,7 @@ void Communication_RecievedPing()
  */
 void Communication_RecievedStopTransmitting()
 {
-  Debugging_Utilities_DebugLog("(R) Received stop transmitting.");
+  Debugging_Utilities_DebugPrintLine("(R. S. T");
 	TRANSMISSION_ENABLED = false;
 }
 
@@ -155,7 +155,7 @@ void Communication_RecievedStopTransmitting()
  */
 void Communication_RecievedStartTransmitting()
 {
-  Debugging_Utilities_DebugLog("(R) Received start transmitting.");
+  Debugging_Utilities_DebugPrintLine("(R. S. T)");
 	TRANSMISSION_ENABLED = true;
 }
 
@@ -167,7 +167,7 @@ void Communication_RecievedStartTransmitting()
  */
 void Communication_TransmitPowerInfo()
 {
-  Debugging_Utilities_DebugLog("(T) Transmitting power info packet.");
+  Debugging_Utilities_DebugPrintLine("(T. Sys. Info)");
   
   String batteryChargingVoltage = System_Info_MapValue(Pin_Interface_GetBatteryChargingVoltage(), 0.0f, 1023.0f, 0.4f, 4.2f);
   String batteryVoltage = System_Info_MapValue(Pin_Interface_GetBatteryVoltage(), 0.0f, 1023.0f, 0.4f, 4.2f);
@@ -177,11 +177,11 @@ void Communication_TransmitPowerInfo()
 	int resetCounter = System_Info_GetResetCounter();
 
 	String sysInfoMessage = String("");
-	sysInfoMessage += String("BC:") + (batteryChargingVoltage) + ";";
-  sysInfoMessage += String("B:") + (batteryVoltage) + ";";
-  sysInfoMessage += String("TS:") + (totalSolarCellVoltage) + ";";
-  sysInfoMessage += String("RC:") + String(resetCounter, "DEC") + ";";
-  sysInfoMessage += String("DS:") + String(deploymentState, "DEC") + ";";
+	sysInfoMessage += String("BC:") + batteryChargingVoltage + ";";
+  sysInfoMessage += String("B:") + batteryVoltage + ";";
+  sysInfoMessage += String("TS:") + totalSolarCellVoltage + ";";
+  sysInfoMessage += String("RC:") + String(resetCounter, DEC) + ";";
+  sysInfoMessage += String("DS:") + String(deploymentState, DEC) + ";";
 
 	Communication_SX1278Transmit("9", sysInfoMessage);
 }
@@ -193,18 +193,16 @@ void Communication_TransmitPowerInfo()
  */
 void Communication_TransmitTune()
 {
-  Debugging_Utilities_DebugLog("(T) Transmitting tuning packet.");
+  Debugging_Utilities_DebugPrintLine("(T. TUNE)");
   
 	// switch to wide bandwidth location transmission.
 	LORA.setBandwidth(LOCATION_BANDWIDTH);
-  
-	Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(LOCATION_BANDWIDTH) + "KHz bandwidth.");
 
 	Communication_SX1278Transmit("10", String("FOSSASAT1"));
 
 	// return to local bandwidth transmissions.
 	LORA.setBandwidth(BANDWIDTH);
  
-	Debugging_Utilities_DebugLog("(TUNING) Switched to " + String(BANDWIDTH) + "KHz bandwidth.");
+	Debugging_Utilities_DebugPrintLine("(E. T. TUNE)");
 }
 

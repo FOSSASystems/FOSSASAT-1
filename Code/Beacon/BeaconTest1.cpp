@@ -71,7 +71,9 @@ void setup()
     while (true);
   }
 
+  Debug_Utilities_DebugLog("Starting deployment sequence...");
   Deployment_PowerDeploymentMosfets();
+  Debug_Utilities_DebugLog("End of deployment sequence!");
 }
 
 /*
@@ -83,10 +85,14 @@ void setup()
  */
 void loop()
 {
+  Debug_Utilities_DebugLog("Sending watchdog signal...");
   Pin_Interface_WatchdogHeartbeat();
+  Debug_Utilities_DebugLog("End of watchdog signal!");
 
+  Debug_Utilities_DebugLog("Waiting to receive data from LORA...");
   String str;
   byte state = LORA.receive(str);
+  Debug_Utilities_DebugLog("Received data!");
   
   String signature = str.substring(0, 10);
   String withoutSignature = str.substring(10);

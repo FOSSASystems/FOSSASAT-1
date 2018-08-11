@@ -33,8 +33,12 @@ int POWER_INFO_TIMER = 0;
 
 void setup()
 {
-  Wire.begin();
 	Serial.begin(9600);
+
+  if (ENABLE_I2C_BUS)
+  {
+     Wire.begin();
+  }
 
   if (Pin_Interface_ShouldReset())
   {
@@ -47,7 +51,7 @@ void setup()
 
 	// Initialize the SX1278 interface with default settings.
 	// See the PDF reports on previous PocketQube attempts for more info.
-	Debugging_Utilities_DebugLog("SX1278 interface :\nCARRIER_FREQUENCY "
+	Debugging_Utilities_DebugPrintLine("SX1278 interface :\nCARRIER_FREQUENCY "
 		+ String(CARRIER_FREQUENCY) + " MHz\nBANDWIDTH: "
 		+ String(BANDWIDTH) + " kHz\nSPREADING_FACTOR: "
 		+ String(SPREADING_FACTOR) + "\nCODING_RATE: "
@@ -59,13 +63,13 @@ void setup()
 
 	if (err_check == ERR_NONE)
 	{
-		Debugging_Utilities_DebugLog("(S) SX1278 Online!");
+		Debugging_Utilities_DebugPrintLine("(S) SX1278 Online!");
 		STATE_TRANSMITTER_INITIALIZED = true;
 	}
 	else
 	{
 		// TODO If we reach this, we cannot communicate with the satellite, therefore we need the system to be restarted.
-		Debugging_Utilities_DebugLog("(E) SX1278 Error code = 0x" + String(err_check, HEX));
+		Debugging_Utilities_DebugPrintLine("(E) SX1278 0x" + String(err_check, HEX));
 		while (true);
 	}
 
@@ -81,7 +85,7 @@ void setup()
  */
 void loop()
 {
-	Pin_Interface_WatchdogHeartbeat();
+  Pin_Interface_WatchdogHeartbeat();
 
 	String str;
 	byte state = LORA.receive(str);
@@ -102,12 +106,13 @@ void loop()
                
   if (System_Info_CheckSystemSignature(signature) == false) // invalid signature
   {
-    Debugging_Utilities_DebugLog("(SAFETY WARNING) Signature received differs from system signature!");
+    Debugging_Utilities_DebugPrintLine("(SIG MISMATCH)");
   }
    
 	if (TRANSMISSION_ENABLED) // cirital decision, transmission recieved to turn off transmission is REQUIRED.
 	{
-    Debugging_Utilities_DebugLog("Invoking the comms subsystem, expecting a print...");
+    Debugging_Utilities_DebugPrintLine("(COMMS SYS START)");
+    
 		///////////////
 		// RECIEVING //
 		///////////////
@@ -173,26 +178,24 @@ void loop()
       TUNE_TIMER = 0;
       STATE_TRANSMIT_TUNE = true;
     }
-    Debugging_Utilities_DebugLog("End of comms system.");
+    Debugging_Utilities_DebugPrintLine("(COMM SYSTEM END");
     
 	}
 	else
 	{
-    Debugging_Utilities_DebugLog("Transmission disabled... Listening for function id '8'");
+    Debugging_Utilities_DebugPrintLine("(TRANS. DISAB. MODE)");
     
     if (function_id == "8") // only parse the function id of 8.
     {
       Communication_RecievedStartTransmitting();
     }
     
-    Debugging_Utilities_DebugLog("End listening for function id '8'");
+    Debugging_Utilities_DebugPrintLine("(TRANS. DISAB. MODE END");
 	}
 
   if (ENABLE_I2C_BUS)
   {
     delay(200);
-    
-    Debugging_Utilities_DebugLog("Checking I2C input for data.");
   
     Wire.requestFrom(8, 32);    // request 32 bytes from slave device #8
   
@@ -207,10 +210,6 @@ void loop()
     if (payloadTransmissionMessage != "")
     {
       Communication_SX1278TransmitPayloadMessage(payloadTransmissionMessage);
-    }
-    else
-    {
-      // Debugging_Utilities_DebugLog("No message to send");
     }
   }
 
