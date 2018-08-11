@@ -10,6 +10,8 @@ extern bool DEBUG;   // whether to print debug infomation at all.
 extern bool DEBUG_SERIAL; // whether to print debug info to serial.
 extern bool DEBUG_SX1278; // whether to send debug info to SX1278.
 
+extern int VOLTAGE_DECIMAL_PLACES;
+
 //////////////////////////
 // Transmission control //
 //////////////////////////

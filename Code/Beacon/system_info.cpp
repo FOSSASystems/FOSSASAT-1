@@ -24,7 +24,9 @@ String System_Info_GetTransmissionSignature()
 	return TRANSMISSION_SIGNATURE;
 }
 
-/* @breif platform dependent float values, very unusual behaviour...
+/* @breif platform dependent float values
+ *  
+ *  rounds to VOLTAGE_DECIMAL_PLACES (default 2)
  *  
  *  @test 1023 integer input
  *  @test 0 integer input
@@ -35,6 +37,6 @@ String System_Info_MapValue(float inValue, float inMin, float inMax, float outMi
 {
   float value = ( ((inValue - inMin) * (outMax - outMin)) / (inMax - inMin) ) + outMin;
 
-  return String(value, DEC);
+  return String(value, VOLTAGE_DECIMAL_PLACES);
 }
 

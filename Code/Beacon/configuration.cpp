@@ -16,6 +16,7 @@ bool DEBUG_SERIAL = true;
 /* Should we print debug infomation through the transmittor? (NO) */
 bool DEBUG_SX1278 = false;
 
+int VOLTAGE_DECIMAL_PLACES = 2;
 
 /* (internal) Disables transmission and only listens for a start transmitting message. */
 bool TRANSMISSION_ENABLED = true;
@@ -29,18 +30,18 @@ int EEPROM_RESTART_COUNTER_ADDR = 4;
 ///////////////////////
 // Anlog in voltages //
 ///////////////////////
-int ANALOG_IN_TOTAL_SOLAR_VOLTAGE_PIN = 0;
+int ANALOG_IN_TOTAL_SOLAR_VOLTAGE_PIN = 3;
 int ANALOG_IN_BATTERY_CHARGING_VOLTAGE_PIN = 1;
 int ANALOG_IN_BATTERY_VOLTAGE_PIN = 2;
 
 ///////////////////////////////
 // System state control pins //
 ///////////////////////////////
-int DIGITAL_OUT_MOSFET_1 = 4; // set to high after 5s, then never set again.
-int DIGITAL_OUT_MOSFET_2 = 5; // set to high after 5s, then never set again.
-int DIGITAL_OUT_WATCHDOG_HEARTBEAT = 6; // if the system stops pinging the watching will restart.
-int DIGITAL_IN_DEPLOYMENT_STATE = 11; // state of the deployment mechanism, HIGH = deployment success, LOW = deployment failed.
-int DIGITAL_IN_RESET_PERSISTANT_STORAGE = 8;
+int DIGITAL_OUT_MOSFET_1 = 9; // set to high after 5s, then never set again.
+int DIGITAL_OUT_MOSFET_2 = 8; // set to high after 5s, then never set again.
+int DIGITAL_OUT_WATCHDOG_HEARTBEAT = 4; // if the system stops pinging the watching will restart.
+int DIGITAL_IN_DEPLOYMENT_STATE = 5; // state of the deployment mechanism, HIGH = deployment success, LOW = deployment failed.
+int DIGITAL_IN_RESET_PERSISTANT_STORAGE = 6;
 
 /////////////////////////
 // SX1278 antenna pins //
@@ -55,14 +56,15 @@ SX1278 LORA = new LoRa(7, 2, 3);
 // LoRa Antenna Settings //
 ///////////////////////////
 float CARRIER_FREQUENCY = 434.0f; // MHz
-float BANDWIDTH = 7.8f; // KHz
-float LOCATION_BANDWIDTH = 62.5f; // KHz
-int SPREADING_FACTOR = 12;
+float BANDWIDTH = 62.5f; // KHz low bandiwdth mode for communicating with ground stations
+float LOCATION_BANDWIDTH = 125.0f; // KHz high bandiwdth mode for locating the ground stations
+int SPREADING_FACTOR = 11;
 int CODING_RATE = 8; // can be 12.
 char SYNC_WORD = 0x13;
-int OUTPUT_POWER = 17; // dBm
+int OUTPUT_POWER = 10; // dBm
 
 String TRANSMISSION_SIGNATURE = "FOSSASAT-1";
+
 
 void Configuration_SetupPins()
 {
