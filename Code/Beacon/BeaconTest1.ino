@@ -35,6 +35,8 @@ void setup()
 {
 	Serial.begin(9600);
 
+  Configuration_SetupPins();
+
   if (ENABLE_I2C_BUS)
   {
      Wire.begin();
