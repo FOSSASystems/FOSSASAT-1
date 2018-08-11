@@ -170,7 +170,7 @@ void Communication_TransmitPowerInfo()
   Debugging_Utilities_DebugPrintLine("(T. Sys. Info)");
   
   int batteryChargingVoltageRaw = Pin_Interface_GetBatteryChargingVoltage(); /* Scales relative to the current value */
-  String batteryChargingVoltage = String((RawValue * 5.0f )/ 1024.0f, 3);
+  String batteryChargingVoltage = String((batteryChargingVoltageRaw  * 5.0f )/ 1024.0f, 3);
   
   String batteryVoltage = System_Info_MapValue(Pin_Interface_GetBatteryVoltage(), 0.0f, 1023.0f, 0.4f, 4.2f);
   String totalSolarCellVoltage = System_Info_MapValue(Pin_Interface_GetTotalSolarCellVoltage(), 0.0f, 1023.0f, 0.4f, 4.2f);
