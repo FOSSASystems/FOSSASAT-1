@@ -3,9 +3,9 @@
 #include "persistant_storage.h"
 #include "system_info.h"
 
-int System_Info_GetResetCounter()
+String System_Info_GetResetCounter()
 {
-	return Persistant_Storage_Get(EEPROM_RESTART_COUNTER_ADDR);
+	return String(Persistant_Storage_Get(EEPROM_RESTART_COUNTER_ADDR), DEC);
 }
 
 void System_Info_IncrementRestartCounter()
@@ -23,20 +23,3 @@ String System_Info_GetTransmissionSignature()
 {
 	return TRANSMISSION_SIGNATURE;
 }
-
-/* @breif platform dependent float values
- *  
- *  rounds to VOLTAGE_DECIMAL_PLACES (default 2)
- *  
- *  @test 1023 integer input
- *  @test 0 integer input
- *  @test negative value input
- *  @test inf value input
- */
-String System_Info_MapValue(float inValue, float inMin, float inMax, float outMin, float outMax)
-{
-  float value = ( ((inValue - inMin) * (outMax - outMin)) / (inMax - inMin) ) + outMin;
-
-  return String(value, VOLTAGE_DECIMAL_PLACES);
-}
-

@@ -169,21 +169,19 @@ void Communication_TransmitPowerInfo()
 {
   Debugging_Utilities_DebugPrintLine("(T. Sys. Info)");
   
-  int batteryChargingVoltageRaw = Pin_Interface_GetBatteryChargingVoltage(); /* Scales relative to the current value */
-  String batteryChargingVoltage = String((batteryChargingVoltageRaw  * 5.0f )/ 1024.0f, 3);
+  String batteryChargingVoltage = Pin_Interface_GetBatteryChargingVoltage();
+  String batteryVoltage = Pin_Interface_GetBatteryVoltage();
+  String totalSolarCellVoltage = Pin_Interface_GetTotalSolarCellVoltage();
   
-  String batteryVoltage = System_Info_MapValue(Pin_Interface_GetBatteryVoltage(), 0.0f, 1023.0f, 0.4f, 4.2f);
-  String totalSolarCellVoltage = System_Info_MapValue(Pin_Interface_GetTotalSolarCellVoltage(), 0.0f, 1023.0f, 0.4f, 4.2f);
-  
-	bool deploymentState = Deployment_GetDeploymentState();
-	int resetCounter = System_Info_GetResetCounter();
+	String deploymentState = Deployment_GetDeploymentState();
+	String resetCounter = System_Info_GetResetCounter();
 
 	String sysInfoMessage = String("");
 	sysInfoMessage += String("BC:") + batteryChargingVoltage + ";";
   sysInfoMessage += String("B:") + batteryVoltage + ";";
   sysInfoMessage += String("TS:") + totalSolarCellVoltage + ";";
-  sysInfoMessage += String("RC:") + String(resetCounter, DEC) + ";";
-  sysInfoMessage += String("DS:") + String(deploymentState, DEC) + ";";
+  sysInfoMessage += String("RC:") + resetCounter + ";";
+  sysInfoMessage += String("DS:") + deploymentState + ";";
 
 	Communication_SX1278Transmit("9", sysInfoMessage);
 }

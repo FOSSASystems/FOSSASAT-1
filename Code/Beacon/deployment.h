@@ -2,6 +2,6 @@
 #define DEPLOYMENT_H_INCLUDED
 
 void Deployment_PowerDeploymentMosfets();
-bool Deployment_GetDeploymentState();
+String Deployment_GetDeploymentState();
 
 #endif

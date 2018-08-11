@@ -3,9 +3,9 @@
 
 extern bool WATCHDOG_HEARTBEAT_STATE;
 
-int Pin_Interface_GetBatteryChargingVoltage();
-int Pin_Interface_GetBatteryVoltage();
-int Pin_Interface_GetTotalSolarCellVoltage();
+String Pin_Interface_GetBatteryChargingVoltage();
+String Pin_Interface_GetBatteryVoltage();
+String Pin_Interface_GetTotalSolarCellVoltage();
 bool Pin_Interface_ShouldReset();
 
 void Pin_Interface_WatchdogHeartbeat();

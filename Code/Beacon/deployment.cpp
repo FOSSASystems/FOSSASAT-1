@@ -56,7 +56,7 @@ void Deployment_PowerDeploymentMosfets()
  * @brief This function abstracts whether the deployment mechanism has succeeded.
  *
  */
-bool Deployment_GetDeploymentState()
+String Deployment_GetDeploymentState()
 {
 	// read from the deployment digital pin.
 	int val = digitalRead(DIGITAL_IN_DEPLOYMENT_STATE);
@@ -65,12 +65,12 @@ bool Deployment_GetDeploymentState()
 	if (val == HIGH)
 	{
 		// deployment pin returning HIGH threshold, deployment success.
-		return true;
+		return String(true, DEC);
 	}
 	else
 	{
 		// deployment pin returning LOW threshold, deployment failed.
-		return false;
+		return String(false, DEC);
 	}
 }
 
