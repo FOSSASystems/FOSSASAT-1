@@ -19,6 +19,8 @@ Author:	Richad Bamford (FOSSA Systems)
 #include "communication.h"
 #include "deployment.h"
 
+bool ENABLE_I2C_BUS = false;
+
 //////////////////////////////////////////////////
 // Timers for transceiver settings transmission //
 // this * 200ms is the delay between each transmission.
@@ -186,27 +188,30 @@ void loop()
     Debugging_Utilities_DebugLog("End listening for function id '8'");
 	}
 
-  delay(200);
-  
-  Debugging_Utilities_DebugLog("Checking I2C input for data.");
-
-  Wire.requestFrom(8, 32);    // request 32 bytes from slave device #8
-
-  String payloadTransmissionMessage = String("");
-  
-  while (Wire.available())
-  { // slave may send less than requested
-    char c = Wire.read(); // receive a byte as character
-    payloadTransmissionMessage += String(c);
-  }
-
-  if (payloadTransmissionMessage != "")
+  if (ENABLE_I2C_BUS)
   {
-    Communication_SX1278TransmitPayloadMessage(payloadTransmissionMessage);
-  }
-  else
-  {
-    // Debugging_Utilities_DebugLog("No message to send");
+    delay(200);
+    
+    Debugging_Utilities_DebugLog("Checking I2C input for data.");
+  
+    Wire.requestFrom(8, 32);    // request 32 bytes from slave device #8
+  
+    String payloadTransmissionMessage = String("");
+    
+    while (Wire.available())
+    { // slave may send less than requested
+      char c = Wire.read(); // receive a byte as character
+      payloadTransmissionMessage += String(c);
+    }
+  
+    if (payloadTransmissionMessage != "")
+    {
+      Communication_SX1278TransmitPayloadMessage(payloadTransmissionMessage);
+    }
+    else
+    {
+      // Debugging_Utilities_DebugLog("No message to send");
+    }
   }
 
 	delay(1000);
