@@ -9,7 +9,7 @@
  */
 float Pin_Interface_MapVoltageDividedReadings(int inAnalogValue)
 {
-  return (inAnalogValue / 4.092f) / 10.0f;
+  return ( (inAnalogValue / 3.3f) / 940.0f ) / 0.2f;
 }
 
 /*
