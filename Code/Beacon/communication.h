@@ -5,6 +5,11 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage);
 
 void Communication_SX1278TransmitPayloadMessage(String inPayloadMessage);
 
+
+void Communication_DisableTransmitting();
+void Communication_EnableTransmitting();
+bool Communication_GetTransmittingState();
+
 //////////////////////////////
 // FOSSA_PROTOCOL FUNCTIONS //
 //////////////////////////////

@@ -18,14 +18,12 @@ bool DEBUG_SX1278 = false;
 
 int VOLTAGE_DECIMAL_PLACES = 2;
 
-/* (internal) Disables transmission and only listens for a start transmitting message. */
-bool TRANSMISSION_ENABLED = true;
-
-
 /* EEPROM addreses */
 int EEPROM_DEPLOYMENT_ADDR = 1;
 /* EEPROM addreses */
 int EEPROM_RESTART_COUNTER_ADDR = 4;
+
+int EEPROM_TRANSMISSION_STATE_ADDR = 8;
 
 ///////////////////////
 // Anlog in voltages //

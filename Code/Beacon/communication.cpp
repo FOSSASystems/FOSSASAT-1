@@ -8,10 +8,44 @@
 #include "configuration.h"
 #include "state_machine_declerations.h"
 #include "pin_interface.h"
+#include "persistant_storage.h"
 #include "deployment.h"
 #include "system_info.h"
 #include "communication.h"
 #include "debugging_utilities.h"
+
+
+void Communication_DisableTransmitting()
+{
+  Persistant_Storage_Set(EEPROM_TRANSMISSION_STATE_ADDR, 1);
+}
+
+void Communication_EnableTransmitting()
+{
+  Persistant_Storage_Set(EEPROM_TRANSMISSION_STATE_ADDR, 2);
+}
+
+bool Communication_GetTransmittingState()
+{
+  int transmissionState = Persistant_Storage_Get(EEPROM_TRANSMISSION_STATE_ADDR);
+
+  if (transmissionState == 1)
+  {
+    return false; // transmission is disabled at the value of 1.
+  }
+  else if (transmissionState == 2)
+  {
+    return true; // transmission is enabled at the value of 2.
+  }
+  else if (transmissionState == 0)
+  {
+    return true; // an undefined transmission state is enabled.
+  }
+  else 
+  {
+    return true; // if eeprom is broken.
+  }
+}
 
 /**
  * @brief The main transmission function.
@@ -36,7 +70,9 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
 
 	Debugging_Utilities_DebugPrintLine("(Transmit) " + transmissionPacket);
 
-	if (TRANSMISSION_ENABLED)
+  bool transmittingState = Communication_GetTransmittingState();
+  
+	if (transmittingState == true)
 	{
 		byte state = LORA.transmit(transmissionPacket);
 
@@ -56,6 +92,10 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is
 			Debugging_Utilities_DebugPrintLine("(Packet timeout)");
 		}  
 	}
+  else
+  {
+      Debugging_Utilities_DebugPrintLine("(Trans. Disab.)");
+  }
 }
 
  /*
@@ -144,8 +184,8 @@ void Communication_RecievedPing()
  */
 void Communication_RecievedStopTransmitting()
 {
-  Debugging_Utilities_DebugPrintLine("(R. S. T");
-	TRANSMISSION_ENABLED = false;
+  Debugging_Utilities_DebugPrintLine("(R. Stop. T");
+	Communication_DisableTransmitting();
 }
 
 /**
@@ -155,8 +195,8 @@ void Communication_RecievedStopTransmitting()
  */
 void Communication_RecievedStartTransmitting()
 {
-  Debugging_Utilities_DebugPrintLine("(R. S. T)");
-	TRANSMISSION_ENABLED = true;
+  Debugging_Utilities_DebugPrintLine("(R. Start. T)");
+	Communication_EnableTransmitting();
 }
 
 /**
@@ -205,4 +245,3 @@ void Communication_TransmitTune()
  
 	Debugging_Utilities_DebugPrintLine("(E. T. TUNE)");
 }
-

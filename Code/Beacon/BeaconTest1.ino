@@ -75,7 +75,7 @@ void setup()
 		while (true);
 	}
 
-	Deployment_PowerDeploymentMosfets();
+	Deployment_PowerDeploymentMosfets(); // check or run deployment sequence.
 }
 
 /*
@@ -88,6 +88,7 @@ void setup()
 void loop()
 {
   Pin_Interface_WatchdogHeartbeat();
+  
 
 	String str;
 	byte state = LORA.receive(str);
@@ -110,8 +111,11 @@ void loop()
   {
     Debugging_Utilities_DebugPrintLine("(SIG MISMATCH)");
   }
+
    
-	if (TRANSMISSION_ENABLED) // cirital decision, transmission recieved to turn off transmission is REQUIRED.
+  bool transmittingState = Communication_GetTransmittingState();
+  
+	if (transmittingState == true) // cirital decision, transmission recieved to turn off transmission is REQUIRED and stored in EEPROM.
 	{
     Debugging_Utilities_DebugPrintLine("(COMMS SYS START)");
     

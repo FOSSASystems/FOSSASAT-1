@@ -22,6 +22,7 @@ extern bool TRANSMISSION_ENABLED; // when disabled will only parse transmission 
 //////////////////////
 extern int EEPROM_DEPLOYMENT_ADDR;
 extern int EEPROM_RESTART_COUNTER_ADDR;
+extern int EEPROM_TRANSMISSION_STATE_ADDR;
 
 ///////////////////////
 // Anlog in voltages //
