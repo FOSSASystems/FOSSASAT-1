@@ -166,9 +166,10 @@ void Communication_RTTY_BeginTransmission()
 }
 
 void Communication_RTTY_EndTransmission()
-{
+{   
     Communication_RTTY_TransmitSpace();
-    LORA.standby();  
+    Communication_RTTY_TransmitMark();
+    LORA.packetMode();
 }
 
 
@@ -344,6 +345,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
   {
     Debugging_Utilities_DebugPrintLine("(LORA MODE)");
     Communication_SX1278TransmitPacket(transmissionPacket);
+    Debugging_Utilities_DebugPrintLine("(LORA S.");
   }
   else
   {
@@ -363,6 +365,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
   {
     Debugging_Utilities_DebugPrintLine("(FSK MODE)");
     Communication_SX1278TransmitPacket(transmissionPacket);
+    Debugging_Utilities_DebugPrintLine("(FSK S.");
   }
 
   ///////////////////////
