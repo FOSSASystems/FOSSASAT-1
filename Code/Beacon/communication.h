@@ -1,8 +1,9 @@
 #ifndef COMMUNICATION_H_INCLUDED
 #define COMMUNICATION_H_INCLUDED
 
+void Communication_SX1278Route(String inFunctionId, String inSignature, String inMessage);
+void Communication_SX1278TransmitPacket(String inTransmissionPacket);
 void Communication_SX1278Transmit(String inFuncId, String inMessage);
-
 void Communication_SX1278TransmitPayloadMessage(String inPayloadMessage);
 
 

@@ -18,17 +18,6 @@ Author:	Richad Bamford (FOSSA Systems)
 #include "system_info.h"
 #include "communication.h"
 #include "deployment.h"
-
-bool ENABLE_I2C_BUS = false;
-
-//////////////////////////////////////////////////
-// Timers for transceiver settings transmission //
-// this * 200ms is the delay between each transmission.
-int POWER_INFO_DELAY = 2; // 400ms
-int TUNE_TIMER_DELAY = 5; // 1s
-
-int TUNE_TIMER = 0;
-int POWER_INFO_TIMER = 0;
     
 
 void setup()
@@ -60,8 +49,10 @@ void setup()
 		+ String(CODING_RATE) + "\nSYNC_WORD: "
 		+ String(SYNC_WORD) + "\nOUTPUT_POWER: "
 		+ String(OUTPUT_POWER));
-
-	byte err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
+    
+  MODEM_MODE = MODEM_LORA;
+  
+	int err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
 
 	if (err_check == ERR_NONE)
 	{
@@ -72,7 +63,6 @@ void setup()
 	{
 		// TODO If we reach this, we cannot communicate with the satellite, therefore we need the system to be restarted.
 		Debugging_Utilities_DebugPrintLine("(E) SX1278 0x" + String(err_check, HEX));
-		while (true);
 	}
 
 	Deployment_PowerDeploymentMosfets(); // check or run deployment sequence.
@@ -88,120 +78,80 @@ void setup()
 void loop()
 {
   Pin_Interface_WatchdogHeartbeat();
-  
 
-	String str;
-	byte state = LORA.receive(str);
-  
-  String signature = str.substring(0, 10);
-  String withoutSignature = str.substring(10);
+  ///////////////////////////////////////////
+  // ENTER RECEIVING MODE FOR LORA PACKETS //
+  ///////////////////////////////////////////
+  MODEM_MODE = MODEM_LORA;
+  int err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
 
-  int indexOfS1 = withoutSignature.indexOf(';');
-  String message = withoutSignature.substring(indexOfS1 + 1);
-
-  String function_id = withoutSignature.substring(0, indexOfS1);
-
-  /*
-  Serial.println("Signature: " + String(signature));
-  Serial.println("Function ID: " + functionId);
-  Serial.println("Message: " + message);
-   */
-               
-  if (System_Info_CheckSystemSignature(signature) == false) // invalid signature
+  if (err_check == ERR_NONE)
   {
-    Debugging_Utilities_DebugPrintLine("(SIG MISMATCH)");
+    Debugging_Utilities_DebugPrintLine("** (LORA RECEIVE)");
+    
+    String str;
+    byte state = LORA.receive(str);
+    
+    String signature = str.substring(0, 10);
+    String withoutSignature = str.substring(10);
+  
+    int indexOfS1 = withoutSignature.indexOf(';');
+    String message = withoutSignature.substring(indexOfS1 + 1);
+  
+    String function_id = withoutSignature.substring(0, indexOfS1);
+  
+    Communication_SX1278Route(function_id, signature, message);
+  }
+  else
+  {
+    // TODO If we reach this, we cannot communicate with the satellite, therefore we need the system to be restarted.
+    Debugging_Utilities_DebugPrintLine("** (LORA ERROR) SX1278 0x" + String(err_check, HEX));
   }
 
-   
-  bool transmittingState = Communication_GetTransmittingState();
+
+ 
+  ///////////////////////////////////////////
+  // ENTER RECEIVING MODE FOR FSK PACKETS ///
+  ///////////////////////////////////////////
+  MODEM_MODE = MODEM_FSK;
+  err_check = LORA.beginFSK();
+  err_check = LORA.setFrequency(CARRIER_FREQUENCY);
+  err_check = LORA.setBitRate(100.0);
+  err_check = LORA.setFrequencyDeviation(10.0);
+  err_check = LORA.setRxBandwidth(BANDWIDTH);
+  err_check = LORA.setOutputPower(OUTPUT_POWER);
+  err_check = LORA.setCurrentLimit(100);
+  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 
+                        0x89, 0xAB, 0xCD, 0xEF};
+  err_check = LORA.setSyncWord(syncWord, 8);
+  if (err_check != ERR_NONE)
+  {
+    Debugging_Utilities_DebugPrintLine("Unable to set configuration, code " + String(err_check, HEX));
+  }
+  else
+  {
+    Debugging_Utilities_DebugPrintLine("** (FSK RECEIVE)");
+    
+    String str;
+    byte state = LORA.receive(str);
+    
+    String signature = str.substring(0, 10);
+    String withoutSignature = str.substring(10);
   
-	if (transmittingState == true) // cirital decision, transmission recieved to turn off transmission is REQUIRED and stored in EEPROM.
-	{
-    Debugging_Utilities_DebugPrintLine("(COMMS SYS START)");
-    
-		///////////////
-		// RECIEVING //
-		///////////////
-		if (function_id == "5")
-		{
-			Communication_RecievedPing();
-		}
-		if (function_id == "7")
-		{
-			Communication_RecievedStopTransmitting(); // switch the TRANSMISSION_ENABLED boolean.
-		}
-
-		////////////////////////////
-		// TRANSMITTING TO GROUND //
-		///////////////////////////
-		if (STATE_STARTED)
-		{
-			Communication_TransmitStartedSignal();
-			STATE_STARTED = false;
-		}
-		if (STATE_STOPPED)
-		{
-			Communication_TransmitStoppedSignal();
-			STATE_STOPPED = false;
-		}
-		if (STATE_TRANSMITTER_INITIALIZED)
-		{
-			Communication_TransmitSX1278InitializedSuccess();
-			STATE_TRANSMITTER_INITIALIZED = false;
-		}
-		if (STATE_DEPLOYMENT_SUCCESS)
-		{
-			Communication_TransmitDeploymentSuccess();
-			STATE_DEPLOYMENT_SUCCESS = false;
-		}
-		if (STATE_PING)
-		{
-			Communication_TransmitPong();
-			STATE_PING = false;
-		}
-		if (STATE_TRANSMIT_POWER_INFO)
-		{
-			Communication_TransmitPowerInfo();
-			STATE_TRANSMIT_POWER_INFO = false;
-		}
-   if (STATE_TRANSMIT_TUNE)
-   {
-      Communication_TransmitTune();
-      STATE_TRANSMIT_TUNE = false;
-   }
-
-   
-    TUNE_TIMER = TUNE_TIMER + 1;
-    POWER_INFO_TIMER = POWER_INFO_TIMER + 1;
-
-    if (POWER_INFO_TIMER >= POWER_INFO_DELAY)
-    {
-      POWER_INFO_TIMER = 0;
-      STATE_TRANSMIT_POWER_INFO = true;
-    }
-    if (TUNE_TIMER >= TUNE_TIMER_DELAY)
-    {
-      TUNE_TIMER = 0;
-      STATE_TRANSMIT_TUNE = true;
-    }
-    Debugging_Utilities_DebugPrintLine("(COMM SYSTEM END");
-    
-	}
-	else
-	{
-    Debugging_Utilities_DebugPrintLine("(TRANS. DISAB. MODE)");
-    
-    if (function_id == "8") // only parse the function id of 8.
-    {
-      Communication_RecievedStartTransmitting();
-    }
-    
-    Debugging_Utilities_DebugPrintLine("(TRANS. DISAB. MODE END");
-	}
-
+    int indexOfS1 = withoutSignature.indexOf(';');
+    String message = withoutSignature.substring(indexOfS1 + 1);
+  
+    String function_id = withoutSignature.substring(0, indexOfS1);
+  
+    Communication_SX1278Route(function_id, signature, message);
+  }
+  
+  // Payload control.
   if (ENABLE_I2C_BUS)
   {
     delay(200);
+
+    MODEM_MODE = MODEM_LORA;
   
     Wire.requestFrom(8, 32);    // request 32 bytes from slave device #8
   

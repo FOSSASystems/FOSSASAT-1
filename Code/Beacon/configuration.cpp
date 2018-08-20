@@ -9,6 +9,23 @@
 #include <LoRaLib.h>
 #include "configuration.h"
 
+byte MODEM_MODE = 2;
+
+byte MODEM_FSK = 1;
+byte MODEM_LORA = 2;
+byte MODEM_FSK_DIRECT = 3;
+
+bool ENABLE_I2C_BUS = false;
+
+//////////////////////////////////////////////////
+// Timers for transceiver settings transmission //
+// this * 200ms is the delay between each transmission.
+int POWER_INFO_DELAY = 2; // 400ms
+int TUNE_TIMER_DELAY = 5; // 1s
+
+int TUNE_TIMER = 0;
+int POWER_INFO_TIMER = 0;
+
 /* Should we print debug infomation? */
 bool DEBUG = true;
 /* Should we print debug infomation to the Serial package? */

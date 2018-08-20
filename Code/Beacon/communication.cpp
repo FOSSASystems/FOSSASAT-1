@@ -47,6 +47,149 @@ bool Communication_GetTransmittingState()
   }
 }
 
+/*
+ * @brief Routes the received string infomation to the internal functions.
+ * inMessage is always empty since we are sending no data to the satellite.
+ */
+void Communication_SX1278Route(String inFunctionId, String inSignature, String inMessage)
+{
+    /*
+  Serial.println("Signature: " + String(signature));
+  Serial.println("Function ID: " + functionId);
+  Serial.println("Message: " + message);
+   */
+               
+  if (System_Info_CheckSystemSignature(inSignature) == false) // invalid signature
+  {
+    Debugging_Utilities_DebugPrintLine("(SIG MISMATCH)");
+  }
+   
+  bool transmittingState = Communication_GetTransmittingState();
+  
+  if (transmittingState == true) // cirital decision, transmission recieved to turn off transmission is REQUIRED and stored in EEPROM.
+  {  
+    Debugging_Utilities_DebugPrintLine("(COMMS SYS START)");
+    
+    ///////////////
+    // RECIEVING //
+    ///////////////
+    if (inFunctionId == "5")
+    {
+      Communication_RecievedPing();
+    }
+    if (inFunctionId == "7")
+    {
+      Communication_RecievedStopTransmitting(); // switch the TRANSMISSION_ENABLED boolean.
+    }
+
+
+    ////////////////////////////
+    // TRANSMITTING TO GROUND //
+    ////////////////////////////
+    if (STATE_STARTED)
+    {
+      Communication_TransmitStartedSignal();
+      STATE_STARTED = false;
+    }
+    if (STATE_STOPPED)
+    {
+      Communication_TransmitStoppedSignal();
+      STATE_STOPPED = false;
+    }
+    if (STATE_TRANSMITTER_INITIALIZED)
+    {
+      Communication_TransmitSX1278InitializedSuccess();
+      STATE_TRANSMITTER_INITIALIZED = false;
+    }
+    if (STATE_DEPLOYMENT_SUCCESS)
+    {
+      Communication_TransmitDeploymentSuccess();
+      STATE_DEPLOYMENT_SUCCESS = false;
+    }
+    if (STATE_PING)
+    {
+      Communication_TransmitPong();
+      STATE_PING = false;
+    }
+    if (STATE_TRANSMIT_POWER_INFO)
+    {
+      Communication_TransmitPowerInfo();
+      STATE_TRANSMIT_POWER_INFO = false;
+    }
+    if (STATE_TRANSMIT_TUNE)
+    {
+       Communication_TransmitTune();
+       STATE_TRANSMIT_TUNE = false;
+    }
+
+    POWER_INFO_TIMER = POWER_INFO_TIMER + 1;
+    if (POWER_INFO_TIMER >= POWER_INFO_DELAY)
+    {
+      POWER_INFO_TIMER = 0;
+      STATE_TRANSMIT_POWER_INFO = true;
+    }
+    
+    if (MODEM_MODE == MODEM_LORA)
+    {  
+      TUNE_TIMER = TUNE_TIMER + 1;
+      if (TUNE_TIMER >= TUNE_TIMER_DELAY)
+      {
+        TUNE_TIMER = 0;
+        STATE_TRANSMIT_TUNE = true;
+      }
+    }
+   
+    Debugging_Utilities_DebugPrintLine("(COMM SYSTEM END");
+  }
+  else
+  {
+    Debugging_Utilities_DebugPrintLine("(TRANS. DISAB. MODE)");
+    
+    if (inFunctionId == "8") // only parse the function id of 8.
+    {
+      Communication_RecievedStartTransmitting();
+    }
+    
+    Debugging_Utilities_DebugPrintLine("(TRANS. DISAB. MODE END");
+  }
+}
+
+/* @brief abstraction for the LORA.transmit function.
+ * 
+ */
+void Communication_SX1278TransmitPacket(String inTransmissionPacket)
+{
+  bool transmittingState = Communication_GetTransmittingState();
+  
+  if (transmittingState == true)
+  {
+    Debugging_Utilities_DebugPrintLine("(Trans.) " + inTransmissionPacket);
+    
+    byte state = LORA.transmit(inTransmissionPacket);
+
+    if (state == ERR_NONE)
+    {
+      // the packet was successfully transmitted
+      Debugging_Utilities_DebugPrintLine("(Sent packet)");
+    }
+    else if (state == ERR_PACKET_TOO_LONG)
+    {
+      // the supplied packet was longer than 256 bytes
+      Debugging_Utilities_DebugPrintLine("(Packet too big)");
+    }
+    else if (state == ERR_TX_TIMEOUT)
+    {
+      // timeout occurred while transmitting packet
+      Debugging_Utilities_DebugPrintLine("(Packet timeout)");
+    }  
+  }
+  else
+  {
+      Debugging_Utilities_DebugPrintLine("(Trans. Disab.)");
+  }
+
+
+}
 /**
  * @brief The main transmission function.
  * @param inFuncId The number that represents the function being sent.
@@ -57,44 +200,72 @@ bool Communication_GetTransmittingState()
  * 
  * @todo Debug Logging removal. 
  * @todo Transmission signature containment.
+ * @todo check transmission packet byte length is below 63 bytes for FSK.
+ * 
  * @test inFuncId range String(-inf) to String(inf).
  * @test inFuncId String length above 256 
  * @test InFuncId empty string.
  * @test inMessage String empty.
  * @test inMessage length above 256.
  */
-void Communication_SX1278Transmit(String inFuncId, String inMessage)  // this is hidden, use SX1278Transmit____ functions.
+void Communication_SX1278Transmit(String inFuncId, String inMessage)
 {
-	String transmissionSignature = System_Info_GetTransmissionSignature();
+  // create transmission packet.
+  String transmissionSignature = System_Info_GetTransmissionSignature();
   String transmissionPacket = transmissionSignature + inFuncId + ";" + inMessage;
 
-	Debugging_Utilities_DebugPrintLine("(Transmit) " + transmissionPacket);
-
-  bool transmittingState = Communication_GetTransmittingState();
-  
-	if (transmittingState == true)
-	{
-		byte state = LORA.transmit(transmissionPacket);
-
-		if (state == ERR_NONE)
-		{
-			// the packet was successfully transmitted
-			Debugging_Utilities_DebugPrintLine("(Sent packet)");
-		}
-		else if (state == ERR_PACKET_TOO_LONG)
-		{
-			// the supplied packet was longer than 256 bytes
-			Debugging_Utilities_DebugPrintLine("(Packet too big)");
-		}
-		else if (state == ERR_TX_TIMEOUT)
-		{
-			// timeout occurred while transmitting packet
-			Debugging_Utilities_DebugPrintLine("(Packet timeout)");
-		}  
-	}
-  else
+  if (MODEM_MODE == MODEM_LORA)
   {
-      Debugging_Utilities_DebugPrintLine("(Trans. Disab.)");
+     ///////////////////////
+    // LORA TRANSMISSION //
+    ///////////////////////
+    int err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
+    
+    if (err_check == ERR_NONE)
+    {
+      Debugging_Utilities_DebugPrintLine("(LORA MODE)");
+    
+      Communication_SX1278TransmitPacket(transmissionPacket);
+    }
+    else
+    {
+      // TODO If we reach this, we cannot communicate with the satellite, therefore we need the system to be restarted.
+      Debugging_Utilities_DebugPrintLine("(LORA MODE E) SX1278 0x" + String(err_check, HEX));
+    }
+  }
+  
+  if (MODEM_MODE == MODEM_FSK)
+  {
+    //////////////////////
+    // FSK TRANSMISSION //
+    //////////////////////
+    byte err_check = LORA.beginFSK();
+    err_check = LORA.setFrequency(CARRIER_FREQUENCY);
+    err_check = LORA.setBitRate(100.0);
+    err_check = LORA.setFrequencyDeviation(10.0);
+    err_check = LORA.setRxBandwidth(BANDWIDTH);
+    err_check = LORA.setOutputPower(OUTPUT_POWER);
+    err_check = LORA.setCurrentLimit(100);
+    uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 
+                          0x89, 0xAB, 0xCD, 0xEF};
+    err_check = LORA.setSyncWord(syncWord, 8);
+    if (err_check != ERR_NONE)
+    {
+      Debugging_Utilities_DebugPrintLine("Unable to set configuration, code " + String(err_check, HEX));
+    }
+    else
+    {
+      Debugging_Utilities_DebugPrintLine("(FSK MODE)");
+    
+      Communication_SX1278TransmitPacket(transmissionPacket);
+    }
+  }
+
+  if (MODEM_MODE == MODEM_FSK_DIRECT)
+  {  
+    ///////////////////////
+    // RTTY TRANSMISSION //
+    ///////////////////////
   }
 }
 

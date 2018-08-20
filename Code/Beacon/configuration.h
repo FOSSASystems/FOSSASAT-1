@@ -3,6 +3,24 @@
 
 #include <LoRaLib.h>
 
+extern byte MODEM_MODE; // current modem mode
+
+extern byte MODEM_FSK;
+extern byte MODEM_LORA;
+extern byte MODEM_FSK_DIRECT;
+
+extern bool ENABLE_I2C_BUS;
+
+//////////////////////////////////////////////////
+// Timers for transceiver settings transmission //
+/////////////////////////////////////////////////
+// this * 200ms is the delay between each transmission.
+extern int POWER_INFO_DELAY ; // 400ms
+extern int TUNE_TIMER_DELAY; // 1s
+
+extern int TUNE_TIMER;
+extern int POWER_INFO_TIMER;
+
 /////////////////////////////////////////////
 // IN HOUSE PROTOTYPE DEBUG                //
 /////////////////////////////////////////////
