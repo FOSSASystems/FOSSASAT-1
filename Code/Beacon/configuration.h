@@ -75,8 +75,8 @@ extern int OUTPUT_POWER; // dBm
 ////////////////////////////////////////
 // SX1278 FSK Direct Mode RTTY Config //
 ////////////////////////////////////////
-extern float RTTY_BASE; // hz, base tone for 0.
-extern float RTTY_SHIFT; // hz, offset for tone of 1.
+extern int RTTY_BASE; // hz, base tone for 0.
+extern int RTTY_SHIFT; // hz, offset for tone of 1.
 // baud rate    delay [us]
 // 45           22222
 // 45.45        22000

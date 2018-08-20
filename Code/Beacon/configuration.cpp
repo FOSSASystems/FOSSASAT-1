@@ -75,9 +75,9 @@ int OUTPUT_POWER = 10; // dBm
 ////////////////////////////////
 // FSK RTTY Protocol settings //
 ////////////////////////////////
-float RTTY_BASE = 2125.0f;
-float RTTY_SHIFT = 170.0f;
-int RTTY_BAUD_RATE = 22222;
+int RTTY_BASE = 0x6C9999; // Hz
+int RTTY_SHIFT = 3; // 3 * 61Hz
+int RTTY_BAUD_RATE = 22222; // micro-seconds (us)
 
 String TRANSMISSION_SIGNATURE = "FOSSASAT-1";
 
