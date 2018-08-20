@@ -15,6 +15,63 @@
 #include "debugging_utilities.h"
 
 
+/*
+ * @brief switches SX1278 modem mode to FSK.
+ */
+int Communication_SwitchFSK()
+{
+  Debugging_Utilities_DebugPrintLine("(FSK MODE)");
+  
+   //////////////////////
+  // FSK MODEM         //
+  //////////////////////
+  int err_check = LORA.beginFSK();
+  err_check = LORA.setFrequency(CARRIER_FREQUENCY);
+  err_check = LORA.setBitRate(100.0);
+  err_check = LORA.setFrequencyDeviation(10.0);
+  err_check = LORA.setRxBandwidth(BANDWIDTH);
+  err_check = LORA.setOutputPower(OUTPUT_POWER);
+  err_check = LORA.setCurrentLimit(100);
+  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 
+                        0x89, 0xAB, 0xCD};
+  err_check = LORA.setSyncWord(syncWord, 7);
+  return err_check;
+}
+
+int Communication_SwitchRTTY()
+{
+  Debugging_Utilities_DebugPrintLine("(RTTY MODE)");
+  
+  int err_check = LORA.beginFSK();
+  err_check = LORA.setFrequency(CARRIER_FREQUENCY);
+  err_check = LORA.setBitRate(100.0);
+  err_check = LORA.setFrequencyDeviation(0.0);
+  err_check = LORA.setRxBandwidth(BANDWIDTH);
+  err_check = LORA.setOutputPower(OUTPUT_POWER);
+  err_check = LORA.setCurrentLimit(100);
+  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 
+                        0x89, 0xAB, 0xCD};
+  err_check = LORA.setSyncWord(syncWord, 7);
+  LORA.directMode();
+
+  return err_check;
+}
+
+int Communication_SwitchLORA()
+{
+  Debugging_Utilities_DebugPrintLine("(LORA MODE)");
+  
+  ////////////////////////////////
+  // LORA MODEM/MODULATION MODE //
+  ////////////////////////////////
+  int err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
+  return err_check;
+}
+
+
+/////////////////////////////////////////
+// TRANSMISSION enabling and disabling //
+////////////////////////////////////////
 void Communication_DisableTransmitting()
 {
   Persistant_Storage_Set(EEPROM_TRANSMISSION_STATE_ADDR, 1);
@@ -46,6 +103,74 @@ bool Communication_GetTransmittingState()
     return true; // if eeprom is broken.
   }
 }
+
+//////////////////////////////////
+// RTTY Protocol implementation //
+//////////////////////////////////
+void Communication_RTTY_TransmitMark()
+{
+  unsigned long start = micros(); // MICRO seconds.
+  
+  LORA.directMode(RTTY_BASE + RTTY_SHIFT);
+  
+  // Delay for sub millisecond times.
+  while (micros() - start < RTTY_BAUD_RATE);
+}
+
+void Communication_RTTY_TransmitSpace()
+{
+  unsigned long start = micros(); // MICRO seconds.
+  
+  LORA.directMode(RTTY_BASE);
+  
+  while (micros() - start < RTTY_BAUD_RATE);
+}
+
+void Communication_RTTY_TransmitBit(char inChar)
+{
+  Communication_RTTY_TransmitSpace();
+  
+  // for each bit in char (8-bits);
+  char m = 0x01; // mask
+  for (m; m; m <<= 1)
+    {
+      // if the char bit is selected by the mask...
+      if (inChar & m)
+      {
+        // send a 1 (MARK) = base + shift
+        Communication_RTTY_TransmitMark();
+      }
+      else
+      {
+        // send a 0 (SPACE) = base
+        Communication_RTTY_TransmitSpace();
+      }
+    }
+  
+    Communication_RTTY_TransmitMark();
+}
+
+void Communication_RTTY_Transmit(String inTransmissionPacket)
+{
+  // for each 8-bit byte/char.
+  for (int i = 0; i < inTransmissionPacket.length(); i++)
+  {
+    Communication_RTTY_TransmitBit(inTransmissionPacket.c_str()[i]);
+  }
+}
+
+void Communication_RTTY_BeginTransmission()
+{
+    Communication_RTTY_TransmitMark();
+    delay(500);
+}
+
+void Communication_RTTY_EndTransmission()
+{
+    Communication_RTTY_TransmitSpace();
+    LORA.standby();  
+}
+
 
 /*
  * @brief Routes the received string infomation to the internal functions.
@@ -129,16 +254,13 @@ void Communication_SX1278Route(String inFunctionId, String inSignature, String i
       STATE_TRANSMIT_POWER_INFO = true;
     }
     
-    if (MODEM_MODE == MODEM_LORA)
-    {  
-      TUNE_TIMER = TUNE_TIMER + 1;
-      if (TUNE_TIMER >= TUNE_TIMER_DELAY)
-      {
-        TUNE_TIMER = 0;
-        STATE_TRANSMIT_TUNE = true;
-      }
+    TUNE_TIMER = TUNE_TIMER + 1;
+    if (TUNE_TIMER >= TUNE_TIMER_DELAY)
+    {
+      TUNE_TIMER = 0;
+      STATE_TRANSMIT_TUNE = true;
     }
-   
+      
     Debugging_Utilities_DebugPrintLine("(COMM SYSTEM END");
   }
   else
@@ -214,59 +336,54 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
   String transmissionSignature = System_Info_GetTransmissionSignature();
   String transmissionPacket = transmissionSignature + inFuncId + ";" + inMessage;
 
-  if (MODEM_MODE == MODEM_LORA)
+  ///////////////////////
+  // LORA Transmission //
+  ///////////////////////
+  int err_check = Communication_SwitchLORA();
+  if (err_check == ERR_NONE)
   {
-     ///////////////////////
-    // LORA TRANSMISSION //
-    ///////////////////////
-    int err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
-    
-    if (err_check == ERR_NONE)
-    {
-      Debugging_Utilities_DebugPrintLine("(LORA MODE)");
-    
-      Communication_SX1278TransmitPacket(transmissionPacket);
-    }
-    else
-    {
-      // TODO If we reach this, we cannot communicate with the satellite, therefore we need the system to be restarted.
-      Debugging_Utilities_DebugPrintLine("(LORA MODE E) SX1278 0x" + String(err_check, HEX));
-    }
+    Debugging_Utilities_DebugPrintLine("(LORA MODE)");
+    Communication_SX1278TransmitPacket(transmissionPacket);
   }
-  
-  if (MODEM_MODE == MODEM_FSK)
+  else
   {
-    //////////////////////
-    // FSK TRANSMISSION //
-    //////////////////////
-    byte err_check = LORA.beginFSK();
-    err_check = LORA.setFrequency(CARRIER_FREQUENCY);
-    err_check = LORA.setBitRate(100.0);
-    err_check = LORA.setFrequencyDeviation(10.0);
-    err_check = LORA.setRxBandwidth(BANDWIDTH);
-    err_check = LORA.setOutputPower(OUTPUT_POWER);
-    err_check = LORA.setCurrentLimit(100);
-    uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 
-                          0x89, 0xAB, 0xCD, 0xEF};
-    err_check = LORA.setSyncWord(syncWord, 8);
-    if (err_check != ERR_NONE)
-    {
-      Debugging_Utilities_DebugPrintLine("Unable to set configuration, code " + String(err_check, HEX));
-    }
-    else
-    {
-      Debugging_Utilities_DebugPrintLine("(FSK MODE)");
-    
-      Communication_SX1278TransmitPacket(transmissionPacket);
-    }
+    // TODO If we reach this, we cannot communicate with the satellite, therefore we need the system to be restarted.
+    Debugging_Utilities_DebugPrintLine("(LORA MODE E) SX1278 0x" + String(err_check, HEX));
   }
 
-  if (MODEM_MODE == MODEM_FSK_DIRECT)
-  {  
-    ///////////////////////
-    // RTTY TRANSMISSION //
-    ///////////////////////
+  //////////////////////
+  // FSK Transmission //
+  //////////////////////
+  err_check = Communication_SwitchFSK();
+  if (err_check != ERR_NONE)
+  {
+    Debugging_Utilities_DebugPrintLine("Unable to set configuration, code " + String(err_check, HEX));
   }
+  else
+  {
+    Debugging_Utilities_DebugPrintLine("(FSK MODE)");
+    Communication_SX1278TransmitPacket(transmissionPacket);
+  }
+
+  ///////////////////////
+  // RTTY Transmission //
+  ///////////////////////
+  err_check = Communication_SwitchRTTY();
+  if (err_check != ERR_NONE)
+  {
+    Debugging_Utilities_DebugPrintLine("Unable to set configuration, code " + String(err_check, HEX));
+  }
+  else
+  {
+    Debugging_Utilities_DebugPrintLine("(RTTY MODE)");
+    
+    Communication_RTTY_BeginTransmission();
+    Communication_RTTY_Transmit(transmissionPacket);
+    Communication_RTTY_EndTransmission();
+  
+    Debugging_Utilities_DebugPrintLine("(T. RTTY. Success)");
+  }
+ 
 }
 
  /*

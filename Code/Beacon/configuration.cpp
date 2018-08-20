@@ -9,12 +9,6 @@
 #include <LoRaLib.h>
 #include "configuration.h"
 
-byte MODEM_MODE = 2;
-
-byte MODEM_FSK = 1;
-byte MODEM_LORA = 2;
-byte MODEM_FSK_DIRECT = 3;
-
 bool ENABLE_I2C_BUS = false;
 
 //////////////////////////////////////////////////
@@ -67,9 +61,9 @@ int DIGITAL_IN_RESET_PERSISTANT_STORAGE = 6;
 /////////////////////////
 SX1278 LORA = new LoRa(7, 2, 3);
 
-///////////////////////////
-// LoRa Antenna Settings //
-///////////////////////////
+/////////////////////////////
+// LoRa chip configuration //
+/////////////////////////////
 float CARRIER_FREQUENCY = 434.0f; // MHz
 float BANDWIDTH = 62.5f; // KHz low bandiwdth mode for communicating with ground stations
 float LOCATION_BANDWIDTH = 125.0f; // KHz high bandiwdth mode for locating the ground stations
@@ -77,6 +71,13 @@ int SPREADING_FACTOR = 11;
 int CODING_RATE = 8; // can be 12.
 char SYNC_WORD = 0x13;
 int OUTPUT_POWER = 10; // dBm
+
+////////////////////////////////
+// FSK RTTY Protocol settings //
+////////////////////////////////
+float RTTY_BASE = 2125.0f;
+float RTTY_SHIFT = 170.0f;
+int RTTY_BAUD_RATE = 22222;
 
 String TRANSMISSION_SIGNATURE = "FOSSASAT-1";
 

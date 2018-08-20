@@ -3,12 +3,6 @@
 
 #include <LoRaLib.h>
 
-extern byte MODEM_MODE; // current modem mode
-
-extern byte MODEM_FSK;
-extern byte MODEM_LORA;
-extern byte MODEM_FSK_DIRECT;
-
 extern bool ENABLE_I2C_BUS;
 
 //////////////////////////////////////////////////
@@ -67,9 +61,9 @@ extern int DIGITAL_IN_RESET_PERSISTANT_STORAGE;
 /////////////////////////
 extern SX1278 LORA;
 
-///////////////////////////
-// LoRa Antenna Settings //
-///////////////////////////
+/////////////////////////////
+// SX1278 Chip Config      //
+/////////////////////////////
 extern float CARRIER_FREQUENCY; // MHz
 extern float BANDWIDTH; // KHz
 extern float LOCATION_BANDWIDTH; // KHz
@@ -77,6 +71,17 @@ extern int SPREADING_FACTOR;
 extern int CODING_RATE; // can be 12.
 extern char SYNC_WORD;
 extern int OUTPUT_POWER; // dBm
+
+////////////////////////////////////////
+// SX1278 FSK Direct Mode RTTY Config //
+////////////////////////////////////////
+extern float RTTY_BASE; // hz, base tone for 0.
+extern float RTTY_SHIFT; // hz, offset for tone of 1.
+// baud rate    delay [us]
+// 45           22222
+// 45.45        22000
+// 50           20000
+extern int RTTY_BAUD_RATE; // microseconds (222222)
 
 ////////////////////////////
 // Transmission signature //

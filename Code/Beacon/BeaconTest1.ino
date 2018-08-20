@@ -42,7 +42,7 @@ void setup()
 
 	// Initialize the SX1278 interface with default settings.
 	// See the PDF reports on previous PocketQube attempts for more info.
-	Debugging_Utilities_DebugPrintLine("SX1278 interface :\nCARRIER_FREQUENCY "
+	Debugging_Utilities_DebugPrintLine("SX1278 config :\nCARRIER_FREQUENCY "
 		+ String(CARRIER_FREQUENCY) + " MHz\nBANDWIDTH: "
 		+ String(BANDWIDTH) + " kHz\nSPREADING_FACTOR: "
 		+ String(SPREADING_FACTOR) + "\nCODING_RATE: "
@@ -50,8 +50,6 @@ void setup()
 		+ String(SYNC_WORD) + "\nOUTPUT_POWER: "
 		+ String(OUTPUT_POWER));
     
-  MODEM_MODE = MODEM_LORA;
-  
 	int err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
 
 	if (err_check == ERR_NONE)
@@ -82,9 +80,7 @@ void loop()
   ///////////////////////////////////////////
   // ENTER RECEIVING MODE FOR LORA PACKETS //
   ///////////////////////////////////////////
-  MODEM_MODE = MODEM_LORA;
-  int err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
-
+  int err_check = Communication_SwitchLORA();
   if (err_check == ERR_NONE)
   {
     Debugging_Utilities_DebugPrintLine("** (LORA RECEIVE)");
@@ -109,21 +105,10 @@ void loop()
   }
 
 
- 
   ///////////////////////////////////////////
-  // ENTER RECEIVING MODE FOR FSK PACKETS ///
+  // ENTER RECEIVING MODE FOR FSK PACKETS  //
   ///////////////////////////////////////////
-  MODEM_MODE = MODEM_FSK;
-  err_check = LORA.beginFSK();
-  err_check = LORA.setFrequency(CARRIER_FREQUENCY);
-  err_check = LORA.setBitRate(100.0);
-  err_check = LORA.setFrequencyDeviation(10.0);
-  err_check = LORA.setRxBandwidth(BANDWIDTH);
-  err_check = LORA.setOutputPower(OUTPUT_POWER);
-  err_check = LORA.setCurrentLimit(100);
-  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 
-                        0x89, 0xAB, 0xCD, 0xEF};
-  err_check = LORA.setSyncWord(syncWord, 8);
+  err_check = Communication_SwitchFSK();
   if (err_check != ERR_NONE)
   {
     Debugging_Utilities_DebugPrintLine("Unable to set configuration, code " + String(err_check, HEX));
@@ -151,8 +136,6 @@ void loop()
   {
     delay(200);
 
-    MODEM_MODE = MODEM_LORA;
-  
     Wire.requestFrom(8, 32);    // request 32 bytes from slave device #8
   
     String payloadTransmissionMessage = String("");
