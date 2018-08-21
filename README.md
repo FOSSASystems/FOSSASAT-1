@@ -17,5 +17,5 @@ The JPL created a coding standard with IEEE and NASA that you can read [here](ht
 Please use KiCad or a file format that can be interpreted by KiCad. This makes sure that anyone can access and modify the hardware in this project without needing access to proprietary software.
 Easy EDA may also be used due to its online availability.
 
-#### Contact
+### Contact
 You can contact us via https://fossa.systems/contact-us/
