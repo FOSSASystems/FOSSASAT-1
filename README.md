@@ -1,4 +1,4 @@
-# FossSat-1
+# FossaSat-1
 An Atmega Arduino powered pocketqube satellite focused on education and research, simplicity is a main focus. The craft will transmit a LoRa, Morse and FSK signal which can be heard using simple and cheap hardware. It will be the first 1P satellite to have deployable solar cells and a LoRa transmitter. More specific info on each system can be read in each section. 
 
 ## Contributing
