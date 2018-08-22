@@ -32,9 +32,8 @@ int Communication_SwitchFSK()
   err_check = LORA.setRxBandwidth(BANDWIDTH);
   err_check = LORA.setOutputPower(OUTPUT_POWER);
   err_check = LORA.setCurrentLimit(100);
-  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 
-                        0x89, 0xAB, 0xCD};
-  err_check = LORA.setSyncWord(syncWord, 7);
+  uint8_t syncWord[] = {0x0F, 0x0F, 0x0F, 0x0F};
+  err_check = LORA.setSyncWord(syncWord, 4);
   return err_check;
 }
 
@@ -49,9 +48,8 @@ int Communication_SwitchRTTY()
   err_check = LORA.setRxBandwidth(BANDWIDTH);
   err_check = LORA.setOutputPower(OUTPUT_POWER);
   err_check = LORA.setCurrentLimit(100);
-  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 
-                        0x89, 0xAB, 0xCD};
-  err_check = LORA.setSyncWord(syncWord, 7);
+  uint8_t syncWord[] = {0x0F, 0x0F, 0x0F, 0x0F};
+  err_check = LORA.setSyncWord(syncWord, 4);
   LORA.directMode();
 
   return err_check;
@@ -381,7 +379,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
 
   delay(100);
 
-  /*///////////////////////
+  ////////////////////////
   // RTTY Transmission //
   ///////////////////////
   err_check = Communication_SwitchRTTY();
@@ -398,7 +396,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
     Communication_RTTY_EndTransmission();
   
     Debugging_Utilities_DebugPrintLine("(T. RTTY. Success)");
-  }*/
+  }
  
 }
 

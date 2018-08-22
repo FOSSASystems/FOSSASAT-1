@@ -121,7 +121,7 @@ void loop()
   }
 
 
-  /*///////////////////////////////////////////
+  ////////////////////////////////////////////
   // ENTER RECEIVING MODE FOR FSK PACKETS  //
   ///////////////////////////////////////////
   err_check = Communication_SwitchFSK();
@@ -162,7 +162,7 @@ void loop()
     
   
     Communication_SX1278Route(function_id, signature, message);
-  }*/
+  }
   
   // Payload control.
   if (ENABLE_I2C_BUS)
