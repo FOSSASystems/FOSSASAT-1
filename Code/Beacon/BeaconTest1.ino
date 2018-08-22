@@ -87,7 +87,7 @@ void loop()
   ///////////////////////
   // LORA Transmission //
   ///////////////////////
-  int err_check = Communication_SwitchLORA();
+  int err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
   if (err_check == ERR_NONE)
   {
     Debugging_Utilities_DebugPrintLine("(LORA MODE)");
@@ -102,7 +102,7 @@ void loop()
 
   delay(100);
 
-  //////////////////////
+  /*//////////////////////
   // FSK Transmission //
   //////////////////////
   err_check = Communication_SwitchFSK();
@@ -137,10 +137,11 @@ void loop()
   
     Debugging_Utilities_DebugPrintLine("(T. RTTY. Success)");
   }
-
+  */
+  
   Debugging_Utilities_DebugPrintLine("--F--");
 
-  ///////////////////////////////////////////
+  /*///////////////////////////////////////////
   // ENTER RECEIVING MODE FOR LORA PACKETS //
   ///////////////////////////////////////////
   err_check = Communication_SwitchLORA();
@@ -180,10 +181,10 @@ void loop()
   {
     // TODO If we reach this, we cannot communicate with the satellite, therefore we need the system to be restarted.
     Debugging_Utilities_DebugPrintLine("** (LORA ERROR) SX1278 0x" + String(err_check, HEX));
-  }
+  }*/
 
 
-  ///////////////////////////////////////////
+  /*///////////////////////////////////////////
   // ENTER RECEIVING MODE FOR FSK PACKETS  //
   ///////////////////////////////////////////
   err_check = Communication_SwitchFSK();
@@ -224,7 +225,7 @@ void loop()
     
   
     Communication_SX1278Route(function_id, signature, message);
-  }
+  }*/
   
   // Payload control.
   if (ENABLE_I2C_BUS)

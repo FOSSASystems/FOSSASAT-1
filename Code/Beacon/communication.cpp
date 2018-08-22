@@ -364,7 +364,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
 
   delay(100);
 
-  //////////////////////
+  /*//////////////////////
   // FSK Transmission //
   //////////////////////
   err_check = Communication_SwitchFSK();
@@ -398,7 +398,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
     Communication_RTTY_EndTransmission();
   
     Debugging_Utilities_DebugPrintLine("(T. RTTY. Success)");
-  }
+  }*/
  
 }
 
