@@ -20,7 +20,7 @@
  */
 int Communication_SwitchFSK()
 {
-  Debugging_Utilities_DebugPrintLine("(FSK MODE)");
+  Debugging_Utilities_DebugPrintLine("(SWITCH FSK MODE)");
   
    //////////////////////
   // FSK MODEM         //
@@ -40,7 +40,7 @@ int Communication_SwitchFSK()
 
 int Communication_SwitchRTTY()
 {
-  Debugging_Utilities_DebugPrintLine("(RTTY MODE)");
+  Debugging_Utilities_DebugPrintLine("(SWITCH RTTY MODE)");
   
   int err_check = LORA.beginFSK();
   err_check = LORA.setFrequency(CARRIER_FREQUENCY);
@@ -59,7 +59,7 @@ int Communication_SwitchRTTY()
 
 int Communication_SwitchLORA()
 {
-  Debugging_Utilities_DebugPrintLine("(LORA MODE)");
+  Debugging_Utilities_DebugPrintLine("(SWITCH LORA MODE)");
   
   ////////////////////////////////
   // LORA MODEM/MODULATION MODE //
