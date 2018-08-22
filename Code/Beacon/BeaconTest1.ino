@@ -77,74 +77,11 @@ void loop()
 {
   Pin_Interface_WatchdogHeartbeat();
 
-  Debugging_Utilities_DebugPrintLine("--S--");
 
-  // Test transmissions //
-  // create transmission packet.
-  String transmissionSignature = System_Info_GetTransmissionSignature();
-  String transmissionPacket = "HELLO WORLD";
-
-  ///////////////////////
-  // LORA Transmission //
-  ///////////////////////
-  int err_check = LORA.begin(CARRIER_FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SYNC_WORD, OUTPUT_POWER);
-  if (err_check == ERR_NONE)
-  {
-    Debugging_Utilities_DebugPrintLine("(LORA MODE)");
-    Communication_SX1278TransmitPacket(transmissionPacket);
-    Debugging_Utilities_DebugPrintLine("(LORA S.");
-  }
-  else
-  {
-    // TODO If we reach this, we cannot communicate with the satellite, therefore we need the system to be restarted.
-    Debugging_Utilities_DebugPrintLine("(LORA MODE E) SX1278 0x" + String(err_check, HEX));
-  }
-
-  delay(100);
-
-  /*//////////////////////
-  // FSK Transmission //
-  //////////////////////
-  err_check = Communication_SwitchFSK();
-  if (err_check != ERR_NONE)
-  {
-    Debugging_Utilities_DebugPrintLine("Unable to set configuration, code " + String(err_check, HEX));
-  }
-  else
-  {
-    Debugging_Utilities_DebugPrintLine("(FSK MODE)");
-    Communication_SX1278TransmitPacket(transmissionPacket);
-    Debugging_Utilities_DebugPrintLine("(FSK S.");
-  }
-
-  delay(100);
-
-  ///////////////////////
-  // RTTY Transmission //
-  ///////////////////////
-  err_check = Communication_SwitchRTTY();
-  if (err_check != ERR_NONE)
-  {
-    Debugging_Utilities_DebugPrintLine("Unable to set configuration, code " + String(err_check, HEX));
-  }
-  else
-  {
-    Debugging_Utilities_DebugPrintLine("(RTTY MODE)");
-    
-    Communication_RTTY_BeginTransmission();
-    Communication_RTTY_Transmit(transmissionPacket);
-    Communication_RTTY_EndTransmission();
-  
-    Debugging_Utilities_DebugPrintLine("(T. RTTY. Success)");
-  }
-  */
-  
-  Debugging_Utilities_DebugPrintLine("--F--");
-
-  /*///////////////////////////////////////////
+  ////////////////////////////////////////////
   // ENTER RECEIVING MODE FOR LORA PACKETS //
   ///////////////////////////////////////////
-  err_check = Communication_SwitchLORA();
+  int err_check = Communication_SwitchLORA();
   if (err_check == ERR_NONE)
   {
     Debugging_Utilities_DebugPrintLine("** (LORA RECEIVE)");
@@ -181,7 +118,7 @@ void loop()
   {
     // TODO If we reach this, we cannot communicate with the satellite, therefore we need the system to be restarted.
     Debugging_Utilities_DebugPrintLine("** (LORA ERROR) SX1278 0x" + String(err_check, HEX));
-  }*/
+  }
 
 
   /*///////////////////////////////////////////
