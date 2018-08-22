@@ -77,7 +77,7 @@ void loop()
 {
   Pin_Interface_WatchdogHeartbeat();
 
-  Debugging_Utilties_DebugPrintLine("--S--");
+  Debugging_Utilities_DebugPrintLine("--S--");
 
   // Test transmissions //
   // create transmission packet.
@@ -138,12 +138,12 @@ void loop()
     Debugging_Utilities_DebugPrintLine("(T. RTTY. Success)");
   }
 
-  Debugging_Utilties_DebugPrintLine("--F--");
+  Debugging_Utilities_DebugPrintLine("--F--");
 
   ///////////////////////////////////////////
   // ENTER RECEIVING MODE FOR LORA PACKETS //
   ///////////////////////////////////////////
-  int err_check = Communication_SwitchLORA();
+  err_check = Communication_SwitchLORA();
   if (err_check == ERR_NONE)
   {
     Debugging_Utilities_DebugPrintLine("** (LORA RECEIVE)");

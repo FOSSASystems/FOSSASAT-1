@@ -1,4 +1,4 @@
-**
+/**
  * @file configuration.cpp
  * @brief Configurable settings for prototyping; pin layouts, lora lib settings, debug.
  * SX1278.

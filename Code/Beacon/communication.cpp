@@ -295,10 +295,12 @@ void Communication_SX1278TransmitPacket(String inTransmissionPacket)
   
   if (transmittingState == true)
   {
-    Debugging_Utilities_DebugPrintLine("(Trans.) " + inTransmissionPacket);
+    Debugging_Utilities_DebugPrintLine("(Transmit) " + inTransmissionPacket);
     
-    byte state = LORA.transmit(inTransmissionPacket);
-
+    int state = LORA.transmit(inTransmissionPacket);
+    
+    Debugging_Utilities_DebugPrintLine("state = " + String(state));
+    
     if (state == ERR_NONE)
     {
       // the packet was successfully transmitted
@@ -319,8 +321,6 @@ void Communication_SX1278TransmitPacket(String inTransmissionPacket)
   {
       Debugging_Utilities_DebugPrintLine("(Trans. Disab.)");
   }
-
-
 }
 /**
  * @brief The main transmission function.
