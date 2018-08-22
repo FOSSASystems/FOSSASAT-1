@@ -111,19 +111,23 @@ void Communication_RTTY_TransmitMark()
 {
   unsigned long start = micros(); // MICRO seconds.
   
-  LORA.directMode(RTTY_BASE + RTTY_SHIFT);
+  tone(DIGITAL_OUT_SX1278_DIRECT, RTTY_BASE + RTTY_SHIFT);
   
   // Delay for sub millisecond times.
   while (micros() - start < RTTY_BAUD_RATE);
+
+  noTone(DIGITAL_OUT_SX1278_DIRECT);
 }
 
 void Communication_RTTY_TransmitSpace()
 {
   unsigned long start = micros(); // MICRO seconds.
   
-  LORA.directMode(RTTY_BASE);
+  tone(DIGITAL_OUT_SX1278_DIRECT, RTTY_BASE);
   
   while (micros() - start < RTTY_BAUD_RATE);
+
+  noTone(DIGITAL_OUT_SX1278_DIRECT);
 }
 
 void Communication_RTTY_TransmitBit(char inChar)
@@ -133,23 +137,28 @@ void Communication_RTTY_TransmitBit(char inChar)
   // for each bit in char (8-bits);
   char m = 0x01; // mask
   for (m; m; m <<= 1)
+  {
+    // if the char bit is selected by the mask...
+    if (inChar & m)
     {
-      // if the char bit is selected by the mask...
-      if (inChar & m)
-      {
-        // send a 1 (MARK) = base + shift
-        Communication_RTTY_TransmitMark();
-      }
-      else
-      {
-        // send a 0 (SPACE) = base
-        Communication_RTTY_TransmitSpace();
-      }
+      // send a 1 (MARK) = base + shift
+      Communication_RTTY_TransmitMark();
     }
+    else
+    {
+      // send a 0 (SPACE) = base
+      Communication_RTTY_TransmitSpace();
+    }
+  }
   
     Communication_RTTY_TransmitMark();
 }
 
+/*
+ * @brief send a string through the RTTY protocol.
+ * 
+ * @todo check if the \r\n chars are being transmitted.
+ */
 void Communication_RTTY_Transmit(String inTransmissionPacket)
 {
   // for each 8-bit byte/char.
@@ -353,6 +362,8 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
     Debugging_Utilities_DebugPrintLine("(LORA MODE E) SX1278 0x" + String(err_check, HEX));
   }
 
+  delay(100);
+
   //////////////////////
   // FSK Transmission //
   //////////////////////
@@ -367,6 +378,8 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
     Communication_SX1278TransmitPacket(transmissionPacket);
     Debugging_Utilities_DebugPrintLine("(FSK S.");
   }
+
+  delay(100);
 
   ///////////////////////
   // RTTY Transmission //

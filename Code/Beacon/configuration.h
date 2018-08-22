@@ -51,6 +51,7 @@ extern int DIGITAL_OUT_MOSFET_2; // set to high after 5s, then never set again.
 extern int DIGITAL_OUT_WATCHDOG_HEARTBEAT; // if the system stops pinging the watching will restart.
 extern int DIGITAL_IN_DEPLOYMENT_STATE; // state of the deployment mechanism, HIGH = deployment success, LOW = deployment failed.
 extern int DIGITAL_IN_RESET_PERSISTANT_STORAGE;
+extern int DIGITAL_OUT_SX1278_DIRECT;
 
 /////////////////////////
 // SX1278 antenna pins //

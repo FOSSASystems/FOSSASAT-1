@@ -51,6 +51,7 @@ int DIGITAL_OUT_MOSFET_2 = 8; // set to high after 5s, then never set again.
 int DIGITAL_OUT_WATCHDOG_HEARTBEAT = 4; // if the system stops pinging the watching will restart.
 int DIGITAL_IN_DEPLOYMENT_STATE = 5; // state of the deployment mechanism, HIGH = deployment success, LOW = deployment failed.
 int DIGITAL_IN_RESET_PERSISTANT_STORAGE = 6;
+int DIGITAL_OUT_SX1278_DIRECT = 11;
 
 /////////////////////////
 // SX1278 antenna pins //
@@ -75,8 +76,8 @@ int OUTPUT_POWER = 10; // dBm
 ////////////////////////////////
 // FSK RTTY Protocol settings //
 ////////////////////////////////
-int RTTY_BASE = 0x6C9999; // Hz
-int RTTY_SHIFT = 3; // 3 * 61Hz
+int RTTY_BASE = 7117209; // Hz
+int RTTY_SHIFT = 183; // 3 * 61Hz
 int RTTY_BAUD_RATE = 22222; // micro-seconds (us)
 
 String TRANSMISSION_SIGNATURE = "FOSSASAT-1";
