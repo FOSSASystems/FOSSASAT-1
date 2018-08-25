@@ -114,14 +114,19 @@ void Communication_RTTY_TransmitSpace()
 
 void Communication_RTTY_TransmitBit(char inChar)
 {
-  // for each bit in char (8-bits);
+  Communication_RTTY_TransmitSpace();
+
+  // for each bit in char (8-bits) (only use 7 bits)
   char m = 0x01; // mask
+  int bitIndex = 0;
   for (m; m; m <<= 1)
   {
+    if (bitIndex == 7) break; // ascii is 7 bit
+    
     // if the char bit is selected by the mask...
     if (inChar & m)
     {
-      // send a 1 (MARK) = base + shift
+      // send a 1 (MARK) = base - shift
       Communication_RTTY_TransmitMark();
     }
     else
@@ -129,7 +134,11 @@ void Communication_RTTY_TransmitBit(char inChar)
       // send a 0 (SPACE) = base
       Communication_RTTY_TransmitSpace();
     }
+    
+    bitIndex++;
   }
+
+  Communication_RTTY_TransmitMark();
 }
 
 /*
@@ -139,7 +148,7 @@ void Communication_RTTY_TransmitBit(char inChar)
  */
 void Communication_RTTY_Transmit(String inTransmissionPacket)
 {
-  // for each 8-bit byte/char.
+  // for each 8-bit byte/char. only 7 used in ascii?
   for (int i = 0; i < inTransmissionPacket.length(); i++)
   {
     Communication_RTTY_TransmitBit(inTransmissionPacket.c_str()[i]);
@@ -154,8 +163,7 @@ void Communication_RTTY_BeginTransmission()
 
 void Communication_RTTY_EndTransmission()
 {   
-    Communication_RTTY_TransmitSpace();
-    Communication_RTTY_TransmitMark();
+    Communication_RTTY_Transmit("\r\n");
     LORA.packetMode();
 }
 
