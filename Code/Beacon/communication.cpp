@@ -26,14 +26,6 @@ int Communication_SwitchFSK()
   // FSK MODEM         //
   //////////////////////
   int err_check = LORA.beginFSK();
-  err_check = LORA.setFrequency(CARRIER_FREQUENCY);
-  err_check = LORA.setBitRate(100.0);
-  err_check = LORA.setFrequencyDeviation(10.0);
-  err_check = LORA.setRxBandwidth(BANDWIDTH);
-  err_check = LORA.setOutputPower(OUTPUT_POWER);
-  err_check = LORA.setCurrentLimit(100);
-  uint8_t syncWord[] = {0x0F, 0x0F, 0x0F, 0x0F};
-  err_check = LORA.setSyncWord(syncWord, 4);
   return err_check;
 }
 
@@ -42,14 +34,6 @@ int Communication_SwitchRTTY()
   Debugging_Utilities_DebugPrintLine("(SWITCH RTTY MODE)");
   
   int err_check = LORA.beginFSK();
-  err_check = LORA.setFrequency(CARRIER_FREQUENCY);
-  err_check = LORA.setBitRate(100.0);
-  err_check = LORA.setFrequencyDeviation(0.0);
-  err_check = LORA.setRxBandwidth(BANDWIDTH);
-  err_check = LORA.setOutputPower(OUTPUT_POWER);
-  err_check = LORA.setCurrentLimit(100);
-  uint8_t syncWord[] = {0x0F, 0x0F, 0x0F, 0x0F};
-  err_check = LORA.setSyncWord(syncWord, 4);
   LORA.directMode();
 
   return err_check;
@@ -112,7 +96,8 @@ void Communication_RTTY_TransmitMark()
   tone(DIGITAL_OUT_SX1278_DIRECT, RTTY_BASE + RTTY_SHIFT);
   
   // Delay for sub millisecond times.
-  while (micros() - start < RTTY_BAUD_RATE);
+  // while (micros() - start < RTTY_BAUD_RATE);
+  delay(1);
 
   noTone(DIGITAL_OUT_SX1278_DIRECT);
 }
@@ -123,15 +108,13 @@ void Communication_RTTY_TransmitSpace()
   
   tone(DIGITAL_OUT_SX1278_DIRECT, RTTY_BASE);
   
-  while (micros() - start < RTTY_BAUD_RATE);
+  delay(1);
 
   noTone(DIGITAL_OUT_SX1278_DIRECT);
 }
 
 void Communication_RTTY_TransmitBit(char inChar)
 {
-  Communication_RTTY_TransmitSpace();
-  
   // for each bit in char (8-bits);
   char m = 0x01; // mask
   for (m; m; m <<= 1)
@@ -148,8 +131,6 @@ void Communication_RTTY_TransmitBit(char inChar)
       Communication_RTTY_TransmitSpace();
     }
   }
-  
-    Communication_RTTY_TransmitMark();
 }
 
 /*
@@ -168,14 +149,11 @@ void Communication_RTTY_Transmit(String inTransmissionPacket)
 
 void Communication_RTTY_BeginTransmission()
 {
-    Communication_RTTY_TransmitMark();
     delay(500);
 }
 
 void Communication_RTTY_EndTransmission()
 {   
-    Communication_RTTY_TransmitSpace();
-    Communication_RTTY_TransmitMark();
     LORA.packetMode();
 }
 
