@@ -93,11 +93,10 @@ void Communication_RTTY_TransmitMark()
 {
   unsigned long start = micros(); // MICRO seconds.
   
-  tone(DIGITAL_OUT_SX1278_DIRECT, RTTY_BASE + RTTY_SHIFT);
+  tone(DIGITAL_OUT_SX1278_DIRECT, RTTY_BASE - RTTY_SHIFT);
   
   // Delay for sub millisecond times.
-  // while (micros() - start < RTTY_BAUD_RATE);
-  delay(1);
+  while (micros() - start < RTTY_BAUD_RATE);
 
   noTone(DIGITAL_OUT_SX1278_DIRECT);
 }
@@ -108,7 +107,7 @@ void Communication_RTTY_TransmitSpace()
   
   tone(DIGITAL_OUT_SX1278_DIRECT, RTTY_BASE);
   
-  delay(1);
+  while (micros() - start < RTTY_BAUD_RATE);
 
   noTone(DIGITAL_OUT_SX1278_DIRECT);
 }
@@ -149,11 +148,14 @@ void Communication_RTTY_Transmit(String inTransmissionPacket)
 
 void Communication_RTTY_BeginTransmission()
 {
+    Communication_RTTY_TransmitMark();
     delay(500);
 }
 
 void Communication_RTTY_EndTransmission()
 {   
+    Communication_RTTY_TransmitSpace();
+    Communication_RTTY_TransmitMark();
     LORA.packetMode();
 }
 
