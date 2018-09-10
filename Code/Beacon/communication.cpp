@@ -34,7 +34,7 @@ int Communication_SwitchRTTY()
   Debugging_Utilities_DebugPrintLine("(SWITCH RTTY MODE)");
   
   int err_check = LORA.beginFSK();
-  LORA.directMode();
+  LORA.transmitDirect();
 
   return err_check;
 }
@@ -112,59 +112,727 @@ void Communication_RTTY_TransmitSpace()
   noTone(DIGITAL_OUT_SX1278_DIRECT);
 }
 
-void Communication_RTTY_TransmitBit(char inChar)
+void Communication_Transmit_ITA2_LettersShift()
 {
   Communication_RTTY_TransmitSpace();
+  
+  // also erasure and deletion
+  Communication_RTTY_TransmitMark();
+  Communication_RTTY_TransmitMark();
+  Communication_RTTY_TransmitMark();
+  Communication_RTTY_TransmitMark();
+  Communication_RTTY_TransmitMark();
+  
+  Communication_RTTY_TransmitMark();
+}
 
-  // for each bit in char (8-bits) (only use 7 bits)
-  char m = 0x01; // mask
-  int bitIndex = 0;
-  for (m; m; m <<= 1)
-  {
-    if (bitIndex == 7) break; // ascii is 7 bit
-    
-    // if the char bit is selected by the mask...
-    if (inChar & m)
-    {
-      // send a 1 (MARK) = base - shift
-      Communication_RTTY_TransmitMark();
-    }
-    else
-    {
-      // send a 0 (SPACE) = base
-      Communication_RTTY_TransmitSpace();
-    }
-    
-    bitIndex++;
-  }
-
+void Communication_Transmit_ITA2_FiguresShift()
+{
+  Communication_RTTY_TransmitSpace();
+  
+  Communication_RTTY_TransmitMark();
+  Communication_RTTY_TransmitMark();
+  Communication_RTTY_TransmitSpace();
+  Communication_RTTY_TransmitMark();
+  Communication_RTTY_TransmitMark();
+  
   Communication_RTTY_TransmitMark();
 }
 
 /*
- * @brief send a string through the RTTY protocol.
+ * @brief the ITA2 standard implementation.
  * 
- * @todo check if the \r\n chars are being transmitted.
+ * @test does capilization affect \r \n? - NO
+ * @test we are transmitting the ';' character, not available in ITA2 standard. Switch to :!!!!!!!!!!!!!!!!!!!
  */
-void Communication_RTTY_Transmit(String inTransmissionPacket)
-{
-  // for each 8-bit byte/char. only 7 used in ascii?
-  for (int i = 0; i < inTransmissionPacket.length(); i++)
+void Communication_Transmit_ITA2_Character(char inCharacter)
+{ 
+  if (inCharacter == '\0')
   {
-    Communication_RTTY_TransmitBit(inTransmissionPacket.c_str()[i]);
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  }
+  else if (inCharacter == '\r')
+  {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  }
+  else if (inCharacter == '\n')
+  {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  }
+  else if (inCharacter == ' ')
+  {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  }
+  else if (inCharacter == 'Q')
+  {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'W') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'E') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'R') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'T') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'Y') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'U') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'I') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'O') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'P') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'A') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'S') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'D') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'F') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'G') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'H') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'J') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'K') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'L') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'Z') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'X') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'C') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'V') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'B') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+          Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  }
+  else if (inCharacter == 'N')
+  {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == 'M') {
+      Communication_Transmit_ITA2_LettersShift();
+
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      
+      Communication_RTTY_TransmitMark();
+  }
+
+  if (inCharacter == '1') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '2') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '3') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '4') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '5') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '6') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '7') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '8') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '9') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '0') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '-') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '\'') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '!') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '&') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '£') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '(') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == ')') {
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '+') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '/') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == ':') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '=') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '?') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == ',') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitSpace();
+
+      Communication_RTTY_TransmitMark();
+  } else if (inCharacter == '.') {
+      Communication_Transmit_ITA2_FiguresShift();
+
+      Communication_RTTY_TransmitSpace();
+      
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitSpace();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      Communication_RTTY_TransmitMark();
+      
+      Communication_RTTY_TransmitMark();
+  }
+}
+
+/*
+ * @brief send a string through the RTTY protocol.
+ */
+void Communication_Transmit_ITA2_Message(String inMessage)
+{
+  inMessage.toUpperCase();
+
+  for (int i = 0; i < inMessage.length(); i++)
+  {
+    Communication_Transmit_ITA2_Character(inMessage.c_str()[i]);
   }
 }
 
 void Communication_RTTY_BeginTransmission()
 {
+  /* Signal to turn on terminals */
+  for (int i = 0; i < 5; i++)
+  {
     Communication_RTTY_TransmitMark();
-    delay(500);
+  }
 }
 
 void Communication_RTTY_EndTransmission()
 {   
-    Communication_RTTY_Transmit("\r\n");
-    LORA.packetMode();
+    Communication_Transmit_ITA2_Message("\r\n");
 }
 
 
@@ -348,7 +1016,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
     Debugging_Utilities_DebugPrintLine("(LORA MODE E) SX1278 0x" + String(err_check, HEX));
   }
 
-  delay(100);
+  delay(50);
 
   ///////////////////////
   // FSK Transmission //
@@ -365,7 +1033,7 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
     Debugging_Utilities_DebugPrintLine("(FSK S.");
   }
 
-  delay(100);
+  delay(50);
 
   ////////////////////////
   // RTTY Transmission //
@@ -380,12 +1048,15 @@ void Communication_SX1278Transmit(String inFuncId, String inMessage)
     Debugging_Utilities_DebugPrintLine("(RTTY MODE)");
     
     Communication_RTTY_BeginTransmission();
-    Communication_RTTY_Transmit(transmissionPacket);
+    Communication_Transmit_ITA2_Message(transmissionPacket);
     Communication_RTTY_EndTransmission();
   
     Debugging_Utilities_DebugPrintLine("(T. RTTY. Success)");
   }
- 
+
+  LORA.packetMode();
+
+  delay(50);
 }
 
  /*

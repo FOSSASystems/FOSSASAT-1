@@ -169,7 +169,7 @@ void loop()
   {
     delay(200);
 
-    Wire.requestFrom(8, 32);    // request 32 bytes from slave device #8
+     Wire.requestFrom(8, 32);    // request 32 bytes from slave device #8
   
     String payloadTransmissionMessage = String("");
     
