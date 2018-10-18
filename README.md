@@ -18,4 +18,4 @@ Please use KiCad or a file format that can be interpreted by KiCad. This makes s
 Easy EDA may also be used due to its online availability.
 
 ### Contact
-You can contact us via https://fossa.systems/contact-us/
+You can contact us via https://fossa.systems/contact/
