@@ -6,7 +6,7 @@
 */
 
 /*
-* Name:    ground_station.ino
+* Name:    GroundStation.ino
 * Created:  7/23/2018
 * Author: Richad Bamford (FOSSA Systems)
 */
@@ -137,10 +137,6 @@ void loop()
   else if (state == ERR_CHIP_NOT_FOUND)
   {
     Debugging_Utilities_DebugLog("Could not find chip.");
-  }
-  else if (state == ERR_EEPROM_NOT_INITIALIZED)
-  {
-    Debugging_Utilities_DebugLog("EEPROM not initialized");
   }
   else if (state == ERR_PACKET_TOO_LONG)
   {
