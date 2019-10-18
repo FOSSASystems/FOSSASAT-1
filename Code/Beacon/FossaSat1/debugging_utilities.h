@@ -1,7 +1,7 @@
 #ifndef DEBUGGING_UTILITIES_H_INCLUDED
 #define DEBUGGING_UTILITIES_H_INCLUDED
 
-#include "BeaconTest2.h"
+#include "FossaSat1.h"
 
 // uncomment to enable debug output
 // RadioLib debug can be enabled in RadioLib/src/TypeDef.h

@@ -1,7 +1,7 @@
 #ifndef COMMUNICATION_H_INCLUDED
 #define COMMUNICATION_H_INCLUDED
 
-#include "BeaconTest2.h"
+#include "FossaSat1.h"
 
 void Communication_Receive_Interrupt();
 void Communication_Change_Modem();

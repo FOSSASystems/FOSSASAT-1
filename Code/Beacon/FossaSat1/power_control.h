@@ -1,7 +1,7 @@
 #ifndef POWER_CONTROL_H_INCLUDED
 #define POWER_CONTROL_H_INCLUDED
 
-#include "BeaconTest2.h"
+#include "FossaSat1.h"
 
 struct powerConfigBits_t {
   uint8_t lowPowerModeActive : 1;       // LSB

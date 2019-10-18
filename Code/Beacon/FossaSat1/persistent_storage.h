@@ -1,7 +1,7 @@
 #ifndef PERSISTENT_STORAGE_H_INCLUDED
 #define PERSISTENT_STORAGE_H_INCLUDED
 
-#include "BeaconTest2.h"
+#include "FossaSat1.h"
 
 template <class T>
 T Persistent_Storage_Read(uint16_t addr);

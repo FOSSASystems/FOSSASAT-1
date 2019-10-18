@@ -1,7 +1,7 @@
 #ifndef PIN_INTERFACE_H_INCLUDED
 #define PIN_INTERFACE_H_INCLUDED
 
-#include "BeaconTest2.h"
+#include "FossaSat1.h"
 
 void Pin_Interface_Set_Temp_Resolution(uint8_t sensorAddr, uint8_t res);
 float Pin_Interface_Read_Temperature(uint8_t sensorAddr);

@@ -1,4 +1,4 @@
-#include "BeaconTest2.h"
+#include "FossaSat1.h"
 
 void setup() {
   // initialize debug port

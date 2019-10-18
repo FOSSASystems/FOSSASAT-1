@@ -1,7 +1,7 @@
 #ifndef CONFIGURATION_H_INCLUDED
 #define CONFIGURATION_H_INCLUDED
 
-#include "BeaconTest2.h"
+#include "FossaSat1.h"
 
 // string length limit
 #define MAX_STRING_LENGTH                               32
