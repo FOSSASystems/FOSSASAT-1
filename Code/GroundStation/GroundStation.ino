@@ -18,7 +18,10 @@
 #include <RadioLib.h>
 #include <FOSSA-Comms.h>
 
-SX1278 radio = new Module(10, 2, 6);
+#define CS = 10;
+#define DIO0 = 2;
+#define DIO1 = 6;
+SX1278 radio = new Module(CS, DIO0, DIO1);
 
 volatile bool isInterruptEnabled = true;
 volatile bool isTransmissionReceived = false;
@@ -39,17 +42,32 @@ void onInterrupt()
 void setup()
 {
   Serial.begin(9600);
-  Serial.println("FOSSA Ground Station Initializing...");
+  Serial.println(F("FOSSA Ground Station Initializing..."));
 
-  
+  // initialize the radio.
+  int state = radio.begin(434.0, 125.0, 11, 8, 0x0F0F);
+  if (state == ERR_NONE)
+  {
+    Serial.println(F("Successfully initialized radio module!"));
+  }
+  else
+  {
+    Serial.print(F("Failed to initialize radio modue error code: "));
+    Serial.println(state);
+  }
 
-  Serial.println("Completed.");
+  // attach the ISR to this function
+  radio.setDio1Action(onInterrupt);
+  // begin listening for packets.
+  radio.startReceive();  
+
+  Serial.println(F("Completed."));
 }
 
 /**
  * This function takes a transmission frame and handles its data.
  */
-void ProcessTransmission(size_t* responsePacketLength, uint8_t* responsePacketFrame)
+void ProcessReceivedTransmission(size_t* responsePacketLength, uint8_t* responsePacketFrame)
 {
   // get the function id
   uint8_t functionId = FCP_Get_FunctionID(callsign, responsePacketFrame, responsePacketLength);
@@ -92,8 +110,105 @@ void ProcessTransmission(size_t* responsePacketLength, uint8_t* responsePacketFr
   }
 }
 
+void SendTransmissions(int serialDataLength)
+{
+  // extract the message from the serial input.
+  char* message = new char[serialDataLength];
+  
+  for (int i = 0; i < serialDataLength; i++)
+  {
+    message[i] = (char)(Serial.read());
+  }
+
+  Serial.print(F("Transmitting: "));
+  Serial.println(message);
+
+
+  // get the information for the frame.
+  char* data;
+  uint8_t functionId;
+  uint8_t dataLength;
+  bool includesData;
+  
+  switch message
+  {
+    case "PING":
+      functionId = CMD_PING;
+      includesData = false;
+      break;
+    case: "GET_SYSTEM_INFO":
+      functionId = CMD_TRANSMIT_SYSTEM_INFO;
+      includesData = false;
+      break;
+    case: "GET_LAST_PACKET_INFO":
+      functionId = CMD_GET_LAST_PACKET_INFO;
+      includesData = false;
+      break;
+    default:
+      functionId = CMD_RETRANSMIT;
+      includesData = true;
+      dataLength = strlen(message);
+      data = message;
+      break;
+  }
+
+
+
+  // construct the frame.
+  uint8_t frameLength;
+  if (includesData)
+  {
+    frameLength = FCP_Get_Frame_Length(callsign, dataLength, (uint8_t*)data);
+  }
+  else
+  {
+    frameLength = FCP_Get_Frame_Length(callsign);
+  }
+  
+  uint8_t* frame = new uint8_t[frameLength];
+  if (includesData)
+  {
+    FCP_Encode(frame, callsign, functionId, data, (uint8_t)data); 
+  }
+  else
+  {
+    FCP_Encode(frame, callsign, functionId);
+  }
+
+
+  // transmit the frame.
+  int state = radio.transmit(frame, frameLength);
+  if (state == ERR_NONE)
+  {
+    Serial.println(F("Successfully transmitted!"));
+  }
+  else
+  {
+    Serial.println(F("Error transmitting message..."));
+  }
+
+  delete[] frame;
+  delete[] message;
+  delete[] consoleMessage;
+}
+
 void loop()
 {
+  // if we receive a serial message.
+  if (Serial.available() > 0)
+  {
+    // prevent receive interrupt.
+    isInterruptEnabled = false;
+    detachInterrupt(digitalPinToInterrupt(DIO1));
+
+    // send a command.
+    SendTransmissions(Serial.available());
+
+    // re-enable radio into receive mode.
+    radio.setDio1Action(onInterrupt);
+    isInterruptEnabled = true;
+  }
+  
   // if we receive a transmission.
   if (isTransmissionReceived)
   {
@@ -118,7 +233,7 @@ void loop()
 
 
     // free the memory.
-    delete responsePacketFrame;
+    delete[] responsePacketFrame;
 
     // enable receiving transmissions again.
     isInterruptEnabled = true;
