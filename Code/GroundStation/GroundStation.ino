@@ -29,14 +29,6 @@ char callsign[] = "FOSSASAT-1";
  * Utility functions
  */
 
- /*
-  * This function returns true if the radio was set up correctly.
-  */
-bool CheckRadioStatusCode(int pErrorCode)
-{
-  
-}
-
 void onInterrupt()
 {
   if (!isInterruptEnabled) return;
@@ -54,54 +46,81 @@ void setup()
   Serial.println("Completed.");
 }
 
+/**
+ * This function takes a transmission frame and handles its data.
+ */
+void ProcessTransmission(size_t* responsePacketLength, uint8_t* responsePacketFrame)
+{
+  // get the function id
+  uint8_t functionId = FCP_Get_FunctionID(callsign, responsePacketFrame, responsePacketLength);
+
+  // get the packets length.
+  uint8_t responsePacketDataLength = FCP_Get_OptData_Length(callsign, responsePacketFrame, responsePacketLength);
+
+
+  // these variables store the optional data the packet has.
+  uint8_t* responsePacketData = null;
+  bool hasData = false;
+  
+  if (responsePacketDataLength > 0) // if we have data in packet.
+  { 
+    // extract the data to be used in the switch case later.
+    responsePacketData = new uint8_t[responsePacketDataLength];
+    
+    hasData = true;
+  } 
+  
+  
+  switch functionId:
+  {
+    case RESP_PONG:
+      break;
+    case RESP_REPEATED_MESSAGE:
+      break;
+    case RESP_REPEATED_MESSAGE_CUSTOM:
+      break;
+    case RESP_SYSTEM_INFO:
+      break;
+    case RESP_LAST_PACKET_INFO:
+      break;
+  }
+
+  // make sure we free any memory allocated for the optional data.
+  if (hasData)
+  {
+    delete responsePacketData;
+  }
+}
+
 void loop()
 {
+  // if we receive a transmission.
   if (isTransmissionReceived)
   {
+    // stop transmissions from being received.
     isInterruptEnabled = false;
-    
+
+    // get frame info and data.
     size_t responsePacketLength = radio.getPacketLength();
     uint8_t* reponsePacketFrame = new uint8_t[responsePacketLength];
 
+    // process the frame.
     int state = radio.readData(responsePacketFrame, responsePacketLength);
-
-    switch (state)
+    if (state != ERR_NONE)
     {
-      case ERR_INVALID
+      // error
+      Serial.println(state);
     }
-    if (state == ERR_NONE)
+    else
     {
-      uint8_t functionId = FCP_Get_FunctionID(callsign, responsePacketFrame, responsePacketLength);
-
-      switch functionId:
-      {
-        case RESP_PONG:
-          break;
-        case RESP_REPEATED_MESSAGE:
-          break;
-        case RESP_REPEATED_MESSAGE_CUSTOM:
-          break;
-        case RESP_SYSTEM_INFO:
-          break;
-        case RESP_LAST_PACKET_INFO:
-          break;
-      }
-   /*   
-      if (functionId == RESP_SYSTEM_INFO)
-      {
-        uint8_t responsePacketDataLength = FCP_Get_OptData_Length(callsign, responsePacketFrame, responsePacketLength);
-  
-        if (responsePacketDataLength > 0)
-        { 
-          uint8_t* responsePacketData = new uint8_t[responsePacketDataLength];
-  
-          delete responsePacketData;
-        }        
-      }
-      */
+      ProcessTransmission(reponsePacketLength, responsePacketFrame);
     }
 
+
+    // free the memory.
     delete responsePacketFrame;
+
+    // enable receiving transmissions again.
     isInterruptEnabled = true;
   }
 }
