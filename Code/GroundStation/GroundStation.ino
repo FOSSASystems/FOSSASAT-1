@@ -18,9 +18,10 @@
 #include <RadioLib.h>
 #include <FOSSA-Comms.h>
 
-#define CS = 10;
-#define DIO0 = 2;
-#define DIO1 = 6;
+#define CS 10
+#define DIO0 2
+#define DIO1 6
+
 SX1278 radio = new Module(CS, DIO0, DIO1);
 
 volatile bool isInterruptEnabled = true;
@@ -36,7 +37,7 @@ void onInterrupt()
 {
   if (!isInterruptEnabled) return;
   
-  transmissionRecieved = true;
+  isTransmissionReceived = true;
 }
 
 void setup()
@@ -77,7 +78,7 @@ void ProcessReceivedTransmission(size_t* responsePacketLength, uint8_t* response
 
 
   // these variables store the optional data the packet has.
-  uint8_t* responsePacketData = null;
+  uint8_t* responsePacketData;
   bool hasData = false;
   
   if (responsePacketDataLength > 0) // if we have data in packet.
@@ -87,19 +88,25 @@ void ProcessReceivedTransmission(size_t* responsePacketLength, uint8_t* response
     
     hasData = true;
   } 
+
+  Serial.print(F("Received: "));
   
-  
-  switch functionId:
+  switch (functionId)
   {
     case RESP_PONG:
+      Serial.println(F(" PONG"));
       break;
     case RESP_REPEATED_MESSAGE:
+      PRINT_BUFF(responsePacketData, responsePacketDataLength);
       break;
     case RESP_REPEATED_MESSAGE_CUSTOM:
+      PRINT_BUFF(responsePacketData, responsePacketDataLength);
       break;
     case RESP_SYSTEM_INFO:
+      PRINT_BUFF(responsePacketData, responsePacketDataLength);
       break;
     case RESP_LAST_PACKET_INFO:
+      PRINT_BUFF(responsePacketData, responsePacketDataLength);
       break;
   }
 
@@ -110,7 +117,7 @@ void ProcessReceivedTransmission(size_t* responsePacketLength, uint8_t* response
   }
 }
 
-void SendTransmissions(int serialDataLength)
+void SendTransmission(int serialDataLength)
 {
   // extract the message from the serial input.
   char* message = new char[serialDataLength];
@@ -129,29 +136,29 @@ void SendTransmissions(int serialDataLength)
   uint8_t functionId;
   uint8_t dataLength;
   bool includesData;
-  
-  switch message
-  {
-    case "PING":
-      functionId = CMD_PING;
-      includesData = false;
-      break;
-    case: "GET_SYSTEM_INFO":
-      functionId = CMD_TRANSMIT_SYSTEM_INFO;
-      includesData = false;
-      break;
-    case: "GET_LAST_PACKET_INFO":
-      functionId = CMD_GET_LAST_PACKET_INFO;
-      includesData = false;
-      break;
-    default:
-      functionId = CMD_RETRANSMIT;
-      includesData = true;
-      dataLength = strlen(message);
-      data = message;
-      break;
-  }
 
+  if (strcmp(message, "PING"))
+  {
+    functionId = CMD_PING;
+    includesData = false;
+  }
+  else if (strcmp(message, "GET_SYSTEM_INFO"))
+  {
+    functionId = CMD_TRANSMIT_SYSTEM_INFO;
+    includesData = false;
+  }
+  else if (strcmp(message, "GET_LAST_PACKET_INFO"))
+  {
+    functionId = CMD_GET_LAST_PACKET_INFO;
+    includesData = false;
+  }
+  else
+  {
+    functionId = CMD_RETRANSMIT;
+    includesData = true;
+    dataLength = strlen(message);
+    data = message;    
+  }
 
 
   // construct the frame.
@@ -189,11 +196,12 @@ void SendTransmissions(int serialDataLength)
 
   delete[] frame;
   delete[] message;
-  delete[] consoleMessage;
 }
 
 void loop()
 {
+
+  
   // if we receive a serial message.
   if (Serial.available() > 0)
   {
@@ -202,12 +210,15 @@ void loop()
     detachInterrupt(digitalPinToInterrupt(DIO1));
 
     // send a command.
-    SendTransmissions(Serial.available());
+    SendTransmission(Serial.available());
 
     // re-enable radio into receive mode.
     radio.setDio1Action(onInterrupt);
     isInterruptEnabled = true;
   }
+
+
+  
   
   // if we receive a transmission.
   if (isTransmissionReceived)
@@ -217,7 +228,7 @@ void loop()
 
     // get frame info and data.
     size_t responsePacketLength = radio.getPacketLength();
-    uint8_t* reponsePacketFrame = new uint8_t[responsePacketLength];
+    uint8_t* responsePacketFrame = new uint8_t[responsePacketLength];
 
     // process the frame.
     int state = radio.readData(responsePacketFrame, responsePacketLength);
@@ -228,7 +239,7 @@ void loop()
     }
     else
     {
-      ProcessTransmission(reponsePacketLength, responsePacketFrame);
+      ProcessReceivedTransmission(responsePacketLength, responsePacketFrame);
     }
 
 
@@ -238,4 +249,7 @@ void loop()
     // enable receiving transmissions again.
     isInterruptEnabled = true;
   }
+
+
+  
 }
