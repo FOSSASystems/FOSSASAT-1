@@ -2,11 +2,8 @@
  * FOSSA Ground Station Example
  *
  * Tested on Arduino Uno and SX1278, can be used with any LoRa radio
- * from the SX127x or SX126x series.
- *
- * Note: When using SX126x, make sure to use the correct sync word,
- * set correct TCXO reference voltage and use DIO1 as the
- * reception interrupt (since SX126x doesn't have DIO0)!
+ * from the SX127x or SX126x series. Make sure radio type (line 21)
+ * and pin mapping (lines 26 - 29) match your hardware!
  *
  * References:
  *
@@ -22,10 +19,14 @@
 #include <RadioLib.h>
 #include <FOSSA-Comms.h>
 
+#define RADIO_TYPE        SX1278  // type of radio module to be used
+//#define RADIO_SX126X            // also uncomment this line when using SX126x!!!
+
 // pin definitions
 #define CS                10
-#define DIO0              2
-#define DIO1              3
+#define DIO1              2
+#define DIO2              3
+#define BUSY              9
 
 // modem configuration
 #define FREQUENCY         436.7   // MHz
@@ -36,7 +37,11 @@
 #define SYNC_WORD_6X      0x0F0F  //                      SX126x
 
 // set up radio module
-SX1278 radio = new Module(CS, DIO0, DIO1);
+#ifdef RADIO_SX126X
+  RADIO_TYPE radio = new Module(CS, DIO1, DIO2, BUSY);
+#else
+  RADIO_TYPE radio = new Module(CS, DIO1, DIO2);
+#endif
 
 // flags
 volatile bool interruptEnabled = true;
@@ -194,11 +199,19 @@ void setup() {
   Serial.println(F("FOSSA Ground Station Demo Code"));
 
   // initialize the radio
+  #ifdef RADIO_SX126X
+  int state = radio.begin(FREQUENCY,
+                          BANDWIDTH,
+                          SPREADING_FACTOR,
+                          CODING_RATE,
+                          SYNC_WORD_6X);
+  #else
   int state = radio.begin(FREQUENCY,
                           BANDWIDTH,
                           SPREADING_FACTOR,
                           CODING_RATE,
                           SYNC_WORD_7X);
+  #endif
   if(state == ERR_NONE) {
     Serial.println(F("Radio initialization successful!"));
   } else {
@@ -208,7 +221,11 @@ void setup() {
   }
 
   // attach the ISR to radio interrupt
+  #ifdef RADIO_SX126X
+  radio.setDio1Action(onInterrupt);
+  #else
   radio.setDio0Action(onInterrupt);
+  #endif
 
   // begin listening for packets
   radio.startReceive();
@@ -221,7 +238,7 @@ void loop() {
   if(Serial.available()) {
     // disable reception interrupt
     interruptEnabled = false;
-    detachInterrupt(digitalPinToInterrupt(DIO0));
+    detachInterrupt(digitalPinToInterrupt(DIO1));
 
     // get the first character
     char serialCmd = Serial.read();
@@ -255,7 +272,11 @@ void loop() {
     }
 
     // set radio mode to reception
+    #ifdef RADIO_SX126X
+    radio.setDio1Action(onInterrupt);
+    #else
     radio.setDio0Action(onInterrupt);
+    #endif
     radio.startReceive();
     interruptEnabled = true;
   }
@@ -362,6 +383,7 @@ void loop() {
           break;
       }
 
+      printControls();
       if(respOptDataLen > 0) {
         delete[] respOptData;
       }
