@@ -40,3 +40,7 @@
 *.tex
 *.bat
 *.map
+
+# Atom C-tags
+*.tags
+*.tags1
