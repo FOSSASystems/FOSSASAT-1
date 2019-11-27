@@ -35,8 +35,8 @@
 #define ANALOG_IN_SOLAR_C_VOLTAGE_PIN                   A2
 #define ANALOG_IN_RANDOM_SEED                           A6  // used as source for randomSeed(), should be left floating
 #define RADIO_NSS                                       10
-#define RADIO_DIO1                                      2
-#define RADIO_DIO2                                      3
+#define RADIO_DIO0                                      2
+#define RADIO_DIO1                                      3
 #define RADIO_BUSY                                      9
 
 

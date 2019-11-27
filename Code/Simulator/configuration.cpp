@@ -21,9 +21,9 @@ uint32_t lastRtty = 0;
 
 // RadioLib instances
 #ifdef RADIO_SX126X
-  RADIO_TYPE radio = new Module(RADIO_NSS, RADIO_DIO1, RADIO_DIO2, RADIO_BUSY);
+  RADIO_TYPE radio = new Module(RADIO_NSS, RADIO_DIO1, RADIO_BUSY);
 #else
-  RADIO_TYPE radio = new Module(RADIO_NSS, RADIO_DIO1, RADIO_DIO2);
+  RADIO_TYPE radio = new Module(RADIO_NSS, RADIO_DIO0, RADIO_DIO1);
 #endif
 
 RTTYClient rtty(&radio);

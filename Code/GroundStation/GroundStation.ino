@@ -24,8 +24,8 @@
 
 // pin definitions
 #define CS                10
-#define DIO1              2
-#define DIO2              3
+#define DIO0              2
+#define DIO1              3
 #define BUSY              9
 
 // modem configuration
@@ -38,9 +38,9 @@
 
 // set up radio module
 #ifdef RADIO_SX126X
-  RADIO_TYPE radio = new Module(CS, DIO1, DIO2, BUSY);
+  RADIO_TYPE radio = new Module(CS, DIO1, BUSY);
 #else
-  RADIO_TYPE radio = new Module(CS, DIO1, DIO2);
+  RADIO_TYPE radio = new Module(CS, DIO0, DIO1);
 #endif
 
 // flags
