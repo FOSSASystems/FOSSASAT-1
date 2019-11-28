@@ -375,7 +375,10 @@ void loop() {
 
         case RESP_REPEATED_MESSAGE:
           Serial.println(F("Got repeated message:"));
-          Serial.println((char*)respOptData);
+          for(uint8_t i = 0; i < respOptDataLen; i++) {
+            Serial.write(respOptData[i]);
+          }
+          Serial.println();
           break;
 
         default:
