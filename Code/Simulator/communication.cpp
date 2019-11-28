@@ -90,11 +90,6 @@ void Communication_Set_Modem(uint8_t modem) {
 
   // set spreading factor
   Communication_Set_SpreadingFactor(spreadingFactorMode);
-
-  // set TCXO
-  #ifdef RADIO_SX126X
-  radio.setTCXO(TCXO_VOLTAGE);
-  #endif
 }
 
 int16_t Communication_Set_SpreadingFactor(uint8_t sfMode) {
@@ -492,13 +487,13 @@ int16_t Communication_Transmit(uint8_t* data, uint8_t len, bool overrideModem) {
 
   // wait for transmission finish
   uint32_t start = micros();
-  while(!digitalRead(RADIO_DIO1)) {
+  while(!digitalRead(RADIO_DIO0)) {
     // check timeout
     if(micros() - start > timeout) {
       // timed out while transmitting
       radio.standby();
       Communication_Set_Modem(modem);
-      FOSSASAT_DEBUG_PRINT(F("Tx timeout"));
+      FOSSASAT_DEBUG_PRINTLN(F("Tx timeout"));
       return(ERR_TX_TIMEOUT);
     }
   }

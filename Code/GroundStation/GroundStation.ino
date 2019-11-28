@@ -38,7 +38,7 @@
 
 // set up radio module
 #ifdef RADIO_SX126X
-  RADIO_TYPE radio = new Module(CS, DIO1, BUSY);
+  RADIO_TYPE radio = new Module(CS, DIO0, BUSY);
 #else
   RADIO_TYPE radio = new Module(CS, DIO0, DIO1);
 #endif

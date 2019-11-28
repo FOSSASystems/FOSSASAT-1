@@ -77,7 +77,7 @@
 #define FSK_CARRIER_FREQUENCY                           436.7f  // MHz
 #define FSK_BIT_RATE                                    1.2f    // kbps nominal
 #define FSK_FREQUENCY_DEVIATION                         5.0f    // kHz single-sideband
-#define FSK_RX_BANDWIDTH                                20.0f   // kHz single-sideband
+#define FSK_RX_BANDWIDTH                                19.5f   // kHz single-sideband
 #define FSK_OUTPUT_POWER                                21      // dBm
 #define FSK_PREAMBLE_LENGTH                             16      // bits
 #define FSK_DATA_SHAPING                                0.5f    // GFSK filter BT product
