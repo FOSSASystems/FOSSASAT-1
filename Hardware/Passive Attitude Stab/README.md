@@ -1,1 +1,1 @@
-The current plan is to use two rare earth magnets to stabilise the craft in two axis, Active attitude stabilisation will not be used due to complexity. Any info on placement is helpful.
+Two 3x10mm cylindrical magnets are held in the ballast at 55º to compensate for magnetic inclination of Spain. Four MuMetal strips are held on the side pcbs.
