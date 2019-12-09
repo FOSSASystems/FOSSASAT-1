@@ -33,7 +33,7 @@
 #define BANDWIDTH         125.0   // kHz
 #define SPREADING_FACTOR  11
 #define CODING_RATE       8       // 4/8
-#define SYNC_WORD_7X      0xFF    // sync word when using SX127x
+#define SYNC_WORD_7X      0x00    // sync word when using SX127x
 #define SYNC_WORD_6X      0x0F0F  //                      SX126x
 
 // set up radio module
